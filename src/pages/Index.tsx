@@ -90,8 +90,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/4259102/pexels-photo-4259102.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Mother cooking with her children in kitchen"
+                    src="https://images.pexels.com/photos/4259707/pexels-photo-4259707.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Mother and daughter cooking together in kitchen"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -120,8 +120,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/6940978/pexels-photo-6940978.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Mother reading with her children"
+                    src="https://images.pexels.com/photos/3094215/pexels-photo-3094215.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Mother and children reading book together"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -150,8 +150,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/7520534/pexels-photo-7520534.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Mother with vlog camera setup"
+                    src="https://images.pexels.com/photos/3968056/pexels-photo-3968056.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman with camera filming vlog"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -180,8 +180,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Mother and kids gardening vegetables"
+                    src="https://images.pexels.com/photos/4503821/pexels-photo-4503821.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Mother and child in vegetable garden"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
