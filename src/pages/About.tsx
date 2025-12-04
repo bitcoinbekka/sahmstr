@@ -114,6 +114,181 @@ export default function About() {
               </div>
 
               <div className="space-y-4">
+                <h2 className="text-3xl font-serif font-bold">Financial Sovereignty for Families</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  At the heart of SAHMstr is the belief that financial sovereignty strengthens families. When families
+                  control their own money and economic future, they gain independence, security, and the ability to
+                  build generational wealth on their own terms.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <h3 className="text-2xl font-semibold">What is Bitcoin?</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  Bitcoin is sound money for the digital age. Unlike government-issued currencies that can be printed
+                  endlessly, bitcoin has a fixed supply of 21 million coins. This scarcity makes it an excellent store
+                  of value - protecting your family's savings from inflation and debasement.
+                </p>
+
+                <div className="bg-card border-2 border-primary/20 rounded-2xl p-6 space-y-4">
+                  <h4 className="text-xl font-semibold">Why Bitcoin Matters for Families</h4>
+                  <ul className="space-y-3 text-muted-foreground">
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Protection from Inflation:</strong> Your savings won't lose
+                        purchasing power over time as governments print more money
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">True Ownership:</strong> You control your bitcoin directly -
+                        no bank can freeze your account or deny you access to your money
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Global & Borderless:</strong> Send value to anyone, anywhere,
+                        without permission from banks or payment processors
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Generational Wealth:</strong> Bitcoin can be passed down to
+                        your children, providing financial security for generations
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Low Time Preference:</strong> Saving in bitcoin encourages
+                        long-term thinking and planning for the future
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <h3 className="text-2xl font-semibold">Value-for-Value (V4V) Communities</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  Value-for-value is a new economic model made possible by bitcoin and Nostr. Instead of ads, subscriptions,
+                  or platform fees, creators and community members exchange value directly through peer-to-peer transactions.
+                </p>
+
+                <div className="bg-card border-2 border-primary/20 rounded-2xl p-6 space-y-4">
+                  <h4 className="text-xl font-semibold">How V4V Works</h4>
+                  <p className="text-muted-foreground">
+                    When someone shares a valuable recipe, helpful tip, or inspiring vlog, you can send them bitcoin
+                    (called "zaps" on Nostr) directly as a thank you. No middlemen, no platform taking a cut - just
+                    direct appreciation flowing from person to person.
+                  </p>
+                  <ul className="space-y-3 text-muted-foreground mt-4">
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">No Ads or Algorithms:</strong> Content creators aren't
+                        incentivized to be sensational or clickbait-y - they're rewarded for genuine value
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Direct Support:</strong> Every satoshi (smallest unit of bitcoin)
+                        goes directly to the creator, not a platform
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Voluntary Exchange:</strong> You decide what content is valuable
+                        and reward creators accordingly
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-primary mt-1">•</span>
+                      <span>
+                        <strong className="text-foreground">Community-Driven:</strong> The community determines value, not
+                        corporate sponsors or advertisers
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <h3 className="text-2xl font-semibold">Building Stronger Families Through P2P Communities</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  Peer-to-peer (P2P) communities built on Nostr and bitcoin create a fundamentally different kind of
+                  social network - one that strengthens families rather than fragmenting them.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="border-l-4 border-primary pl-6 py-2">
+                    <h4 className="font-semibold text-lg mb-2">Economic Independence</h4>
+                    <p className="text-muted-foreground">
+                      Stay-at-home moms can earn bitcoin by sharing their knowledge and skills - whether that's recipes,
+                      homemaking tips, or crafts. This creates economic value for homemaking work that society often
+                      undervalues, giving moms financial independence while staying home with their children.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-primary pl-6 py-2">
+                    <h4 className="font-semibold text-lg mb-2">Aligned Incentives</h4>
+                    <p className="text-muted-foreground">
+                      Traditional social media profits from keeping you addicted and distracted. V4V communities profit
+                      when they provide real value to your life. This alignment means content that helps your family
+                      thrive - not content designed to steal your attention from your children.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-primary pl-6 py-2">
+                    <h4 className="font-semibold text-lg mb-2">True Ownership</h4>
+                    <p className="text-muted-foreground">
+                      Your content, connections, and reputation belong to you. If SAHMstr disappeared tomorrow, you could
+                      take your Nostr identity to any other Nostr app and find the same connections, content, and community.
+                      This protects families from platform risk and censorship.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-primary pl-6 py-2">
+                    <h4 className="font-semibold text-lg mb-2">Long-Term Thinking</h4>
+                    <p className="text-muted-foreground">
+                      Bitcoin's fixed supply encourages saving and long-term planning. When your money appreciates over
+                      time instead of depreciating, you naturally think more about the future - your children's education,
+                      retirement, and generational wealth. This mindset strengthens family bonds and builds resilience.
+                    </p>
+                  </div>
+
+                  <div className="border-l-4 border-primary pl-6 py-2">
+                    <h4 className="font-semibold text-lg mb-2">Privacy & Safety</h4>
+                    <p className="text-muted-foreground">
+                      Unlike traditional social media that harvests your data, Nostr gives you control over your privacy.
+                      You can be pseudonymous or public, share what you choose, and protect your family's personal
+                      information. Bitcoin transactions are also peer-to-peer, without revealing your banking details.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-card border-2 border-primary/20 rounded-2xl p-8 space-y-4">
+                <h3 className="text-2xl font-serif font-bold">The Vision</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  SAHMstr exists to help families thrive in the digital age by combining timeless homemaking wisdom
+                  with cutting-edge financial technology. We believe that when moms have financial sovereignty, strong
+                  peer-to-peer communities, and the freedom to share their knowledge without corporate interference,
+                  families become stronger, more resilient, and more connected.
+                </p>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  This is more than just a social network - it's a movement toward family financial independence,
+                  authentic community, and a better future for our children.
+                </p>
+              </div>
+
+              <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-bold">Why Nostr?</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   We built SAHMstr on the Nostr protocol because we believe in true digital ownership. Your content belongs to you,
