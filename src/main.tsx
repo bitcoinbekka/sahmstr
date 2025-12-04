@@ -7,8 +7,12 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import App from './App.tsx';
 import './index.css';
 
-// FIXME: a custom font should be used. Eg:
-// import '@fontsource-variable/<font-name>';
+// Fonts
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-sans/600.css';
+import '@fontsource/dm-sans/700.css';
+import '@fontsource-variable/playfair-display';
 
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary>
