@@ -18,9 +18,21 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(251,146,60,0.05),transparent_50%)] pointer-events-none" />
+        <section className="relative overflow-hidden">
+          {/* Hero Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src="https://images.pexels.com/photos/6932955/pexels-photo-6932955.jpeg?auto=compress&cs=tinysrgb&w=1920"
+              alt="Cozy home kitchen"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+          </div>
+
+          {/* Radial gradient overlays for bitcoin orange glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.12),transparent_50%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
 
           <div className="container relative py-24 md:py-32">
             <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -75,11 +87,21 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50">
-                <CardHeader>
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <ChefHat className="h-7 w-7 text-white" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Cooking and baking"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg">
+                      <ChefHat className="h-6 w-6 text-white" />
+                    </div>
                   </div>
+                </div>
+                <CardHeader>
                   <CardTitle className="text-2xl">Recipes & Cooking</CardTitle>
                   <CardDescription className="text-base">
                     From scratch cooking, baking, preserving, and meal planning for your family
@@ -95,11 +117,21 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50">
-                <CardHeader>
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Video className="h-7 w-7 text-white" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.pexels.com/photos/3692882/pexels-photo-3692882.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Video blogging"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg">
+                      <Video className="h-6 w-6 text-white" />
+                    </div>
                   </div>
+                </div>
+                <CardHeader>
                   <CardTitle className="text-2xl">Vlogs & Stories</CardTitle>
                   <CardDescription className="text-base">
                     Real life, real moments. Watch and share your daily homemaking journey
@@ -115,11 +147,21 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50">
-                <CardHeader>
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Radio className="h-7 w-7 text-white" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.pexels.com/photos/3831187/pexels-photo-3831187.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Live streaming setup"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg">
+                      <Radio className="h-6 w-6 text-white" />
+                    </div>
                   </div>
+                </div>
+                <CardHeader>
                   <CardTitle className="text-2xl">Live Streaming</CardTitle>
                   <CardDescription className="text-base">
                     Join live cooking sessions, Q&As, and connect in real-time with the community
@@ -135,11 +177,21 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50">
-                <CardHeader>
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Lightbulb className="h-7 w-7 text-white" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.pexels.com/photos/6231899/pexels-photo-6231899.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Home economics and gardening"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                      <Lightbulb className="h-6 w-6 text-white" />
+                    </div>
                   </div>
+                </div>
+                <CardHeader>
                   <CardTitle className="text-2xl">Home Economics</CardTitle>
                   <CardDescription className="text-base">
                     Budgeting, gardening, sewing, and sustainable living tips for the modern homemaker
