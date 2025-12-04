@@ -12,19 +12,19 @@ export default function Live() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-accent/30 py-16">
+        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 items-center justify-center mx-auto">
                 <Radio className="h-8 w-8 text-white" />
               </div>
-              
+
               <h1 className="text-4xl md:text-6xl font-serif font-bold">
                 Live Streaming
               </h1>
-              
+
               <p className="text-xl text-muted-foreground">
                 Connect in real-time with cooking sessions, Q&As, and community gatherings.
               </p>

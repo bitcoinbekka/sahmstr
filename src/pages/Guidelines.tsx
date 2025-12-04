@@ -13,15 +13,15 @@ export default function Guidelines() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-accent/30 py-16">
+        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <h1 className="text-4xl md:text-6xl font-serif font-bold">
                 Community Guidelines
               </h1>
-              
+
               <p className="text-xl text-muted-foreground">
                 Creating a nurturing space for all SAHMstr community members
               </p>
@@ -34,7 +34,7 @@ export default function Guidelines() {
             <div className="space-y-12">
               <div className="prose prose-lg max-w-none">
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  SAHMstr is built on the principles of respect, authenticity, and mutual support. 
+                  SAHMstr is built on the principles of respect, authenticity, and mutual support.
                   Our community thrives when we all contribute to a positive, welcoming environment.
                 </p>
               </div>
@@ -47,7 +47,7 @@ export default function Guidelines() {
                     </div>
                     <h3 className="text-xl font-semibold">Be Respectful</h3>
                     <p className="text-muted-foreground">
-                      Treat everyone with kindness and respect. We're all on different journeys, 
+                      Treat everyone with kindness and respect. We're all on different journeys,
                       and our diversity makes us stronger.
                     </p>
                   </CardContent>
@@ -60,7 +60,7 @@ export default function Guidelines() {
                     </div>
                     <h3 className="text-xl font-semibold">Share Authentically</h3>
                     <p className="text-muted-foreground">
-                      Be genuine in your contributions. Share your real experiences, successes, 
+                      Be genuine in your contributions. Share your real experiences, successes,
                       and challenges alike.
                     </p>
                   </CardContent>
@@ -85,7 +85,7 @@ export default function Guidelines() {
                     </div>
                     <h3 className="text-xl font-semibold">Stay On Topic</h3>
                     <p className="text-muted-foreground">
-                      Keep content relevant to homemaking, bitcoin, and family life. 
+                      Keep content relevant to homemaking, bitcoin, and family life.
                       This helps maintain a focused, valuable community.
                     </p>
                   </CardContent>
@@ -94,12 +94,12 @@ export default function Guidelines() {
 
               <div className="space-y-6">
                 <h2 className="text-3xl font-serif font-bold">Our Values</h2>
-                
+
                 <div className="space-y-4">
                   <div className="border-l-4 border-primary pl-6 py-2">
                     <h3 className="font-semibold text-lg mb-2">Financial Sovereignty</h3>
                     <p className="text-muted-foreground">
-                      We believe in bitcoin's potential to empower families. Discussions about financial 
+                      We believe in bitcoin's potential to empower families. Discussions about financial
                       independence, saving, and bitcoin education are encouraged.
                     </p>
                   </div>
@@ -107,7 +107,7 @@ export default function Guidelines() {
                   <div className="border-l-4 border-primary pl-6 py-2">
                     <h3 className="font-semibold text-lg mb-2">Homemaking Excellence</h3>
                     <p className="text-muted-foreground">
-                      From cooking to budgeting to home education, we celebrate the art and science 
+                      From cooking to budgeting to home education, we celebrate the art and science
                       of creating a thriving home environment.
                     </p>
                   </div>
@@ -115,7 +115,7 @@ export default function Guidelines() {
                   <div className="border-l-4 border-primary pl-6 py-2">
                     <h3 className="font-semibold text-lg mb-2">Decentralization</h3>
                     <p className="text-muted-foreground">
-                      Built on Nostr, we value freedom, privacy, and user ownership. Your content 
+                      Built on Nostr, we value freedom, privacy, and user ownership. Your content
                       belongs to you, and censorship has no place here.
                     </p>
                   </div>
@@ -123,7 +123,7 @@ export default function Guidelines() {
                   <div className="border-l-4 border-primary pl-6 py-2">
                     <h3 className="font-semibold text-lg mb-2">Lifelong Learning</h3>
                     <p className="text-muted-foreground">
-                      We're all students and teachers. Share your knowledge generously and remain 
+                      We're all students and teachers. Share your knowledge generously and remain
                       open to learning from others.
                     </p>
                   </div>
@@ -132,44 +132,44 @@ export default function Guidelines() {
 
               <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-bold">Content Guidelines</h2>
-                
+
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <span>
-                      <strong className="text-foreground">Recipes:</strong> Share complete, tested recipes with clear 
+                      <strong className="text-foreground">Recipes:</strong> Share complete, tested recipes with clear
                       instructions. Include ingredients, measurements, and helpful tips.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <span>
-                      <strong className="text-foreground">Vlogs & Videos:</strong> Keep content family-friendly and 
+                      <strong className="text-foreground">Vlogs & Videos:</strong> Keep content family-friendly and
                       relevant to homemaking, parenting, or bitcoin topics.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <span>
-                      <strong className="text-foreground">Tips & How-Tos:</strong> Provide actionable advice based on 
+                      <strong className="text-foreground">Tips & How-Tos:</strong> Provide actionable advice based on
                       real experience. Cite sources when sharing technical or financial information.
                     </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <span>
-                      <strong className="text-foreground">Comments & Discussion:</strong> Engage thoughtfully. 
+                      <strong className="text-foreground">Comments & Discussion:</strong> Engage thoughtfully.
                       Constructive criticism is welcome; personal attacks are not.
                     </span>
                   </li>
                 </ul>
               </div>
 
-              <div className="bg-secondary/50 rounded-2xl p-8 space-y-4">
+              <div className="bg-card border-2 border-primary/20 rounded-2xl p-8 space-y-4">
                 <h2 className="text-2xl font-serif font-bold">Building Together</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  SAHMstr is more than a platform - it's a community built by its members. By following these 
-                  guidelines and embodying our values, you help create a space where homemakers can connect, 
+                  SAHMstr is more than a platform - it's a community built by its members. By following these
+                  guidelines and embodying our values, you help create a space where homemakers can connect,
                   learn, and thrive together. Thank you for being part of this journey!
                 </p>
               </div>

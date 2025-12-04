@@ -20,22 +20,22 @@ export default function Recipes() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-accent/30 py-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.1),transparent_50%)] pointer-events-none" />
-          
+        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
+
           <div className="container relative">
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 items-center justify-center mx-auto">
                 <ChefHat className="h-8 w-8 text-white" />
               </div>
-              
+
               <h1 className="text-4xl md:text-6xl font-serif font-bold">
                 Recipe Collection
               </h1>
-              
+
               <p className="text-xl text-muted-foreground">
                 Wholesome recipes shared by homemakers, for homemakers. From everyday meals to special occasions.
               </p>

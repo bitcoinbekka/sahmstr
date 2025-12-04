@@ -13,15 +13,15 @@ export default function About() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-accent/30 py-16">
+        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <h1 className="text-4xl md:text-6xl font-serif font-bold">
                 About SAHMstr
               </h1>
-              
+
               <p className="text-xl text-muted-foreground">
                 Empowering stay-at-home moms through community, knowledge sharing, and financial sovereignty
               </p>
@@ -35,8 +35,8 @@ export default function About() {
               <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-bold">Our Mission</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  SAHMstr is a vibrant community for stay-at-home moms who embrace bitcoin and value financial sovereignty. 
-                  We believe in the power of decentralized technology to give families more control over their future, while 
+                  SAHMstr is a vibrant community for stay-at-home moms who embrace bitcoin and value financial sovereignty.
+                  We believe in the power of decentralized technology to give families more control over their future, while
                   celebrating the timeless wisdom of homemaking.
                 </p>
               </div>
@@ -116,12 +116,12 @@ export default function About() {
               <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-bold">Why Nostr?</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  We built SAHMstr on the Nostr protocol because we believe in true digital ownership. Your content belongs to you, 
-                  not a corporation. Your connections are portable - you can take them with you anywhere. There's no algorithm 
+                  We built SAHMstr on the Nostr protocol because we believe in true digital ownership. Your content belongs to you,
+                  not a corporation. Your connections are portable - you can take them with you anywhere. There's no algorithm
                   controlling what you see, and no central authority that can silence your voice.
                 </p>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  Combined with bitcoin, Nostr represents a complete ecosystem of financial and digital sovereignty - values 
+                  Combined with bitcoin, Nostr represents a complete ecosystem of financial and digital sovereignty - values
                   that align perfectly with our mission to empower families.
                 </p>
               </div>

@@ -15,36 +15,36 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-accent/30">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.15),transparent_50%)] pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(134,239,172,0.15),transparent_50%)] pointer-events-none" />
-          
+        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(251,146,60,0.05),transparent_50%)] pointer-events-none" />
+
           <div className="container relative py-24 md:py-32">
             <div className="max-w-4xl mx-auto text-center space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span>Powered by Nostr & Bitcoin</span>
               </div>
-              
+
               <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight">
                 Where{' '}
                 <span className="bg-gradient-to-r from-primary via-orange-500 to-amber-500 bg-clip-text text-transparent">
                   Bitcoin
                 </span>{' '}
                 Meets{' '}
-                <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                <span className="text-foreground">
                   Homemaking
                 </span>
               </h1>
-              
+
               <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                A nurturing community for stay-at-home moms who embrace financial sovereignty. 
+                A nurturing community for stay-at-home moms who embrace financial sovereignty.
                 Share recipes, vlogs, home economics tips, and build lasting connections.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                 <Link to="/recipes">
                   <Button size="lg" className="gap-2 text-lg px-8 rounded-full shadow-lg hover:shadow-xl transition-all">
@@ -73,7 +73,7 @@ const Index = () => {
                 From kitchen to homestead, discover resources that empower your daily life
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50">
                 <CardHeader>
@@ -159,7 +159,7 @@ const Index = () => {
         </section>
 
         {/* Community Values Section */}
-        <section className="py-20 bg-gradient-to-br from-secondary/30 to-accent/20">
+        <section className="py-20 bg-gradient-to-br from-primary/5 to-background">
           <div className="container">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16 space-y-4">
@@ -209,7 +209,7 @@ const Index = () => {
         {/* CTA Section */}
         <section className="py-20 bg-background">
           <div className="container">
-            <Card className="max-w-3xl mx-auto border-2 border-primary/20 bg-gradient-to-br from-background to-secondary/20">
+            <Card className="max-w-3xl mx-auto border-2 border-primary/30 bg-gradient-to-br from-card to-primary/5">
               <CardContent className="p-12 text-center space-y-6">
                 <h2 className="text-3xl md:text-4xl font-serif font-bold">
                   Ready to Join the Community?
