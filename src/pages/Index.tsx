@@ -22,8 +22,8 @@ const Index = () => {
           {/* Hero Background Image */}
           <div className="absolute inset-0">
             <img
-              src="https://images.pexels.com/photos/6932955/pexels-photo-6932955.jpeg?auto=compress&cs=tinysrgb&w=1920"
-              alt="Cozy home kitchen"
+              src="https://images.pexels.com/photos/4259707/pexels-photo-4259707.jpeg?auto=compress&cs=tinysrgb&w=1920"
+              alt="Mom and family in kitchen"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50" />
@@ -90,8 +90,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Cooking and baking"
+                    src="https://images.pexels.com/photos/4259144/pexels-photo-4259144.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman baking in kitchen"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -120,8 +120,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/3692882/pexels-photo-3692882.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Video blogging"
+                    src="https://images.pexels.com/photos/6953876/pexels-photo-6953876.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman creating video content"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -150,8 +150,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/3831187/pexels-photo-3831187.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Live streaming setup"
+                    src="https://images.pexels.com/photos/7792716/pexels-photo-7792716.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman recording cooking video"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -180,8 +180,8 @@ const Index = () => {
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.pexels.com/photos/6231899/pexels-photo-6231899.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Home economics and gardening"
+                    src="https://images.pexels.com/photos/7658355/pexels-photo-7658355.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman gardening at home"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
