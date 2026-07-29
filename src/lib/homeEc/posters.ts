@@ -10,8 +10,16 @@
  * its gradient badge, so the site never depends on an image loading.
  */
 
-/** The six ink colours of the poster series. */
-export type PosterTone = 'ochre' | 'green' | 'terracotta' | 'sage' | 'blue' | 'cream';
+/** The ink colours of the poster series. */
+export type PosterTone =
+  | 'ochre'
+  | 'green'
+  | 'terracotta'
+  | 'sage'
+  | 'blue'
+  | 'teal'
+  | 'oxblood'
+  | 'cream';
 
 export interface Poster {
   url: string;
@@ -23,25 +31,30 @@ export interface Poster {
 
 /**
  * Flat ink washes keyed by tone. Two stops only — the posters are screen-printed,
- * not airbrushed, so gradients stay short and stay within one ink family.
+ * not airbrushed, so gradients stay short and stay within one ink family. These
+ * track the ink drawer in index.css; keep them in step.
  */
 export const TONE_WASH: Record<PosterTone, string> = {
-  ochre: 'from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)]',
-  green: 'from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)]',
-  terracotta: 'from-[hsl(16_58%_48%)] to-[hsl(10_52%_36%)]',
-  sage: 'from-[hsl(145_18%_54%)] to-[hsl(150_22%_38%)]',
-  blue: 'from-[hsl(210_58%_46%)] to-[hsl(216_50%_32%)]',
-  cream: 'from-[hsl(40_44%_72%)] to-[hsl(34_38%_56%)]',
+  ochre: 'from-[hsl(40_82%_50%)] to-[hsl(32_74%_38%)]',
+  green: 'from-[hsl(158_40%_24%)] to-[hsl(162_46%_15%)]',
+  terracotta: 'from-[hsl(14_66%_45%)] to-[hsl(8_58%_33%)]',
+  sage: 'from-[hsl(96_20%_46%)] to-[hsl(100_24%_32%)]',
+  blue: 'from-[hsl(205_56%_40%)] to-[hsl(210_50%_27%)]',
+  teal: 'from-[hsl(188_48%_32%)] to-[hsl(192_52%_20%)]',
+  oxblood: 'from-[hsl(356_52%_35%)] to-[hsl(352_50%_23%)]',
+  cream: 'from-[hsl(39_50%_78%)] to-[hsl(34_40%_62%)]',
 };
 
-/** Foreground that reads on each wash. Cream is light, so it takes ink. */
+/** Foreground that reads on each wash. Cream and ochre are light, so they take ink. */
 export const TONE_INK: Record<PosterTone, string> = {
-  ochre: 'text-[hsl(25_30%_14%)]',
-  green: 'text-[hsl(42_52%_96%)]',
-  terracotta: 'text-[hsl(42_52%_96%)]',
-  sage: 'text-[hsl(150_38%_14%)]',
-  blue: 'text-[hsl(42_52%_96%)]',
-  cream: 'text-[hsl(25_30%_18%)]',
+  ochre: 'text-[hsl(22_36%_13%)]',
+  green: 'text-[hsl(41_56%_95%)]',
+  terracotta: 'text-[hsl(41_56%_95%)]',
+  sage: 'text-[hsl(100_30%_10%)]',
+  blue: 'text-[hsl(41_56%_95%)]',
+  teal: 'text-[hsl(41_56%_95%)]',
+  oxblood: 'text-[hsl(41_56%_95%)]',
+  cream: 'text-[hsl(22_36%_16%)]',
 };
 
 /** The hero poster for the site as a whole. */
@@ -106,7 +119,7 @@ export const UNIT_POSTERS: Record<string, Poster> = {
   'keeping-good-health': {
     url: 'https://blossom.ditto.pub/219c60bf509eb00dcf3f9b1dddeb15be29e4829fd2a148ecd7af314038a80e15.jpeg',
     alt: 'Vintage-style poster of an open window over rolling green hills with a bowl of apples and a glass of milk, titled "Keeping in Good Health".',
-    tone: 'blue',
+    tone: 'teal',
   },
   'health-home-nursing': {
     url: 'https://blossom.primal.net/9d17d4e02026c5251a11544ac64fa7a40ff0570b9dd9eb20950545dacc64315f.jpg',
@@ -133,15 +146,15 @@ export const UNIT_TONES: Record<string, PosterTone> = {
   'caring-for-the-house': 'terracotta',
   'food-nutrition': 'cream',
   'textiles-clothing': 'ochre',
-  'household-finance': 'ochre',
+  'household-finance': 'oxblood',
   'consumer-education': 'cream',
   'young-child': 'sage',
   'child-development': 'green',
   hospitality: 'terracotta',
-  'keeping-good-health': 'blue',
+  'keeping-good-health': 'teal',
   'health-home-nursing': 'sage',
-  'digital-household': 'blue',
-  'home-and-protocols': 'ochre',
+  'digital-household': 'teal',
+  'home-and-protocols': 'blue',
 };
 
 /** Get the poster for a unit, if it has one. */

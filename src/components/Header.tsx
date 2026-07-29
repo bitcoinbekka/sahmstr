@@ -37,11 +37,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75">
-      {/* Ink rule across the head of the page, in the three series colours */}
-      <div
-        aria-hidden
-        className="h-[3px] bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-ochre))] to-[hsl(var(--poster-terracotta))]"
-      />
+      {/* Ink rule across the head of the page — four inks, hard stops */}
+      <div aria-hidden className="ink-rule h-[3px]" />
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link to="/" className="group flex items-baseline gap-2">

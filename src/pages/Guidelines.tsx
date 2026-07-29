@@ -3,6 +3,40 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Users, Shield, Sparkles } from 'lucide-react';
+import { TONE_WASH, TONE_INK, type PosterTone } from '@/lib/homeEc/posters';
+
+/** The four house rules, each struck in one of the series inks. */
+const RULES: Array<{
+  icon: typeof Heart;
+  tone: PosterTone;
+  title: string;
+  body: string;
+}> = [
+  {
+    icon: Heart,
+    tone: 'terracotta',
+    title: 'Be Respectful',
+    body: "Treat everyone with kindness and respect. We're all on different journeys, and our diversity makes us stronger.",
+  },
+  {
+    icon: Sparkles,
+    tone: 'ochre',
+    title: 'Share Authentically',
+    body: 'Be genuine in your contributions. Share your real experiences, successes, and challenges alike.',
+  },
+  {
+    icon: Users,
+    tone: 'green',
+    title: 'Support Each Other',
+    body: 'Offer encouragement and constructive feedback. We rise by lifting each other up.',
+  },
+  {
+    icon: Shield,
+    tone: 'teal',
+    title: 'Stay On Topic',
+    body: 'Keep content relevant to homemaking, bitcoin, and family life. This helps maintain a focused, valuable community.',
+  },
+];
 
 export default function Guidelines() {
   useSeoMeta({
@@ -15,12 +49,31 @@ export default function Guidelines() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="container">
+        <section className="paper-grain relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] py-16 dark:bg-background">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+          />
+
+          <div className="container relative">
             <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Community Guidelines
-              </h1>
+              <div className="flex items-center justify-center gap-3">
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
+                <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
+                  House rules
+                </span>
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
+              </div>
+
+              <h1 className="poster-title text-4xl md:text-6xl">Community Guidelines</h1>
 
               <p className="text-xl text-muted-foreground">
                 Creating a nurturing space for all SAHMstr community members
@@ -40,56 +93,19 @@ export default function Guidelines() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(16_58%_48%)] to-[hsl(10_52%_36%)] flex items-center justify-center shadow-sm">
-                      <Heart className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Be Respectful</h3>
-                    <p className="text-muted-foreground">
-                      Treat everyone with kindness and respect. We're all on different journeys,
-                      and our diversity makes us stronger.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] flex items-center justify-center shadow-sm">
-                      <Sparkles className="h-6 w-6 text-[hsl(25_30%_14%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Share Authentically</h3>
-                    <p className="text-muted-foreground">
-                      Be genuine in your contributions. Share your real experiences, successes,
-                      and challenges alike.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] flex items-center justify-center shadow-sm">
-                      <Users className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Support Each Other</h3>
-                    <p className="text-muted-foreground">
-                      Offer encouragement and constructive feedback. We rise by lifting each other up.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(210_58%_46%)] to-[hsl(216_50%_32%)] flex items-center justify-center shadow-sm">
-                      <Shield className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Stay On Topic</h3>
-                    <p className="text-muted-foreground">
-                      Keep content relevant to homemaking, bitcoin, and family life.
-                      This helps maintain a focused, valuable community.
-                    </p>
-                  </CardContent>
-                </Card>
+                {RULES.map(({ icon: Icon, tone, title, body }) => (
+                  <Card key={title} className="overflow-hidden rounded-sm border-2">
+                    <CardContent className="p-6 space-y-3">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-sm bg-gradient-to-br shadow-sm ${TONE_WASH[tone]} ${TONE_INK[tone]}`}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="text-xl font-semibold">{title}</h3>
+                      <p className="text-muted-foreground">{body}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
               <div className="space-y-6">

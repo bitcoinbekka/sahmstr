@@ -52,6 +52,12 @@ export function PageHero({
         }}
       />
 
+      {/* Goldenrod rule closing the title page, as at the foot of a plate */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+      />
+
       <div className="container relative">
         <div
           className={cn(

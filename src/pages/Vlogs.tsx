@@ -32,7 +32,7 @@ export default function Vlogs() {
         <section className="bg-background py-14">
           <div className="container max-w-2xl">
             <Card className="overflow-hidden rounded-sm border-2">
-              <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-sage))] to-[hsl(var(--poster-ochre))]" />
+              <div aria-hidden className="ink-rule h-1.5" />
               <CardContent className="space-y-5 p-8 text-center">
                 <ShieldCheck className="mx-auto h-9 w-9 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
                 <h2 className="font-serif text-2xl font-bold">

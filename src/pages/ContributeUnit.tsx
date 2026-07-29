@@ -155,7 +155,7 @@ export default function ContributeUnit() {
       <main className="flex-1">
         <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-14">
           <div className="container max-w-3xl relative space-y-5">
-            <div className="inline-flex h-14 w-14 rounded-sm bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] items-center justify-center shadow-sm">
+            <div className="inline-flex h-14 w-14 rounded-sm bg-gradient-to-br from-[hsl(158_40%_24%)] to-[hsl(162_46%_15%)] items-center justify-center shadow-sm">
               <PenLine className="h-7 w-7 text-white" />
             </div>
             <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight">

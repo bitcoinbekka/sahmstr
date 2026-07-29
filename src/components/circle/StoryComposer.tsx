@@ -140,7 +140,7 @@ export function StoryComposer() {
 
   return (
     <Card className="overflow-hidden rounded-sm border-2">
-      <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-sage))] to-[hsl(var(--poster-ochre))]" />
+      <div aria-hidden className="ink-rule h-1.5" />
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />

@@ -295,7 +295,7 @@ const Index = () => {
 
               {/* Sixth cell: the Circle, set as a sealed envelope rather than a plate */}
               <Link to="/circle" className="group focus-visible:outline-none">
-                <Card className="flex h-full flex-col justify-between overflow-hidden rounded-sm border-2 bg-[hsl(var(--poster-green))] p-5 text-[hsl(42_52%_96%)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <Card className="halftone flex h-full flex-col justify-between overflow-hidden rounded-sm border-2 bg-[hsl(var(--poster-green))] p-5 text-[hsl(41_56%_95%)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div className="space-y-3">
                     <span className="inline-flex items-center gap-1.5 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ochre))]">
                       <ShieldCheck className="h-3 w-3" />
@@ -304,7 +304,7 @@ const Index = () => {
                     <h3 className="font-serif text-2xl font-bold leading-snug">
                       The Circle
                     </h3>
-                    <p className="text-[15px] leading-relaxed text-[hsl(42_44%_88%)]">
+                    <p className="text-[15px] leading-relaxed text-[hsl(40_44%_88%)]">
                       Share photos and video of your children with the family you name — encrypted
                       for each of them, and invisible to the rest of the network.
                     </p>
@@ -320,14 +320,20 @@ const Index = () => {
         </section>
 
         {/* ───────────────────────── Values, set as a printed panel ───────────────────────── */}
-        <section className="relative overflow-hidden border-y bg-[hsl(var(--poster-green))] py-16 md:py-20 text-[hsl(42_52%_96%)] paper-grain">
+        <section className="relative overflow-hidden border-y bg-[hsl(var(--poster-green))] py-16 md:py-20 text-[hsl(41_56%_95%)] paper-grain">
+          {/* Diagonal ruling, as struck across a solid panel on the press */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
+            className="pointer-events-none absolute inset-0 opacity-[0.10]"
             style={{
               backgroundImage:
-                'repeating-linear-gradient(135deg, hsl(42 52% 96%) 0 1px, transparent 1px 18px)',
+                'repeating-linear-gradient(135deg, hsl(41 56% 95%) 0 1px, transparent 1px 18px)',
             }}
+          />
+          {/* A goldenrod rule closes the panel at the foot */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-1 bg-[hsl(var(--poster-ochre))]"
           />
           <div className="container relative">
             <div className="max-w-2xl space-y-4 mb-12">
@@ -346,7 +352,7 @@ const Index = () => {
                     <Icon className="h-7 w-7" />
                   </div>
                   <h3 className="font-serif text-2xl font-bold">{title}</h3>
-                  <p className="leading-relaxed text-[hsl(42_44%_88%)]">{body}</p>
+                  <p className="leading-relaxed text-[hsl(40_44%_88%)]">{body}</p>
                 </div>
               ))}
             </div>
@@ -398,7 +404,7 @@ const Index = () => {
         <section className="pb-20 pt-4 bg-background">
           <div className="container">
             <Card className="mx-auto max-w-3xl overflow-hidden rounded-sm border-2 bg-card">
-              <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-terracotta))] via-[hsl(var(--poster-ochre))] to-[hsl(var(--poster-green))]" />
+              <div aria-hidden className="ink-rule h-1.5" />
               <CardContent className="space-y-5 p-10 text-center md:p-12">
                 <h2 className="poster-title text-3xl md:text-4xl">
                   There is a seat at this table

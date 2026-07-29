@@ -3,6 +3,40 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Bitcoin, Heart, Shield, Users } from 'lucide-react';
+import { TONE_WASH, TONE_INK, type PosterTone } from '@/lib/homeEc/posters';
+
+/** The four pillars, each struck in one of the series inks. */
+const PILLARS: Array<{
+  icon: typeof Bitcoin;
+  tone: PosterTone;
+  title: string;
+  body: string;
+}> = [
+  {
+    icon: Bitcoin,
+    tone: 'ochre',
+    title: 'Bitcoin-Focused',
+    body: 'We embrace bitcoin as a tool for financial independence and generational wealth building.',
+  },
+  {
+    icon: Shield,
+    tone: 'green',
+    title: 'Decentralized',
+    body: 'Built on the Nostr protocol — censorship-resistant, user-owned, and truly open.',
+  },
+  {
+    icon: Heart,
+    tone: 'terracotta',
+    title: 'Supportive Community',
+    body: 'Real connections with women who share your values and understand your journey.',
+  },
+  {
+    icon: Users,
+    tone: 'teal',
+    title: 'Knowledge Sharing',
+    body: 'From recipes to budgeting tips, we share practical wisdom that matters.',
+  },
+];
 
 export default function About() {
   useSeoMeta({
@@ -15,12 +49,32 @@ export default function About() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="container">
+        <section className="paper-grain relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] py-16 dark:bg-background">
+          {/* Ruled ground, as on a title page */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+          />
+
+          <div className="container relative">
             <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                About SAHMstr
-              </h1>
+              <div className="flex items-center justify-center gap-3">
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
+                <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
+                  The imprint
+                </span>
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
+              </div>
+
+              <h1 className="poster-title text-4xl md:text-6xl">About SAHMstr</h1>
 
               <p className="text-xl text-muted-foreground">
                 Empowering stay-at-home moms through community, knowledge sharing, and financial sovereignty
@@ -42,53 +96,19 @@ export default function About() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] flex items-center justify-center shadow-sm">
-                      <Bitcoin className="h-6 w-6 text-[hsl(25_30%_14%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Bitcoin-Focused</h3>
-                    <p className="text-muted-foreground">
-                      We embrace bitcoin as a tool for financial independence and generational wealth building.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] flex items-center justify-center shadow-sm">
-                      <Shield className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Decentralized</h3>
-                    <p className="text-muted-foreground">
-                      Built on Nostr protocol - censorship-resistant, user-owned, and truly open.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(16_58%_48%)] to-[hsl(10_52%_36%)] flex items-center justify-center shadow-sm">
-                      <Heart className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Supportive Community</h3>
-                    <p className="text-muted-foreground">
-                      Real connections with women who share your values and understand your journey.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(210_58%_46%)] to-[hsl(216_50%_32%)] flex items-center justify-center shadow-sm">
-                      <Users className="h-6 w-6 text-[hsl(42_52%_96%)]" />
-                    </div>
-                    <h3 className="text-xl font-semibold">Knowledge Sharing</h3>
-                    <p className="text-muted-foreground">
-                      From recipes to budgeting tips, we share practical wisdom that matters.
-                    </p>
-                  </CardContent>
-                </Card>
+                {PILLARS.map(({ icon: Icon, tone, title, body }) => (
+                  <Card key={title} className="overflow-hidden rounded-sm border-2">
+                    <CardContent className="p-6 space-y-3">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-sm bg-gradient-to-br shadow-sm ${TONE_WASH[tone]} ${TONE_INK[tone]}`}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="text-xl font-semibold">{title}</h3>
+                      <p className="text-muted-foreground">{body}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
               <div className="space-y-4">

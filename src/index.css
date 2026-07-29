@@ -5,119 +5,137 @@
 @layer base {
   :root {
     /*
-     * Grandmillennial palette, drawn from the SAHMstr poster series.
-     * Warm paper ground, forest green primary, terracotta and ochre accents.
-     * The intent is a printed feel — aged paper rather than glowing screen.
+     * Lithographic travel-poster palette, c. 1880–1920.
+     *
+     * The period presses ran a small number of solid, highly saturated inks on
+     * cheap warm stock: spruce green, peacock teal, goldenrod, burnt sienna and
+     * oxblood, over oatmeal paper. Nothing is greyed off or pastel — the colour
+     * is bold, but the ground is soft and aged, which is what keeps it inviting
+     * rather than loud. Every ink here is a flat plane, never a glow.
      */
 
-    /* Aged poster paper */
-    --background: 42 44% 94%;
-    --foreground: 25 26% 16%;
+    /* Oatmeal stock — warmer and a shade deeper than white paper */
+    --background: 39 42% 91%;
+    --foreground: 22 30% 13%;
 
-    /* Cards sit slightly lighter than the ground, like a mounted print */
-    --card: 40 50% 97%;
-    --card-foreground: 25 26% 16%;
+    /* Cards are freshly trimmed sheets against the aged ground */
+    --card: 38 50% 96%;
+    --card-foreground: 22 30% 13%;
 
-    --popover: 40 50% 97%;
-    --popover-foreground: 25 26% 16%;
+    --popover: 38 50% 96%;
+    --popover-foreground: 22 30% 13%;
 
-    /* Deep forest green — the title bands on the posters */
-    --primary: 150 38% 22%;
-    --primary-foreground: 42 52% 96%;
+    /* Deep spruce — the title bands across the foot of each plate */
+    --primary: 158 44% 19%;
+    --primary-foreground: 41 56% 95%;
 
-    /* Warm sage secondary */
-    --secondary: 45 26% 87%;
-    --secondary-foreground: 25 30% 20%;
+    /* Secondary reads as a second run of the same stock */
+    --secondary: 40 32% 85%;
+    --secondary-foreground: 22 32% 18%;
 
     /* Muted linen tones */
-    --muted: 44 30% 89%;
-    --muted-foreground: 30 14% 42%;
+    --muted: 40 30% 87%;
+    --muted-foreground: 26 18% 37%;
 
-    /* Terracotta accent */
-    --accent: 18 54% 90%;
-    --accent-foreground: 14 46% 28%;
+    /* Burnt sienna accent, tinted right back for surfaces */
+    --accent: 16 62% 89%;
+    --accent-foreground: 12 58% 26%;
 
-    --destructive: 6 58% 42%;
-    --destructive-foreground: 42 52% 96%;
+    /* Oxblood, the period's red — deeper and less orange than a modern red */
+    --destructive: 356 54% 36%;
+    --destructive-foreground: 41 56% 95%;
 
-    --border: 40 22% 82%;
-    --input: 40 22% 82%;
-    --ring: 150 38% 22%;
+    --border: 36 26% 78%;
+    --input: 36 26% 78%;
+    --ring: 158 44% 19%;
 
-    /* Softer than the previous 1rem — printed matter has gentle corners */
+    /* Printed matter has gentle corners, not rounded ones */
     --radius: 0.5rem;
 
-    /* Named poster colours, for accents and gradients */
-    --poster-ochre: 38 72% 52%;
-    --poster-green: 150 38% 22%;
-    --poster-terracotta: 16 58% 44%;
-    --poster-sage: 145 14% 62%;
-    --poster-blue: 210 68% 46%;
-    --poster-cream: 42 52% 92%;
-    --poster-ink: 25 30% 14%;
+    /*
+     * The ink drawer. Six solid colours plus paper and ink, matching the
+     * poster series. These carry the character of the theme — components reach
+     * for these rather than inventing their own colour.
+     */
+    --poster-ochre: 40 82% 48%; /* goldenrod */
+    --poster-green: 158 44% 19%; /* spruce */
+    --poster-terracotta: 14 66% 42%; /* burnt sienna */
+    --poster-teal: 188 48% 29%; /* peacock */
+    --poster-oxblood: 356 52% 32%; /* deep red */
+    --poster-sage: 96 18% 50%; /* olive */
+    --poster-blue: 205 56% 37%; /* lithograph blue */
+    --poster-cream: 39 54% 89%;
+    --poster-ink: 22 32% 12%;
 
-    --sidebar-background: 44 38% 91%;
-    --sidebar-foreground: 25 26% 20%;
-    --sidebar-primary: 150 38% 22%;
-    --sidebar-primary-foreground: 42 52% 96%;
-    --sidebar-accent: 45 26% 86%;
-    --sidebar-accent-foreground: 25 30% 20%;
-    --sidebar-border: 40 22% 80%;
-    --sidebar-ring: 150 38% 22%;
+    --sidebar-background: 40 40% 89%;
+    --sidebar-foreground: 22 30% 18%;
+    --sidebar-primary: 158 44% 19%;
+    --sidebar-primary-foreground: 41 56% 95%;
+    --sidebar-accent: 40 32% 84%;
+    --sidebar-accent-foreground: 22 32% 18%;
+    --sidebar-border: 36 26% 76%;
+    --sidebar-ring: 158 44% 19%;
   }
 
   .dark {
     /*
      * Evening lamplight rather than true black — the posters are warm, and a
-     * cold dark mode would make them look pasted on.
+     * cold dark mode would make them look pasted on. Read as tobacco-brown
+     * board stock under a lamp, with the goldenrod ink leading.
      */
 
-    /* Deep walnut ground */
-    --background: 25 22% 10%;
-    --foreground: 42 38% 92%;
+    /* Deep walnut board */
+    --background: 24 26% 9%;
+    --foreground: 40 42% 91%;
 
-    --card: 24 20% 14%;
-    --card-foreground: 42 38% 92%;
+    --card: 22 22% 13%;
+    --card-foreground: 40 42% 91%;
 
-    --popover: 24 20% 14%;
-    --popover-foreground: 42 38% 92%;
+    --popover: 22 22% 13%;
+    --popover-foreground: 40 42% 91%;
 
-    /* Ochre leads in the dark, where deep green would disappear */
-    --primary: 38 70% 56%;
-    --primary-foreground: 25 30% 12%;
+    /* Goldenrod leads in the dark, where deep spruce would disappear */
+    --primary: 40 78% 55%;
+    --primary-foreground: 24 34% 11%;
 
-    --secondary: 25 16% 20%;
-    --secondary-foreground: 42 38% 92%;
+    --secondary: 24 18% 19%;
+    --secondary-foreground: 40 42% 91%;
 
-    --muted: 25 14% 18%;
-    --muted-foreground: 40 16% 66%;
+    --muted: 24 16% 17%;
+    --muted-foreground: 38 20% 65%;
 
-    --accent: 16 32% 24%;
-    --accent-foreground: 30 60% 84%;
+    --accent: 14 34% 22%;
+    --accent-foreground: 28 66% 82%;
 
-    --destructive: 6 54% 48%;
-    --destructive-foreground: 42 44% 94%;
+    --destructive: 356 52% 46%;
+    --destructive-foreground: 40 44% 93%;
 
-    --border: 25 14% 24%;
-    --input: 25 14% 24%;
-    --ring: 38 70% 56%;
+    --border: 24 16% 23%;
+    --input: 24 16% 23%;
+    --ring: 40 78% 55%;
 
-    --poster-ochre: 38 74% 58%;
-    --poster-green: 150 30% 40%;
-    --poster-terracotta: 16 56% 52%;
-    --poster-sage: 145 16% 58%;
-    --poster-blue: 210 60% 58%;
-    --poster-cream: 42 30% 82%;
-    --poster-ink: 42 38% 92%;
+    /*
+     * The inks lift in the dark so they still read as colour on a dark ground.
+     * Spruce in particular has to come well up or it goes to mud.
+     */
+    --poster-ochre: 40 84% 60%;
+    --poster-green: 158 34% 40%;
+    --poster-terracotta: 14 62% 53%;
+    --poster-teal: 188 44% 48%;
+    --poster-oxblood: 356 50% 50%;
+    --poster-sage: 96 22% 54%;
+    --poster-blue: 205 54% 55%;
+    --poster-cream: 40 26% 80%;
+    --poster-ink: 40 42% 91%;
 
-    --sidebar-background: 25 24% 8%;
-    --sidebar-foreground: 42 34% 88%;
-    --sidebar-primary: 38 70% 56%;
-    --sidebar-primary-foreground: 25 30% 12%;
-    --sidebar-accent: 25 14% 16%;
-    --sidebar-accent-foreground: 42 34% 88%;
-    --sidebar-border: 25 14% 20%;
-    --sidebar-ring: 38 70% 56%;
+    --sidebar-background: 24 28% 7%;
+    --sidebar-foreground: 40 38% 88%;
+    --sidebar-primary: 40 78% 55%;
+    --sidebar-primary-foreground: 24 34% 11%;
+    --sidebar-accent: 24 16% 15%;
+    --sidebar-accent-foreground: 40 38% 88%;
+    --sidebar-border: 24 16% 19%;
+    --sidebar-ring: 40 78% 55%;
   }
 }
 
@@ -140,8 +158,9 @@
 
 @layer components {
   /*
-   * Subtle paper grain. Applied to large surfaces to keep the flat colour from
-   * reading as flat screen. Deliberately very low contrast.
+   * Paper grain. Applied to large surfaces to keep flat colour from reading as
+   * flat screen. Slightly stronger than a pure noise dither, because period
+   * stock was coarse — but still low enough not to fight the text over it.
    */
   .paper-grain {
     position: relative;
@@ -152,31 +171,85 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.055;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  .dark .paper-grain::after {
+    opacity: 0.07;
+  }
+
   /*
-   * A framed poster: cream mount, thin rule, and a soft drop shadow so it
-   * reads as a physical print pinned to the page.
+   * Halftone dot screen. The period's way of getting a tint from a solid ink:
+   * a fine dot grid rather than a lighter mix. Lay over coloured panels.
+   */
+  .halftone {
+    position: relative;
+  }
+
+  .halftone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    background-image: radial-gradient(
+      hsl(var(--poster-ink)) 0.5px,
+      transparent 0.5px
+    );
+    background-size: 5px 5px;
+  }
+
+  /*
+   * A framed poster: cream mount, hairline rule, and a soft drop shadow so it
+   * reads as a physical print pinned to the page. The inner ring stands in for
+   * the plate edge where the ink stopped short of the mount.
    */
   .poster-frame {
-    @apply relative overflow-hidden rounded-sm bg-[hsl(var(--poster-cream))] p-2 shadow-md ring-1 ring-black/10;
+    @apply relative overflow-hidden rounded-sm bg-[hsl(var(--poster-cream))] p-2;
+    box-shadow:
+      0 1px 2px hsl(var(--poster-ink) / 0.16),
+      0 6px 16px -4px hsl(var(--poster-ink) / 0.24);
+    outline: 1px solid hsl(var(--poster-ink) / 0.14);
+    outline-offset: -1px;
   }
 
   .poster-frame img {
     @apply block w-full rounded-sm;
   }
 
-  /* Letterpress-ish heading treatment for hero titles */
+  /*
+   * Letterpress heading treatment. The faint light edge beneath each letter
+   * mimics the way an impressed character catches the light on soft paper.
+   */
   .poster-title {
     @apply font-serif font-bold tracking-tight;
     text-wrap: balance;
+    text-shadow: 0 1px 0 hsl(var(--poster-cream) / 0.6);
+  }
+
+  .dark .poster-title {
+    text-shadow: none;
   }
 
   /* The title band that runs across the foot of each poster */
   .poster-band {
     @apply bg-primary text-primary-foreground;
+  }
+
+  /*
+   * The three-ink rule used at the head of the page and the foot of cards.
+   * Hard stops, not a blend — these were three separate passes through the
+   * press, so the colours butt against each other.
+   */
+  .ink-rule {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--poster-green)) 0 25%,
+      hsl(var(--poster-teal)) 25% 45%,
+      hsl(var(--poster-ochre)) 45% 72%,
+      hsl(var(--poster-terracotta)) 72% 100%
+    );
   }
 }
 
@@ -187,11 +260,23 @@
   .text-terracotta {
     color: hsl(var(--poster-terracotta));
   }
+  .text-teal-ink {
+    color: hsl(var(--poster-teal));
+  }
+  .text-oxblood {
+    color: hsl(var(--poster-oxblood));
+  }
   .bg-ochre {
     background-color: hsl(var(--poster-ochre));
   }
   .bg-terracotta {
     background-color: hsl(var(--poster-terracotta));
+  }
+  .bg-teal-ink {
+    background-color: hsl(var(--poster-teal));
+  }
+  .bg-oxblood {
+    background-color: hsl(var(--poster-oxblood));
   }
   .bg-sage {
     background-color: hsl(var(--poster-sage));
