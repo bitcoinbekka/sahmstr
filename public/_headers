@@ -1,0 +1,18 @@
+# Cache policy for the built site.
+#
+# The JS and CSS filenames contain a content hash, so they can be cached
+# indefinitely — a new build produces a new filename. The HTML shell must never
+# be cached, or visitors keep loading an old shell that points at deleted
+# bundles. That mismatch is the usual cause of a blank page after a deploy.
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/manifest.webmanifest
+  Cache-Control: public, max-age=0, must-revalidate
+
+/main-*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/shakespeare_tailwind.config-*.js
+  Cache-Control: public, max-age=31536000, immutable

@@ -45,7 +45,7 @@ export function NoteContent({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
+            className="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
           >
             {url}
           </a>
@@ -67,7 +67,7 @@ export function NoteContent({
               <Link 
                 key={`nostr-${keyCounter++}`}
                 to={`/${nostrId}`}
-                className="text-blue-500 hover:underline"
+                className="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
               >
                 {fullMatch}
               </Link>
@@ -84,7 +84,7 @@ export function NoteContent({
           <Link 
             key={`hashtag-${keyCounter++}`}
             to={`/t/${tag}`}
-            className="text-blue-500 hover:underline"
+            className="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
           >
             {hashtag}
           </Link>
@@ -126,9 +126,10 @@ function NostrMention({ pubkey }: { pubkey: string }) {
       to={`/${npub}`}
       className={cn(
         "font-medium hover:underline",
-        hasRealName 
-          ? "text-blue-500" 
-          : "text-gray-500 hover:text-gray-700"
+        // A claimed name prints in the primary ink; a generated one stays muted.
+        hasRealName
+          ? "text-primary"
+          : "text-muted-foreground hover:text-foreground"
       )}
     >
       @{displayName}

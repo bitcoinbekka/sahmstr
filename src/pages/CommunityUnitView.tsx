@@ -82,7 +82,19 @@ export function CommunityUnitView({ pubkey, identifier }: CommunityUnitViewProps
 
       <main className="flex-1">
         {/* Header */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-12">
+        <section className="paper-grain relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] py-12 dark:bg-background">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+          />
           <div className="container max-w-3xl relative space-y-6">
             <Link
               to="/tips"
@@ -104,7 +116,7 @@ export function CommunityUnitView({ pubkey, identifier }: CommunityUnitViewProps
               ))}
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight">
+            <h1 className="poster-title text-3xl md:text-5xl leading-tight">
               {unit.title}
             </h1>
 

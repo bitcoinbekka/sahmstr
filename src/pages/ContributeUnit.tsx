@@ -153,12 +153,24 @@ export default function ContributeUnit() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-14">
+        <section className="paper-grain relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] py-14 dark:bg-background">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+          />
           <div className="container max-w-3xl relative space-y-5">
             <div className="inline-flex h-14 w-14 rounded-sm bg-gradient-to-br from-[hsl(158_40%_24%)] to-[hsl(162_46%_15%)] items-center justify-center shadow-sm">
-              <PenLine className="h-7 w-7 text-white" />
+              <PenLine className="h-7 w-7 text-[hsl(41_56%_95%)]" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight">
+            <h1 className="poster-title text-3xl md:text-5xl leading-tight">
               Contribute a Unit
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
