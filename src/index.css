@@ -251,6 +251,12 @@
     text-transform: var(--display-transform);
     text-wrap: balance;
     text-shadow: 0 1px 0 hsl(var(--poster-cream) / 0.6);
+    /*
+     * Fat faces and wood type ship a single weight. Without this the browser
+     * fakes a bold by smearing the outline, which on an already-heavy display
+     * face turns the counters to mud.
+     */
+    font-synthesis: none;
   }
 
   .dark .poster-title {

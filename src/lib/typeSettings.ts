@@ -162,8 +162,11 @@ export function isTypeSettingId(value: unknown): value is TypeSettingId {
   return typeof value === 'string' && value in TYPE_SETTINGS;
 }
 
-/** Storage key, shared with the hook that owns this preference. */
-export const TYPE_SETTING_STORAGE_KEY = 'sahmstr:type-setting';
+/**
+ * Storage key, shared with the hook that owns this preference.
+ * Versioned so a future change to the stored shape cannot be misread.
+ */
+export const TYPE_SETTING_STORAGE_KEY = 'sahmstr:type-setting:v1';
 
 /**
  * Read the saved setting and apply it, before React mounts. Kept dependency
