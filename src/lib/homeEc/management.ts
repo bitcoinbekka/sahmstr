@@ -10,7 +10,6 @@ export const management: UnitDefinition = {
     opening:
       'This was the most quietly radical part of the old curriculum. It took the efficiency studies then being applied to factories and turned them on the kitchen — counting steps, timing tasks, mapping the actual path a woman walked to make a meal, and then redesigning the room so she walked less. The premise was that a homemaker\'s energy is a finite resource worth engineering around, and that fatigue is usually a design failure rather than a personal one. That premise deserves reviving.',
     icon: 'ClipboardList',
-    gradient: 'from-emerald-500 to-teal-600',
     lessons: [
       {
         id: 'goals-of-management',

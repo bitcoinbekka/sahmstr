@@ -10,7 +10,6 @@ export const digital: UnitDefinition = {
     opening:
       'Every other module in this curriculum has an ancestor. This one does not. But the questions it asks are the oldest ones in the field, only relocated: where are the household\'s records kept, who holds the keys, what happens if a supplier fails, and what can be lost in a single bad afternoon. A household that would not keep its only copy of the deed in a neighbor\'s desk should think carefully about where its photographs, messages, and money actually live.',
     icon: 'ShieldCheck',
-    gradient: 'from-slate-500 to-zinc-700',
     lessons: [
       {
         id: 'where-records-live',

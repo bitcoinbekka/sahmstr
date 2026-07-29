@@ -22,6 +22,8 @@ export default {
 			fontFamily: {
 				sans: ['DM Sans', 'system-ui', 'sans-serif'],
 				serif: ['Playfair Display Variable', 'Georgia', 'serif'],
+				// Slab serif for poster-style labels, numerals and small caps
+				slab: ['Bitter', 'Georgia', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

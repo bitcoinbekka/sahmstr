@@ -4,91 +4,120 @@
 
 @layer base {
   :root {
-    /* Dark sophisticated theme with rich charcoals and deep tones */
-    --background: 240 10% 8%;
-    --foreground: 0 0% 98%;
+    /*
+     * Grandmillennial palette, drawn from the SAHMstr poster series.
+     * Warm paper ground, forest green primary, terracotta and ochre accents.
+     * The intent is a printed feel — aged paper rather than glowing screen.
+     */
 
-    --card: 240 8% 12%;
-    --card-foreground: 0 0% 98%;
+    /* Aged poster paper */
+    --background: 42 44% 94%;
+    --foreground: 25 26% 16%;
 
-    --popover: 240 8% 12%;
-    --popover-foreground: 0 0% 98%;
+    /* Cards sit slightly lighter than the ground, like a mounted print */
+    --card: 40 50% 97%;
+    --card-foreground: 25 26% 16%;
 
-    /* Bitcoin orange as vibrant primary accent */
-    --primary: 25 95% 55%;
-    --primary-foreground: 0 0% 10%;
+    --popover: 40 50% 97%;
+    --popover-foreground: 25 26% 16%;
 
-    /* Deep slate secondary */
-    --secondary: 240 6% 18%;
-    --secondary-foreground: 0 0% 98%;
+    /* Deep forest green — the title bands on the posters */
+    --primary: 150 38% 22%;
+    --primary-foreground: 42 52% 96%;
 
-    /* Muted dark tones */
-    --muted: 240 6% 16%;
-    --muted-foreground: 240 5% 65%;
+    /* Warm sage secondary */
+    --secondary: 45 26% 87%;
+    --secondary-foreground: 25 30% 20%;
 
-    /* Subtle accent */
-    --accent: 240 6% 20%;
-    --accent-foreground: 0 0% 98%;
+    /* Muted linen tones */
+    --muted: 44 30% 89%;
+    --muted-foreground: 30 14% 42%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    /* Terracotta accent */
+    --accent: 18 54% 90%;
+    --accent-foreground: 14 46% 28%;
 
-    --border: 240 6% 20%;
-    --input: 240 6% 20%;
-    --ring: 25 95% 55%;
+    --destructive: 6 58% 42%;
+    --destructive-foreground: 42 52% 96%;
 
-    --radius: 1rem;
+    --border: 40 22% 82%;
+    --input: 40 22% 82%;
+    --ring: 150 38% 22%;
 
-    --sidebar-background: 240 10% 6%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 25 95% 55%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 240 6% 18%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 240 8% 15%;
-    --sidebar-ring: 25 95% 55%;
+    /* Softer than the previous 1rem — printed matter has gentle corners */
+    --radius: 0.5rem;
+
+    /* Named poster colours, for accents and gradients */
+    --poster-ochre: 38 72% 52%;
+    --poster-green: 150 38% 22%;
+    --poster-terracotta: 16 58% 44%;
+    --poster-sage: 145 14% 62%;
+    --poster-blue: 210 68% 46%;
+    --poster-cream: 42 52% 92%;
+    --poster-ink: 25 30% 14%;
+
+    --sidebar-background: 44 38% 91%;
+    --sidebar-foreground: 25 26% 20%;
+    --sidebar-primary: 150 38% 22%;
+    --sidebar-primary-foreground: 42 52% 96%;
+    --sidebar-accent: 45 26% 86%;
+    --sidebar-accent-foreground: 25 30% 20%;
+    --sidebar-border: 40 22% 80%;
+    --sidebar-ring: 150 38% 22%;
   }
 
   .dark {
-    /* Pure black theme for true dark mode */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 95%;
+    /*
+     * Evening lamplight rather than true black — the posters are warm, and a
+     * cold dark mode would make them look pasted on.
+     */
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    /* Deep walnut ground */
+    --background: 25 22% 10%;
+    --foreground: 42 38% 92%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --card: 24 20% 14%;
+    --card-foreground: 42 38% 92%;
 
-    /* Brighter bitcoin orange for contrast on black */
-    --primary: 25 100% 58%;
-    --primary-foreground: 0 0% 5%;
+    --popover: 24 20% 14%;
+    --popover-foreground: 42 38% 92%;
 
-    /* Very dark slate */
-    --secondary: 240 4% 12%;
-    --secondary-foreground: 0 0% 95%;
+    /* Ochre leads in the dark, where deep green would disappear */
+    --primary: 38 70% 56%;
+    --primary-foreground: 25 30% 12%;
 
-    --muted: 240 4% 10%;
-    --muted-foreground: 240 3% 60%;
+    --secondary: 25 16% 20%;
+    --secondary-foreground: 42 38% 92%;
 
-    --accent: 240 4% 14%;
-    --accent-foreground: 0 0% 95%;
+    --muted: 25 14% 18%;
+    --muted-foreground: 40 16% 66%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: 16 32% 24%;
+    --accent-foreground: 30 60% 84%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 25 100% 58%;
+    --destructive: 6 54% 48%;
+    --destructive-foreground: 42 44% 94%;
 
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 25 100% 58%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 240 4% 10%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 240 4% 12%;
-    --sidebar-ring: 25 100% 58%;
+    --border: 25 14% 24%;
+    --input: 25 14% 24%;
+    --ring: 38 70% 56%;
+
+    --poster-ochre: 38 74% 58%;
+    --poster-green: 150 30% 40%;
+    --poster-terracotta: 16 56% 52%;
+    --poster-sage: 145 16% 58%;
+    --poster-blue: 210 60% 58%;
+    --poster-cream: 42 30% 82%;
+    --poster-ink: 42 38% 92%;
+
+    --sidebar-background: 25 24% 8%;
+    --sidebar-foreground: 42 34% 88%;
+    --sidebar-primary: 38 70% 56%;
+    --sidebar-primary-foreground: 25 30% 12%;
+    --sidebar-accent: 25 14% 16%;
+    --sidebar-accent-foreground: 42 34% 88%;
+    --sidebar-border: 25 14% 20%;
+    --sidebar-ring: 38 70% 56%;
   }
 }
 
@@ -99,5 +128,75 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Serif headings throughout — the posters use display serifs */
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  /*
+   * Subtle paper grain. Applied to large surfaces to keep the flat colour from
+   * reading as flat screen. Deliberately very low contrast.
+   */
+  .paper-grain {
+    position: relative;
+  }
+
+  .paper-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /*
+   * A framed poster: cream mount, thin rule, and a soft drop shadow so it
+   * reads as a physical print pinned to the page.
+   */
+  .poster-frame {
+    @apply relative overflow-hidden rounded-sm bg-[hsl(var(--poster-cream))] p-2 shadow-md ring-1 ring-black/10;
+  }
+
+  .poster-frame img {
+    @apply block w-full rounded-sm;
+  }
+
+  /* Letterpress-ish heading treatment for hero titles */
+  .poster-title {
+    @apply font-serif font-bold tracking-tight;
+    text-wrap: balance;
+  }
+
+  /* The title band that runs across the foot of each poster */
+  .poster-band {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@layer utilities {
+  .text-ochre {
+    color: hsl(var(--poster-ochre));
+  }
+  .text-terracotta {
+    color: hsl(var(--poster-terracotta));
+  }
+  .bg-ochre {
+    background-color: hsl(var(--poster-ochre));
+  }
+  .bg-terracotta {
+    background-color: hsl(var(--poster-terracotta));
+  }
+  .bg-sage {
+    background-color: hsl(var(--poster-sage));
+  }
+  .bg-paper {
+    background-color: hsl(var(--poster-cream));
   }
 }

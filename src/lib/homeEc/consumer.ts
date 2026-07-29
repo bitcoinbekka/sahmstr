@@ -17,7 +17,6 @@ export const consumer: UnitDefinition = {
   opening:
     'This unit reads as the most startlingly current in the old curriculum. It taught teenagers to analyze advertising, to separate a claim from a suggestion, to weigh the moral responsibilities of a buyer, and to know which protections existed and what they were worth. That is media literacy, taught in the 1940s and largely dropped since — at precisely the moment the persuasion industry became personalized, continuous, and hard to see. We have kept all of it and added the part those authors could not have anticipated: that a household can now buy and sell directly, on open protocols, with no company positioned between the two people making the trade.',
   icon: 'ShoppingBag',
-  gradient: 'from-yellow-500 to-amber-600',
   lessons: [
     {
       id: 'judging-quality',

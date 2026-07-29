@@ -15,8 +15,9 @@ import {
   Bitcoin,
   PenLine,
 } from 'lucide-react';
-import { CURRICULUM, getModule } from '@/lib/homeEc';
+import { CURRICULUM, getModule, getUnitPoster } from '@/lib/homeEc';
 import { resolveUnitIcon } from '@/lib/homeEc/icons';
+import { PosterFrame } from '@/components/PosterFrame';
 import NotFound from './NotFound';
 
 export default function HomeEcModule() {
@@ -33,6 +34,7 @@ export default function HomeEcModule() {
   }
 
   const Icon = resolveUnitIcon(module.icon);
+  const poster = getUnitPoster(module.id);
   const index = CURRICULUM.findIndex((m) => m.id === module.id);
   const prev = index > 0 ? CURRICULUM[index - 1] : null;
   const next = index < CURRICULUM.length - 1 ? CURRICULUM[index + 1] : null;
@@ -42,44 +44,75 @@ export default function HomeEcModule() {
       <Header />
 
       <main className="flex-1">
-        {/* Module header */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-14">
-          <div className="container max-w-4xl relative">
+        {/* Module header — the unit's own title page */}
+        <section className="relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] dark:bg-background paper-grain py-14">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+
+          <div className="container max-w-5xl relative">
             <Link
               to="/tips"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+              className="mb-8 inline-flex items-center gap-1.5 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               All units
             </Link>
 
-            <div className="flex flex-col sm:flex-row items-start gap-6">
-              <div
-                className={`h-16 w-16 shrink-0 rounded-2xl bg-gradient-to-br ${module.gradient} flex items-center justify-center shadow-md`}
-              >
-                <Icon className="h-8 w-8 text-white" />
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:items-start">
+              {/* The unit's plate */}
+              <div className="sm:col-span-4 lg:col-span-3">
+                {poster ? (
+                  <PosterFrame poster={poster} ratio="portrait" tilt="left" priority />
+                ) : (
+                  <div
+                    className={`poster-frame flex aspect-[3/4] items-center justify-center bg-gradient-to-br ${module.wash} ${module.ink}`}
+                  >
+                    <Icon className="h-16 w-16 opacity-90" />
+                  </div>
+                )}
+                <p className="mt-3 text-center font-slab text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  Plate · Unit {module.number}
+                </p>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary">Unit {module.number}</Badge>
-                  <span className="text-sm text-muted-foreground">
+              <div className="space-y-4 sm:col-span-8 lg:col-span-9">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Badge
+                    variant="secondary"
+                    className="rounded-sm font-slab text-[10px] uppercase tracking-[0.14em]"
+                  >
+                    Unit {module.number}
+                  </Badge>
+                  <span className="font-slab text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {module.lessons.length} problems
                   </span>
                   {module.isNew && (
-                    <Badge variant="outline" className="border-primary/40 text-primary">
+                    <Badge
+                      variant="outline"
+                      className="rounded-sm border-primary/40 font-slab text-[10px] uppercase tracking-[0.14em] text-primary"
+                    >
                       Entirely new material
                     </Badge>
                   )}
                 </div>
 
-                <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight">
+                <h1 className="poster-title text-3xl md:text-5xl leading-[1.02]">
                   {module.title}
                 </h1>
 
-                <p className="text-lg text-primary/90 font-medium">{module.tagline}</p>
+                <div
+                  className={`inline-block rounded-sm bg-gradient-to-r px-3.5 py-1.5 ${module.wash} ${module.ink}`}
+                >
+                  <p className="font-serif text-base font-semibold">{module.tagline}</p>
+                </div>
 
-                <p className="text-muted-foreground leading-relaxed max-w-2xl">
+                <p className="max-w-2xl leading-relaxed text-muted-foreground">
                   {module.description}
                 </p>
               </div>

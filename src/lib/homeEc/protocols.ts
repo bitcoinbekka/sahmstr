@@ -26,7 +26,6 @@ export const protocols: UnitDefinition = {
   opening:
     'The classic curriculum closed by widening the frame — asking how the household and the wider community worked together, and answering in terms of shared systems: safe water, an inspected food supply, sewage disposal, coordinated public health. Those were framed as benevolent infrastructure, and the household\'s role was to cooperate with them. We are inverting that closing question. The infrastructure a modern household depends on is largely privately owned: the money it saves in, the platforms its relationships live on, the services holding its records. Cooperation is no longer the only available posture, because open protocols now exist for the two most important pieces — money and identity. This unit asks what a family actually does with that.',
   icon: 'Network',
-  gradient: 'from-orange-500 to-amber-700',
   isNew: true,
   lessons: [
     {

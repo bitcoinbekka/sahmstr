@@ -10,7 +10,6 @@ export const hospitality: UnitDefinition = {
     opening:
       'Hospitality earned a place in the management unit, and the question the text asked about it is a good one: how does hospitality justify the time, effort, and money it costs? The answer given was not about entertaining well. It was that a household embedded in a web of local relationships is a stronger household — and that those relationships are built by feeding people, repeatedly and without ceremony.',
     icon: 'Users',
-    gradient: 'from-fuchsia-500 to-pink-600',
     lessons: [
       {
         id: 'hosting-without-strain',

@@ -10,7 +10,6 @@ export const houseCare: UnitDefinition = {
     opening:
       'An entire unit was given to the care of the house — surfaces, furnishings, equipment, utensils, laundry, stains, pests, and safety — on the understanding that a household which maintains what it owns spends far less than one which replaces it. Cleaning was taught as chemistry and sequence, not as effort. And the safety instruction was blunt in a way modern advice rarely is, because the hazards it named were the ones that actually injured children.',
     icon: 'SprayCan',
-    gradient: 'from-cyan-500 to-sky-700',
     lessons: [
       {
         id: 'what-care-the-house-requires',

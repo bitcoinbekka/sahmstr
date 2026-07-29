@@ -3,24 +3,27 @@ import { Bitcoin } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t bg-background">
-      <div className="container py-12">
+    <footer className="w-full border-t bg-[hsl(var(--poster-cream))] dark:bg-card paper-grain">
+      <div className="container relative py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="font-serif text-xl font-bold bg-gradient-to-r from-primary to-amber-500 bg-clip-text text-transparent">
-              SAHMstr
+            <h3 className="font-serif text-xl font-bold tracking-tight">
+              SAHM<span className="text-[hsl(var(--poster-terracotta))]">str</span>
             </h3>
-            <p className="text-sm text-muted-foreground">
-              A community for stay-at-home moms who embrace bitcoin, sharing recipes, tips, and wisdom.
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Home economics for households that hold their own money. Recipes, curriculum, and
+              the plain wisdom of women doing the work.
             </p>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Bitcoin className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-2 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+              <Bitcoin className="h-3.5 w-3.5 text-[hsl(var(--poster-ochre))]" />
               <span>Built on Nostr</span>
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Explore</h4>
+            <h4 className="mb-4 font-slab text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Explore
+            </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/recipes" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -51,7 +54,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Community</h4>
+            <h4 className="mb-4 font-slab text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Community
+            </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -67,23 +72,33 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Connect</h4>
-            <p className="text-sm text-muted-foreground mb-4">
-              Join our community on Nostr and share your journey.
+            <h4 className="mb-4 font-slab text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Connect
+            </h4>
+            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              Publish to Nostr and your writing stays yours — here and anywhere else you take it.
             </p>
-            <a 
-              href="https://shakespeare.diy" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            <Link
+              to="/contribute"
+              className="inline-flex items-center gap-1.5 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-primary hover:underline"
             >
-              Vibed with Shakespeare
-            </a>
+              Contribute a unit
+            </Link>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} SAHMstr. Empowering moms, one satoshi at a time.</p>
+        <div className="mt-10 flex flex-col items-center gap-3 border-t pt-8 text-center sm:flex-row sm:justify-between sm:text-left">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} SAHMstr · One satoshi at a time.
+          </p>
+          <a
+            href="https://shakespeare.diy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-slab text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Vibed with Shakespeare
+          </a>
         </div>
       </div>
     </footer>

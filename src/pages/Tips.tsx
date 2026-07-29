@@ -15,7 +15,7 @@ import {
   Users,
   PenLine,
 } from 'lucide-react';
-import { CURRICULUM, TOTAL_LESSONS, PROVENANCE } from '@/lib/homeEc';
+import { CURRICULUM, TOTAL_LESSONS, PROVENANCE, getUnitPoster } from '@/lib/homeEc';
 import { resolveUnitIcon } from '@/lib/homeEc/icons';
 import { useCommunityUnits, SUBJECT_AREAS } from '@/hooks/useCommunityUnits';
 import { CommunityUnitCard } from '@/components/CommunityUnitCard';
@@ -157,19 +157,29 @@ export default function Tips() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
+        {/* Hero — set as a title page */}
+        <section className="relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] dark:bg-background paper-grain py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
 
           <div className="container relative">
             <div className="max-w-3xl mx-auto text-center space-y-6">
-              <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 items-center justify-center mx-auto">
-                <Lightbulb className="h-8 w-8 text-white" />
+              <div className="inline-flex items-center gap-3">
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
+                <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
+                  <Lightbulb className="mr-1.5 inline h-3.5 w-3.5" />
+                  The complete course
+                </span>
+                <span className="h-px w-8 bg-[hsl(var(--poster-terracotta))]" />
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Home Economics
-              </h1>
+              <h1 className="poster-title text-4xl md:text-6xl">Home Economics</h1>
 
               <p className="text-xl text-muted-foreground leading-relaxed">
                 The old curriculum was serious about this work. It started with the family and the
@@ -180,14 +190,23 @@ export default function Tips() {
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <Badge variant="secondary" className="gap-1.5 text-sm px-3 py-1">
+                <Badge
+                  variant="secondary"
+                  className="gap-1.5 rounded-sm font-slab text-[11px] uppercase tracking-[0.12em] px-3 py-1"
+                >
                   <BookOpen className="h-3.5 w-3.5" />
                   {CURRICULUM.length} units
                 </Badge>
-                <Badge variant="secondary" className="text-sm px-3 py-1">
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm font-slab text-[11px] uppercase tracking-[0.12em] px-3 py-1"
+                >
                   {TOTAL_LESSONS} problems
                 </Badge>
-                <Badge variant="outline" className="text-sm px-3 py-1">
+                <Badge
+                  variant="outline"
+                  className="rounded-sm font-slab text-[11px] uppercase tracking-[0.12em] px-3 py-1"
+                >
                   Classic principles · modern application
                 </Badge>
               </div>
@@ -274,65 +293,84 @@ export default function Tips() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {CURRICULUM.map((module) => {
                 const Icon = resolveUnitIcon(module.icon);
+                const poster = getUnitPoster(module.id);
                 return (
                   <Link key={module.id} to={`/tips/${module.id}`} className="group">
-                    <Card className="h-full border-2 hover:border-primary/50 hover:shadow-lg transition-all duration-300 flex flex-col">
-                      <CardHeader className="space-y-4">
-                        <div className="flex items-start justify-between gap-3">
-                          <div
-                            className={`h-12 w-12 rounded-xl bg-gradient-to-br ${module.gradient} flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform`}
-                          >
-                            <Icon className="h-6 w-6 text-white" />
-                          </div>
-                          <div className="flex flex-col items-end gap-1.5">
-                            <span className="text-3xl font-serif font-bold text-muted-foreground/25">
-                              {module.number}
-                            </span>
-                            {module.isNew && (
-                              <Badge
-                                variant="outline"
-                                className="text-[10px] px-1.5 py-0 border-primary/40 text-primary"
-                              >
-                                New
-                              </Badge>
-                            )}
-                          </div>
+                    <Card className="flex h-full flex-col overflow-hidden rounded-sm border-2 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl">
+                      {/* Plate, or a printed plate where the illustrator never got to it */}
+                      {poster ? (
+                        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                          <img
+                            src={poster.url}
+                            alt={poster.alt}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                          />
+                          <span className="absolute left-0 top-0 bg-[hsl(var(--poster-cream))]/95 px-2 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ink))]">
+                            Unit {module.number}
+                          </span>
                         </div>
+                      ) : (
+                        <div
+                          className={`relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br ${module.wash} ${module.ink}`}
+                        >
+                          <Icon className="h-12 w-12 opacity-90" />
+                          <span className="absolute left-0 top-0 bg-[hsl(var(--poster-cream))]/95 px-2 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ink))]">
+                            Unit {module.number}
+                          </span>
+                        </div>
+                      )}
 
-                        <div className="space-y-1.5">
-                          <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                      {/* Title band across the foot */}
+                      <div
+                        className={`flex items-start gap-2.5 bg-gradient-to-r px-4 py-3 ${module.wash} ${module.ink}`}
+                      >
+                        <Icon className="mt-0.5 h-4 w-4 shrink-0 opacity-90" />
+                        <div className="min-w-0">
+                          <CardTitle className="text-base font-bold leading-tight">
                             {module.title}
                           </CardTitle>
-                          <p className="text-sm text-primary/80 font-medium">{module.tagline}</p>
+                          <p className="mt-0.5 text-xs opacity-85">{module.tagline}</p>
                         </div>
+                      </div>
 
+                      <CardHeader className="space-y-2 pb-3 pt-4">
+                        {module.isNew && (
+                          <Badge
+                            variant="outline"
+                            className="w-fit rounded-sm border-primary/40 font-slab text-[9px] uppercase tracking-[0.14em] text-primary"
+                          >
+                            New material
+                          </Badge>
+                        )}
                         <CardDescription className="text-sm leading-relaxed line-clamp-4">
                           {module.description}
                         </CardDescription>
                       </CardHeader>
 
-                      <CardContent className="mt-auto pt-0 space-y-4">
+                      <CardContent className="mt-auto space-y-4 pt-0">
                         <ul className="space-y-1.5 border-t pt-4">
                           {module.lessons.slice(0, 3).map((lesson) => (
                             <li
                               key={lesson.id}
-                              className="text-xs text-muted-foreground leading-snug line-clamp-1"
+                              className="line-clamp-1 text-xs leading-snug text-muted-foreground"
                             >
                               {lesson.question}
                             </li>
                           ))}
                           {module.lessons.length > 3 && (
-                            <li className="text-xs text-muted-foreground/60 italic">
+                            <li className="text-xs italic text-muted-foreground/60">
                               and {module.lessons.length - 3} more…
                             </li>
                           )}
                         </ul>
 
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">
+                          <span className="font-slab text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
                             {module.lessons.length} problems
                           </span>
-                          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary group-hover:gap-2.5 transition-all">
+                          <span className="inline-flex items-center gap-1.5 font-slab text-[11px] font-bold uppercase tracking-[0.12em] text-primary transition-all group-hover:gap-2.5">
                             Read
                             <ArrowRight className="h-3.5 w-3.5" />
                           </span>

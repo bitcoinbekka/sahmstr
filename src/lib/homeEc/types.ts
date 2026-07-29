@@ -7,6 +7,7 @@
  */
 
 import type { UnitIconName } from './icons';
+import type { PosterTone } from './posters';
 
 export interface Lesson {
   id: string;
@@ -40,8 +41,14 @@ export interface UnitDefinition {
    * a build error rather than a runtime crash.
    */
   icon: UnitIconName;
-  /** Tailwind gradient classes for the unit badge */
-  gradient: string;
+  /**
+   * Tailwind gradient classes for the unit badge.
+   *
+   * @deprecated Colour is now derived from the unit's poster tone — see
+   * `getUnitTone` in `posters.ts`. Retained on the type only so existing unit
+   * files keep compiling; the UI ignores it.
+   */
+  gradient?: string;
   /**
    * True for units with no ancestor in the classic curriculum — these are
    * marked in the UI so readers know the difference.
@@ -50,7 +57,13 @@ export interface UnitDefinition {
   lessons: Lesson[];
 }
 
-/** A unit with its derived number, as consumed by the UI */
+/** A unit with its derived number and printed ink, as consumed by the UI */
 export interface CurriculumModule extends UnitDefinition {
   number: number;
+  /** The ink this unit prints in, derived from its poster. */
+  tone: PosterTone;
+  /** Two-stop wash classes for the unit's tone. */
+  wash: string;
+  /** Foreground class that reads against the wash. */
+  ink: string;
 }

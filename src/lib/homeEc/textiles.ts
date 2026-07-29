@@ -10,7 +10,6 @@ export const textiles: UnitDefinition = {
     opening:
       'Clothing was studied as a material with properties, not as a mood. Students learned what fibers were, how each behaved under water and heat and friction, and therefore how to wash, press, store, and repair them. The result was a household in which garments lasted years and were expected to. Nothing about that knowledge has expired. What changed is that garments are now built to a price and sold on a feeling, which makes knowing the material the single most useful defense a buyer has.',
     icon: 'Scissors',
-    gradient: 'from-violet-500 to-purple-600',
     lessons: [
       {
         id: 'know-your-fibers',

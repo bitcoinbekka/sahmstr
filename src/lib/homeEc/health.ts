@@ -16,7 +16,6 @@ export const health: UnitDefinition = {
   opening:
     'A full unit was given to staying well, as distinct from treating illness — and it asked the right question first: what actually determines our state of health? The answer given was mostly unexciting. Sleep, food, movement, cleanliness, air, light, and the avoidance of specific known hazards. No single item on that list is interesting enough to sell, which is precisely why the modern information environment talks about everything else. This unit is general household practice, not medical advice; the clinical questions belong with your physician.',
   icon: 'Activity',
-  gradient: 'from-teal-500 to-emerald-700',
   lessons: [
     {
       id: 'what-determines-health',

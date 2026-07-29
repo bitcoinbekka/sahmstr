@@ -16,7 +16,6 @@ export const successfulFamily: UnitDefinition = {
   opening:
     'The classic texts opened here, and the choice was deliberate. Before teaching a single practical skill they asked what a family is, what makes one succeed, and what it owes the community around it. The reasoning was that technique without purpose produces an efficient household nobody wants to live in. That order of operations is worth restoring. Everything else in this curriculum — every account book, pantry, and maintenance schedule — is instrumental. This unit is about the thing it is all instrumental to.',
   icon: 'Heart',
-  gradient: 'from-red-500 to-rose-700',
   lessons: [
     {
       id: 'what-a-family-does',

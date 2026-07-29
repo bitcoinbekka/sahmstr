@@ -16,7 +16,6 @@ export const growingUp: UnitDefinition = {
   opening:
     'This unit is unusual in the old curriculum because it addresses the student as herself rather than as a future homemaker. It asked what growing up actually means, what kind of person she wanted to become, how to build friendships worth having, how to think about courtship, and what she wanted to do with her life. Those questions were considered part of home economics because the field understood that the quality of a household depends first on the maturity of the people who form it. We have kept the questions, and answered them for a young woman who will be forming a household inside an economy her grandmother would not recognize.',
   icon: 'Sprout',
-  gradient: 'from-lime-500 to-green-700',
   lessons: [
     {
       id: 'what-growing-up-means',

@@ -10,7 +10,6 @@ export const house: UnitDefinition = {
     opening:
       'Two full units of the old text concerned the dwelling itself: what housing must provide, how much of the family income it should absorb, how to read a floor plan, and how to furnish rooms so they serve the people in them. The instruction was unsentimental. A house was equipment for living, to be judged by whether it worked. That is a useful corrective now, when the housing conversation is conducted almost entirely in the language of appreciation and appearance.',
     icon: 'Home',
-    gradient: 'from-stone-500 to-amber-700',
     lessons: [
       {
         id: 'housing-essentials',

@@ -10,7 +10,6 @@ export const food: UnitDefinition = {
     opening:
       'Food was the oldest subject in the field and the one most thoroughly taught, on the reasonable grounds that a household eats every day whether or not anyone has planned for it. The instruction was unglamorous and sequential: plan, provision, cook, preserve, and account for what was spent. None of it assumed a delivery service, a freezer aisle, or a phone. That independence is precisely what makes it worth relearning.',
     icon: 'UtensilsCrossed',
-    gradient: 'from-rose-500 to-red-600',
     lessons: [
       {
         id: 'planning-the-week',

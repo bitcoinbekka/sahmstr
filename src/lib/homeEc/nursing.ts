@@ -10,7 +10,6 @@ export const nursing: UnitDefinition = {
     opening:
       'Two units covered this ground: being a home helper to the physician, and caring for the patient. Home nursing is nearly extinct as a taught skill and remains entirely relevant, because most illness is still managed at home by someone with no training at all. The old material was careful about its own limits — it taught observation, comfort, and infection control, and it named plainly the signs that meant sending for a doctor. That combination of competence and humility is exactly right. This is general household practice, not medical advice.',
     icon: 'HeartPulse',
-    gradient: 'from-sky-500 to-blue-600',
     lessons: [
       {
         id: 'the-medicine-chest',

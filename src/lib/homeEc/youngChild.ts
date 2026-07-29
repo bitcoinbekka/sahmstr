@@ -19,7 +19,6 @@ export const youngChild: UnitDefinition = {
   opening:
     'The old texts devoted an entire unit to the care of the young child and began, sensibly, with the mother herself. Then feeding, the value of regularity, cleanliness, clothing, and the safeguarding of health. Much of the specific medical guidance from that era has been revised or overturned, and we have not repeated it. What survives is the practical craft — the rhythms, the arrangements, the small decisions that make the early years workable — and one thing the old books had that modern parenting advice largely lacks: confidence that this is learnable, ordinary work rather than a specialist field requiring constant consultation.',
   icon: 'Baby',
-  gradient: 'from-pink-400 to-rose-600',
   lessons: [
     {
       id: 'care-of-the-mother',

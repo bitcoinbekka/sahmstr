@@ -25,6 +25,7 @@
  */
 
 import type { CurriculumModule, UnitDefinition } from './types';
+import { getUnitTone, TONE_INK, TONE_WASH } from './posters';
 
 import { successfulFamily } from './successfulFamily';
 import { growingUp } from './growingUp';
@@ -79,10 +80,16 @@ const UNITS: UnitDefinition[] = [
   protocols,
 ];
 
-export const CURRICULUM: CurriculumModule[] = UNITS.map((unit, i) => ({
-  ...unit,
-  number: i + 1,
-}));
+export const CURRICULUM: CurriculumModule[] = UNITS.map((unit, i) => {
+  const tone = getUnitTone(unit.id);
+  return {
+    ...unit,
+    number: i + 1,
+    tone,
+    wash: TONE_WASH[tone],
+    ink: TONE_INK[tone],
+  };
+});
 
 /** Find a unit by its id */
 export function getModule(id: string): CurriculumModule | undefined {
@@ -93,4 +100,15 @@ export function getModule(id: string): CurriculumModule | undefined {
 export const TOTAL_LESSONS = CURRICULUM.reduce((sum, m) => sum + m.lessons.length, 0);
 
 export { PROVENANCE } from './provenance';
+export {
+  HERO_POSTER,
+  SECTION_POSTERS,
+  UNIT_POSTERS,
+  POSTER_GALLERY,
+  TONE_WASH,
+  TONE_INK,
+  getUnitPoster,
+  getUnitTone,
+} from './posters';
+export type { Poster, PosterTone } from './posters';
 export type { Lesson, CurriculumModule, UnitDefinition } from './types';

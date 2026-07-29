@@ -10,7 +10,6 @@ export const householdFinance: UnitDefinition = {
     opening:
       'The older texts began where we no longer think to begin: with the household itself as an economic institution. Not a place where income arrives and disappears, but a going concern — with labor, inventory, capital equipment, records, and output. A homemaker was understood to be managing that concern, and the coursework treated her accordingly. What follows recovers that framing and then asks a question those books did not have to ask, because in their decade the answer was still mostly yes: will the money you set aside still be worth something when you need it?',
     icon: 'Wallet',
-    gradient: 'from-amber-500 to-orange-600',
     lessons: [
       {
         id: 'household-as-economy',

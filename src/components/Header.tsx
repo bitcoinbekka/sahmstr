@@ -28,22 +28,32 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+      {/* Ink rule across the head of the page, in the three series colours */}
+      <div
+        aria-hidden
+        className="h-[3px] bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-ochre))] to-[hsl(var(--poster-terracotta))]"
+      />
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-serif font-bold bg-gradient-to-r from-primary via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                SAHMstr
-              </span>
-            </div>
+          <Link to="/" className="group flex items-baseline gap-2">
+            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
+              SAHM<span className="text-[hsl(var(--poster-terracotta))]">str</span>
+            </span>
+            <span className="hidden font-slab text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground lg:inline">
+              est. household
+            </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-1">
             {navLinks.map(({ to, icon: Icon, label }) => (
               <Link key={to} to={to}>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <Icon className="h-4 w-4" />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2 rounded-sm font-slab text-[11px] font-bold uppercase tracking-[0.1em]"
+                >
+                  <Icon className="h-3.5 w-3.5" />
                   <span>{label}</span>
                 </Button>
               </Link>
@@ -85,8 +95,8 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-72">
               <SheetHeader>
-                <SheetTitle className="text-left font-serif text-2xl bg-gradient-to-r from-primary to-amber-500 bg-clip-text text-transparent">
-                  SAHMstr
+                <SheetTitle className="text-left font-serif text-2xl font-bold tracking-tight">
+                  SAHM<span className="text-[hsl(var(--poster-terracotta))]">str</span>
                 </SheetTitle>
                 <SheetDescription className="sr-only">
                   Site navigation menu.
