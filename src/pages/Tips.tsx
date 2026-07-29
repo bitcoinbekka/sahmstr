@@ -305,7 +305,7 @@ export default function Tips() {
                             alt={poster.alt}
                             loading="lazy"
                             decoding="async"
-                            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                            className="h-full w-full object-cover transition-transform [transition-duration:900ms] ease-out group-hover:scale-[1.06]"
                           />
                           <span className="absolute left-0 top-0 bg-[hsl(var(--poster-cream))]/95 px-2 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ink))]">
                             Unit {module.number}

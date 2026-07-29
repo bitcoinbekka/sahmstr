@@ -264,7 +264,7 @@ const Index = () => {
                         alt={poster.alt}
                         loading={i < 2 ? 'eager' : 'lazy'}
                         decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                        className="h-full w-full object-cover transition-transform [transition-duration:900ms] ease-out group-hover:scale-[1.06]"
                       />
                       {/* Plate number, printed in the corner */}
                       <span className="absolute left-0 top-0 bg-[hsl(var(--poster-cream))]/95 px-2.5 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ink))]">
