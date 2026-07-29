@@ -20,11 +20,16 @@ import {
   Home,
   SprayCan,
   ShieldCheck,
+  Heart,
+  Sprout,
+  Activity,
+  Network,
+  GraduationCap,
   Library,
   ExternalLink,
   type LucideIcon,
 } from 'lucide-react';
-import { CURRICULUM, TOTAL_LESSONS, PROVENANCE } from '@/lib/homeEcCurriculum';
+import { CURRICULUM, TOTAL_LESSONS, PROVENANCE } from '@/lib/homeEc';
 
 /** Map icon names from the curriculum data to Lucide components */
 const ICONS: Record<string, LucideIcon> = {
@@ -39,6 +44,11 @@ const ICONS: Record<string, LucideIcon> = {
   Home,
   SprayCan,
   ShieldCheck,
+  Heart,
+  Sprout,
+  Activity,
+  Network,
+  GraduationCap,
 };
 
 export default function Tips() {
@@ -68,10 +78,11 @@ export default function Tips() {
               </h1>
 
               <p className="text-xl text-muted-foreground leading-relaxed">
-                The old curriculum was serious about this work — household finance, housing, the
-                care of a house, the use of time, nutrition, textiles, child development, and how
-                to take an advertisement apart. We have rebuilt it, unit by unit, for households
-                that intend to hold their own money, records, and skills.
+                The old curriculum was serious about this work. It started with the family and the
+                person, then taught the running of a house, the money, the children, the health —
+                and how to take an advertisement apart. We have rebuilt it unit by unit, and
+                closed it where the original could not: with money and identity a household
+                genuinely holds.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -149,6 +160,9 @@ export default function Tips() {
                 <p className="text-muted-foreground leading-relaxed">
                   {PROVENANCE.statement}
                 </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {PROVENANCE.divergence}
+                </p>
                 <p className="text-sm text-muted-foreground/80 leading-relaxed pt-1">
                   The consumer unit is the one worth noting. It taught teenagers to take an
                   advertisement apart — to name the emotional appeal, separate the claim from the
@@ -176,9 +190,19 @@ export default function Tips() {
                           >
                             <Icon className="h-6 w-6 text-white" />
                           </div>
-                          <span className="text-3xl font-serif font-bold text-muted-foreground/25">
-                            {module.number}
-                          </span>
+                          <div className="flex flex-col items-end gap-1.5">
+                            <span className="text-3xl font-serif font-bold text-muted-foreground/25">
+                              {module.number}
+                            </span>
+                            {module.isNew && (
+                              <Badge
+                                variant="outline"
+                                className="text-[10px] px-1.5 py-0 border-primary/40 text-primary"
+                              >
+                                New
+                              </Badge>
+                            )}
+                          </div>
                         </div>
 
                         <div className="space-y-1.5">

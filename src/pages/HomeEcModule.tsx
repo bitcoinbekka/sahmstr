@@ -25,10 +25,15 @@ import {
   Home,
   SprayCan,
   ShieldCheck,
+  Heart,
+  Sprout,
+  Activity,
+  Network,
+  GraduationCap,
   PenLine,
   type LucideIcon,
 } from 'lucide-react';
-import { CURRICULUM, getModule } from '@/lib/homeEcCurriculum';
+import { CURRICULUM, getModule } from '@/lib/homeEc';
 import NotFound from './NotFound';
 
 const ICONS: Record<string, LucideIcon> = {
@@ -43,6 +48,11 @@ const ICONS: Record<string, LucideIcon> = {
   Home,
   SprayCan,
   ShieldCheck,
+  Heart,
+  Sprout,
+  Activity,
+  Network,
+  GraduationCap,
 };
 
 export default function HomeEcModule() {
@@ -92,6 +102,11 @@ export default function HomeEcModule() {
                   <span className="text-sm text-muted-foreground">
                     {module.lessons.length} problems
                   </span>
+                  {module.isNew && (
+                    <Badge variant="outline" className="border-primary/40 text-primary">
+                      Entirely new material
+                    </Badge>
+                  )}
                 </div>
 
                 <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight">
