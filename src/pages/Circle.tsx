@@ -1,5 +1,6 @@
 import { useSeoMeta } from '@unhead/react';
-import { Lock, Images, Users } from 'lucide-react';
+// `Lock` is avoided project-wide — see the note in Header.tsx.
+import { ShieldCheck, Images, Users } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/PageHero';
@@ -34,7 +35,7 @@ export default function Circle() {
       <main className="flex-1">
         <PageHero
           eyebrow="Private sharing"
-          icon={Lock}
+          icon={ShieldCheck}
           title="The Circle"
           lede="A photo of your children does not belong to the whole network. Share it with the people you name — encrypted for each of them, invisible to everyone else, including us."
         />
@@ -44,7 +45,7 @@ export default function Circle() {
             {!user ? (
               <Card className="rounded-sm border-2">
                 <CardContent className="space-y-6 px-8 py-12 text-center">
-                  <Lock className="mx-auto h-10 w-10 text-muted-foreground/40" />
+                  <ShieldCheck className="mx-auto h-10 w-10 text-muted-foreground/40" />
                   <div className="space-y-2">
                     <h2 className="font-serif text-2xl font-bold">Log in to open your circle</h2>
                     <p className="mx-auto max-w-md leading-relaxed text-muted-foreground">

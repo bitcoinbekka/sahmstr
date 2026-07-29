@@ -5,7 +5,8 @@ import { Footer } from '@/components/Footer';
 import { PageHero } from '@/components/PageHero';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Video, Lock, ArrowRight } from 'lucide-react';
+// `Lock` is avoided project-wide — see the note in Header.tsx.
+import { Video, ShieldCheck, ArrowRight } from 'lucide-react';
 import { SECTION_POSTERS } from '@/lib/homeEc';
 
 export default function Vlogs() {
@@ -33,7 +34,7 @@ export default function Vlogs() {
             <Card className="overflow-hidden rounded-sm border-2">
               <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-sage))] to-[hsl(var(--poster-ochre))]" />
               <CardContent className="space-y-5 p-8 text-center">
-                <Lock className="mx-auto h-9 w-9 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
+                <ShieldCheck className="mx-auto h-9 w-9 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
                 <h2 className="font-serif text-2xl font-bold">
                   Want to share video with family instead?
                 </h2>

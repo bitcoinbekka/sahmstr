@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { ImagePlus, Loader2, Lock, X, Send } from 'lucide-react';
+// `Lock` is avoided project-wide — see the note in Header.tsx.
+import { ImagePlus, Loader2, ShieldCheck, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
@@ -142,7 +143,7 @@ export function StoryComposer() {
       <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-sage))] to-[hsl(var(--poster-ochre))]" />
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center gap-2">
-          <Lock className="h-4 w-4 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
+          <ShieldCheck className="h-4 w-4 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
           <h2 className="font-serif text-xl font-bold">Share with your circle</h2>
         </div>
 

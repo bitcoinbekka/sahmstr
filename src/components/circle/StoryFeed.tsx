@@ -1,4 +1,5 @@
-import { Lock, Users } from 'lucide-react';
+// `Lock` is avoided project-wide — see the note in Header.tsx.
+import { ShieldCheck, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,7 +33,7 @@ function StoryCard({ story }: { story: CircleStory }) {
             {formatConversationTime(story.createdAt)}
           </p>
         </div>
-        <Lock
+        <ShieldCheck
           className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
           aria-label="Shared privately"
         />

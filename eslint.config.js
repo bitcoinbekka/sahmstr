@@ -43,6 +43,28 @@ export default tseslint.config(
         "error",
         { terms: ["fixme"] },
       ],
+      /*
+       * lucide-react exports several icons whose names shadow browser globals.
+       * Under the ESM CDN build a named import can resolve to the native class
+       * instead of the component, and React then throws "Illegal constructor" at
+       * render time — a crash that no type check or build will catch.
+       *
+       * `Lock` bit us on the Circle pages. Ban the known-dangerous names and use
+       * an unambiguous alternative (ShieldCheck, ImageIcon, FileIcon, …).
+       */
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "lucide-react",
+              importNames: ["Lock", "Image", "Text", "Range", "Option", "Comment", "Selection", "Notification"],
+              message:
+                "This lucide icon name shadows a browser global and can resolve to the native class at runtime. Use an unambiguous icon (e.g. ShieldCheck instead of Lock, ImageIcon instead of Image).",
+            },
+          ],
+        },
+      ],
     },
   },
   {

@@ -10,7 +10,9 @@ import {
   Bitcoin,
   Heart,
   Users,
-  Lock,
+  // `Lock` is avoided project-wide: it shadows the Web Locks API global and can
+  // resolve to the native class under the ESM CDN build.
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -296,7 +298,7 @@ const Index = () => {
                 <Card className="flex h-full flex-col justify-between overflow-hidden rounded-sm border-2 bg-[hsl(var(--poster-green))] p-5 text-[hsl(42_52%_96%)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div className="space-y-3">
                     <span className="inline-flex items-center gap-1.5 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ochre))]">
-                      <Lock className="h-3 w-3" />
+                      <ShieldCheck className="h-3 w-3" />
                       Sealed · private
                     </span>
                     <h3 className="font-serif text-2xl font-bold leading-snug">

@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, Lock } from 'lucide-react';
+/*
+ * Note: lucide's `Lock` export is avoided throughout this project. It shadows the
+ * browser's Web Locks API `Lock` global, and under the ESM CDN build the named
+ * import can resolve to the native class instead of the icon — which React then
+ * tries to call, throwing "Illegal constructor". `ShieldCheck` carries the same
+ * meaning and resolves reliably.
+ */
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
@@ -20,7 +27,7 @@ export function Header() {
 
   const navLinks = [
     { to: '/', icon: Home, label: 'Home' },
-    { to: '/circle', icon: Lock, label: 'Circle' },
+    { to: '/circle', icon: ShieldCheck, label: 'Circle' },
     { to: '/recipes', icon: ChefHat, label: 'Recipes' },
     { to: '/tips', icon: Lightbulb, label: 'Home Ec' },
     { to: '/wardrobe', icon: Shirt, label: 'Style' },

@@ -8,6 +8,7 @@ import { encryptFile, decryptToBlobUrl, ENCRYPTION_ALGORITHM } from './circleCry
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('encryptFile', () => {
@@ -62,14 +63,12 @@ describe('decryptToBlobUrl', () => {
       vi.fn().mockResolvedValue({ ok: true, arrayBuffer: async () => ciphertext }),
     );
 
+    // Spy on the object-URL factory rather than replacing global URL, so the
+    // URL constructor itself keeps working for anything else in scope.
     const captured: Blob[] = [];
-    vi.stubGlobal('URL', {
-      ...URL,
-      createObjectURL: (blob: Blob) => {
-        captured.push(blob);
-        return 'blob:mock';
-      },
-      revokeObjectURL: () => {},
+    vi.spyOn(URL, 'createObjectURL').mockImplementation((blob) => {
+      captured.push(blob as Blob);
+      return 'blob:mock';
     });
 
     const url = await decryptToBlobUrl(
