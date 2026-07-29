@@ -9,7 +9,7 @@ export const childDevelopment: UnitDefinition = {
       'Age-appropriate responsibility, the home as a first classroom, guiding behavior, and passing on skills and values deliberately rather than by accident.',
     opening:
       'Four units of the original text concerned children — their care, their physical and mental development, the guidance of their learning, and the community\'s obligations to them. It was the largest single subject in the book, which tells you what the field considered its central work. The material was developmental rather than sentimental: it described what a child could do at each stage and what the household owed them, and it assumed the answer involved real responsibility rather than entertainment.',
-    icon: 'GraduationCap',
+    icon: 'BookOpen',
     gradient: 'from-indigo-500 to-blue-700',
     lessons: [
       {

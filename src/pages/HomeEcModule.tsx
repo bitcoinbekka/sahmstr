@@ -29,7 +29,7 @@ import {
   Sprout,
   Activity,
   Network,
-  GraduationCap,
+  BookOpen,
   PenLine,
   type LucideIcon,
 } from 'lucide-react';
@@ -52,7 +52,7 @@ const ICONS: Record<string, LucideIcon> = {
   Sprout,
   Activity,
   Network,
-  GraduationCap,
+  BookOpen,
 };
 
 export default function HomeEcModule() {

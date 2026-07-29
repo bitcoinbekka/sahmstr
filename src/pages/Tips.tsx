@@ -24,7 +24,6 @@ import {
   Sprout,
   Activity,
   Network,
-  GraduationCap,
   Library,
   ExternalLink,
   type LucideIcon,
@@ -48,7 +47,7 @@ const ICONS: Record<string, LucideIcon> = {
   Sprout,
   Activity,
   Network,
-  GraduationCap,
+  BookOpen,
 };
 
 export default function Tips() {
