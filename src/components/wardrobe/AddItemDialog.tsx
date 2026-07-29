@@ -18,9 +18,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Upload, Loader2, X } from 'lucide-react';
+import { Plus, Upload, Loader2, X, Wand2, Check } from 'lucide-react';
 import { useUploadFile } from '@/hooks/useUploadFile';
 import { useWardrobe } from '@/hooks/useWardrobe';
+import { useAIStylist } from '@/hooks/useAIStylist';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import type {
   ClothingCategory,
   ColorFamily,
@@ -41,8 +43,11 @@ import {
 
 export function AddItemDialog() {
   const { addItem } = useWardrobe();
+  const { user } = useCurrentUser();
   const { mutateAsync: uploadFile, isPending: isUploading } = useUploadFile();
+  const { autoTagImage, isTagging, tagError } = useAIStylist();
   const [open, setOpen] = useState(false);
+  const [autoTagged, setAutoTagged] = useState(false);
 
   const [imageUrl, setImageUrl] = useState('');
   const [name, setName] = useState('');
@@ -61,9 +66,27 @@ export function AddItemDialog() {
     try {
       const [[, url]] = await uploadFile(file);
       setImageUrl(url);
+      setAutoTagged(false);
     } catch (err) {
       console.error('Upload failed:', err);
     }
+  };
+
+  const handleAutoTag = async () => {
+    if (!imageUrl) return;
+    const tags = await autoTagImage(imageUrl);
+    if (!tags) return;
+
+    setName(tags.name);
+    setCategory(tags.category);
+    setSubcategory(tags.subcategory);
+    setColor(tags.color);
+    setColorFamily(tags.colorFamily);
+    setPattern(tags.pattern);
+    setStyles(tags.style);
+    setSeasons(tags.season);
+    setOccasions(tags.occasion);
+    setAutoTagged(true);
   };
 
   const toggleArrayValue = <T extends string>(arr: T[], val: T, setter: React.Dispatch<React.SetStateAction<T[]>>) => {
@@ -81,6 +104,7 @@ export function AddItemDialog() {
     setStyles([]);
     setSeasons([]);
     setOccasions([]);
+    setAutoTagged(false);
   };
 
   const handleSubmit = () => {
@@ -149,6 +173,42 @@ export function AddItemDialog() {
               </label>
             )}
           </div>
+
+          {/* AI Auto-fill */}
+          {imageUrl && user && (
+            <div className="space-y-2">
+              <Button
+                type="button"
+                variant={autoTagged ? 'secondary' : 'outline'}
+                className="w-full gap-2"
+                onClick={handleAutoTag}
+                disabled={isTagging}
+              >
+                {isTagging ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Analyzing photo...
+                  </>
+                ) : autoTagged ? (
+                  <>
+                    <Check className="h-4 w-4 text-primary" />
+                    Filled in by AI — edit anything below
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-4 w-4" />
+                    Fill in details with AI
+                  </>
+                )}
+              </Button>
+              {tagError && <p className="text-xs text-destructive">{tagError}</p>}
+              {!autoTagged && !isTagging && !tagError && (
+                <p className="text-xs text-muted-foreground text-center">
+                  Let AI read the photo and fill in the fields for you
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Name */}
           <div className="space-y-2">
