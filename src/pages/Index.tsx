@@ -29,6 +29,7 @@ import {
   TOTAL_LESSONS,
   type Poster,
 } from '@/lib/homeEc';
+import { TOOLKIT } from '@/lib/toolkit';
 
 /**
  * The five standing sections of the site, each printed as a plate from the
@@ -113,44 +114,6 @@ const VALUES = [
     title: 'Peer-to-peer, not platform',
     tone: 'terracotta' as const,
     body: 'You are not the product here. No ads, no engagement algorithm, no surveillance capitalism harvesting your family for data. Just women talking to each other directly.',
-  },
-];
-
-/**
- * The sovereign toolkit — the alternatives to the extractive platforms.
- *
- * Every entry is something a household can actually use today, and every one
- * of them can be self-hosted or left behind without losing your identity or
- * your customers. Kept short deliberately: a long list of tools reads as
- * homework, three reads as a starting point.
- */
-const TOOLKIT: Array<{
-  label: string;
-  kicker: string;
-  body: string;
-  href: string;
-  tone: 'ochre' | 'green' | 'terracotta' | 'teal';
-}> = [
-  {
-    label: 'Plebeian Market',
-    kicker: 'Peer-to-peer trade',
-    body: 'Sell what your household makes without a middleman taking a cut or owning your customers. Listings are events you sign yourself, payment is bitcoin over Lightning straight to you, and you can run the whole shop from a node in your own closet.',
-    href: 'https://plebeian.market',
-    tone: 'ochre',
-  },
-  {
-    label: 'Nostr',
-    kicker: 'Censorship-resistant',
-    body: 'The protocol underneath this site. One keypair is your account everywhere — no email, no phone number, nothing to be locked out of. Run your own relay and your family\'s words live on hardware you control.',
-    href: 'https://nostr.com',
-    tone: 'green',
-  },
-  {
-    label: 'Start9 & Umbrel',
-    kicker: 'Self-hosting',
-    body: 'Sovereignty is a server in the cupboard, not a subscription. Both turn a small computer at home into your own relay, node and cloud — your photos, your money, your data, on your own hardware.',
-    href: 'https://start9.com',
-    tone: 'teal',
   },
 ];
 

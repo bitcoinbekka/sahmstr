@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Bitcoin } from 'lucide-react';
+import { TOOLKIT_LINKS } from '@/lib/toolkit';
 
 export function Footer() {
   return (
@@ -81,11 +82,7 @@ export function Footer() {
               Freedom tech
             </h4>
             <ul className="space-y-2 text-sm">
-              {[
-                { href: 'https://plebeian.market', label: 'Plebeian Market' },
-                { href: 'https://nostr.com', label: 'What is Nostr?' },
-                { href: 'https://start9.com', label: 'Self-host at home' },
-              ].map(({ href, label }) => (
+              {TOOLKIT_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <a
                     href={href}
