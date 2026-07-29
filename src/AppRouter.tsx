@@ -5,6 +5,7 @@ import Index from "./pages/Index";
 import Recipes from "./pages/Recipes";
 import NewRecipe from "./pages/NewRecipe";
 import Vlogs from "./pages/Vlogs";
+import Circle from "./pages/Circle";
 import Live from "./pages/Live";
 import Tips from "./pages/Tips";
 import HomeEcModule from "./pages/HomeEcModule";
@@ -25,6 +26,7 @@ export function AppRouter() {
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/recipes/new" element={<NewRecipe />} />
         <Route path="/vlogs" element={<Vlogs />} />
+        <Route path="/circle" element={<Circle />} />
         <Route path="/live" element={<Live />} />
         <Route path="/tips" element={<Tips />} />
         <Route path="/tips/:moduleId" element={<HomeEcModule />} />

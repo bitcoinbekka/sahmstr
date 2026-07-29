@@ -8,6 +8,8 @@ import { StyleProfileForm } from '@/components/wardrobe/StyleProfileForm';
 import { OutfitSuggestions } from '@/components/wardrobe/OutfitSuggestions';
 import { AIStylistPanel } from '@/components/wardrobe/AIStylistPanel';
 import { useSearchParams } from 'react-router-dom';
+import { PageHero } from '@/components/PageHero';
+import { SECTION_POSTERS } from '@/lib/homeEc';
 
 export default function Wardrobe() {
   useSeoMeta({
@@ -27,25 +29,15 @@ export default function Wardrobe() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 items-center justify-center mx-auto">
-                <Shirt className="h-8 w-8 text-white" />
-              </div>
-
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Wardrobe & Style
-              </h1>
-
-              <p className="text-xl text-muted-foreground">
-                Upload your closet and let your AI stylist create personalized looks — with real advice on
-                colors, layering, and what flatters you.
-              </p>
-            </div>
-          </div>
-        </section>
+        {/* Hero — the textiles plate */}
+        <PageHero
+          eyebrow="Plate III · Wardrobe"
+          icon={Shirt}
+          title="Wardrobe & Style"
+          lede="Know your fibres, keep what lasts, and dress well from a closet you already own. Your stylist works from what is actually hanging there."
+          poster={SECTION_POSTERS.wardrobe}
+          plateCaption="Plate III · Managing the Home"
+        />
 
         {/* Main Content */}
         <section className="py-10 bg-background">

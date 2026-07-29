@@ -26,6 +26,11 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link to="/circle" className="text-muted-foreground hover:text-foreground transition-colors">
+                  The Circle
+                </Link>
+              </li>
+              <li>
                 <Link to="/recipes" className="text-muted-foreground hover:text-foreground transition-colors">
                   Recipes
                 </Link>

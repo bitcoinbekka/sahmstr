@@ -62,7 +62,7 @@ export function RecipeCard({ event }: RecipeCardProps) {
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10 border-2 border-background shadow-sm">
               <AvatarImage src={avatarUrl} alt={displayName} />
-              <AvatarFallback className="bg-gradient-to-br from-primary to-amber-500 text-white text-sm">
+              <AvatarFallback className="bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] text-[hsl(42_52%_96%)] text-sm">
                 {displayName.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>

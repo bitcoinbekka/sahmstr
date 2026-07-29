@@ -1,7 +1,10 @@
 import { useSeoMeta } from '@unhead/react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { PageHero } from '@/components/PageHero';
+import { Card, CardContent } from '@/components/ui/card';
 import { Radio } from 'lucide-react';
+import { SECTION_POSTERS } from '@/lib/homeEc';
 
 export default function Live() {
   useSeoMeta({
@@ -14,29 +17,28 @@ export default function Live() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 items-center justify-center mx-auto">
-                <Radio className="h-8 w-8 text-white" />
-              </div>
+        <PageHero
+          eyebrow="Plate V · Gathering"
+          icon={Radio}
+          title="Live & Gathering"
+          lede="Cooking together in real time, questions answered plainly, and the door left open. Scheduled gatherings are still being built."
+          poster={SECTION_POSTERS.live}
+          plateCaption="Plate V · Making the House a Home"
+        />
 
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Live Streaming
-              </h1>
-
-              <p className="text-xl text-muted-foreground">
-                Connect in real-time with cooking sessions, Q&As, and community gatherings.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-12 bg-background">
-          <div className="container">
-            <div className="text-center py-20">
-              <p className="text-muted-foreground">Live streaming events coming soon...</p>
-            </div>
+        <section className="bg-background py-14">
+          <div className="container max-w-2xl">
+            <Card className="rounded-sm border-2 border-dashed">
+              <CardContent className="px-8 py-14 text-center">
+                <div className="mx-auto max-w-md space-y-3">
+                  <h2 className="font-serif text-xl font-bold">Nothing on just now</h2>
+                  <p className="leading-relaxed text-muted-foreground">
+                    When a gathering is scheduled it will be listed here, with the time in your
+                    own timezone.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
       </main>

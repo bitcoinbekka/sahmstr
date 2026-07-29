@@ -8,6 +8,8 @@ import { useRecipes } from '@/hooks/useRecipes';
 import { RecipeCard } from '@/components/RecipeCard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHero } from '@/components/PageHero';
+import { SECTION_POSTERS } from '@/lib/homeEc';
 
 export default function Recipes() {
   useSeoMeta({
@@ -22,33 +24,22 @@ export default function Recipes() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_50%)] pointer-events-none" />
-
-          <div className="container relative">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 items-center justify-center mx-auto">
-                <ChefHat className="h-8 w-8 text-white" />
-              </div>
-
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Recipe Collection
-              </h1>
-
-              <p className="text-xl text-muted-foreground">
-                Wholesome recipes shared by homemakers, for homemakers. From everyday meals to special occasions.
-              </p>
-
-              <Link to="/recipes/new">
-                <Button size="lg" className="gap-2 rounded-full">
-                  <Plus className="h-5 w-5" />
-                  Share Your Recipe
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Hero — the recipe plate */}
+        <PageHero
+          eyebrow="Plate I · Recipes"
+          icon={ChefHat}
+          title="Recipe Collection"
+          lede="Cooking from staples, putting up the harvest, and feeding a family well on what the week actually allows."
+          poster={SECTION_POSTERS.recipes}
+          plateCaption="Plate I · The Family as a Consumer"
+        >
+          <Link to="/recipes/new">
+            <Button size="lg" className="gap-2 rounded-sm px-7">
+              <Plus className="h-5 w-5" />
+              Share your recipe
+            </Button>
+          </Link>
+        </PageHero>
 
         {/* Recipes Grid */}
         <section className="py-12 bg-background">

@@ -44,8 +44,8 @@ export default function About() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
-                      <Bitcoin className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] flex items-center justify-center shadow-sm">
+                      <Bitcoin className="h-6 w-6 text-[hsl(25_30%_14%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Bitcoin-Focused</h3>
                     <p className="text-muted-foreground">
@@ -56,8 +56,8 @@ export default function About() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                      <Shield className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] flex items-center justify-center shadow-sm">
+                      <Shield className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Decentralized</h3>
                     <p className="text-muted-foreground">
@@ -68,8 +68,8 @@ export default function About() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
-                      <Heart className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(16_58%_48%)] to-[hsl(10_52%_36%)] flex items-center justify-center shadow-sm">
+                      <Heart className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Supportive Community</h3>
                     <p className="text-muted-foreground">
@@ -80,8 +80,8 @@ export default function About() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
-                      <Users className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(210_58%_46%)] to-[hsl(216_50%_32%)] flex items-center justify-center shadow-sm">
+                      <Users className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Knowledge Sharing</h3>
                     <p className="text-muted-foreground">
@@ -109,6 +109,14 @@ export default function About() {
                   <li className="flex gap-3">
                     <span className="text-primary mt-1">•</span>
                     <span><strong className="text-foreground">Home Economics:</strong> Learn about budgeting, gardening, sewing, preserving, and sustainable living</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary mt-1">•</span>
+                    <span>
+                      <strong className="text-foreground">The Circle:</strong> Share photos and
+                      video of your children with a private, encrypted list of family — not with
+                      the whole network
+                    </span>
                   </li>
                 </ul>
               </div>

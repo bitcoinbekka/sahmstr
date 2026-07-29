@@ -1,7 +1,12 @@
 import { useSeoMeta } from '@unhead/react';
+import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Video } from 'lucide-react';
+import { PageHero } from '@/components/PageHero';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Video, Lock, ArrowRight } from 'lucide-react';
+import { SECTION_POSTERS } from '@/lib/homeEc';
 
 export default function Vlogs() {
   useSeoMeta({
@@ -14,29 +19,37 @@ export default function Vlogs() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-16">
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <div className="inline-flex h-16 w-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 items-center justify-center mx-auto">
-                <Video className="h-8 w-8 text-white" />
-              </div>
+        <PageHero
+          eyebrow="Plate IV · Vlogs"
+          icon={Video}
+          title="Vlogs & Stories"
+          lede="The ordinary record of a household, kept honestly — what worked this week and what did not. Public vlogs are still being built."
+          poster={SECTION_POSTERS.vlogs}
+          plateCaption="Plate IV · The Successful Family"
+        />
 
-              <h1 className="text-4xl md:text-6xl font-serif font-bold">
-                Vlogs & Videos
-              </h1>
-
-              <p className="text-xl text-muted-foreground">
-                Real life, real moments. Watch homemaking vlogs from our community.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-12 bg-background">
-          <div className="container">
-            <div className="text-center py-20">
-              <p className="text-muted-foreground">Video content coming soon...</p>
-            </div>
+        <section className="bg-background py-14">
+          <div className="container max-w-2xl">
+            <Card className="overflow-hidden rounded-sm border-2">
+              <div className="h-1.5 bg-gradient-to-r from-[hsl(var(--poster-green))] via-[hsl(var(--poster-sage))] to-[hsl(var(--poster-ochre))]" />
+              <CardContent className="space-y-5 p-8 text-center">
+                <Lock className="mx-auto h-9 w-9 text-[hsl(var(--poster-green))] dark:text-[hsl(var(--poster-ochre))]" />
+                <h2 className="font-serif text-2xl font-bold">
+                  Want to share video with family instead?
+                </h2>
+                <p className="mx-auto max-w-md leading-relaxed text-muted-foreground">
+                  Public vlogs are coming. But if what you actually want is to show your mother a
+                  clip of the children without publishing it to the whole network, that already
+                  works — the Circle encrypts it for the people you name.
+                </p>
+                <Link to="/circle">
+                  <Button className="gap-2 rounded-sm">
+                    Open the Circle
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </section>
       </main>

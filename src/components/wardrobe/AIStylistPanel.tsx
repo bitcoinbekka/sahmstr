@@ -62,7 +62,7 @@ export function AIStylistPanel() {
     return (
       <Card className="border-2 border-primary/30 bg-gradient-to-br from-card to-primary/5">
         <CardContent className="p-10 text-center space-y-6">
-          <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center">
+          <div className="mx-auto h-16 w-16 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] flex items-center justify-center shadow-sm">
             <Wand2 className="h-8 w-8 text-white" />
           </div>
           <div className="space-y-3 max-w-lg mx-auto">

@@ -10,6 +10,7 @@ import {
   Bitcoin,
   Heart,
   Users,
+  Lock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -290,23 +291,24 @@ const Index = () => {
                 </Link>
               ))}
 
-              {/* Sixth cell: contribute, printed as a blank plate awaiting an image */}
-              <Link to="/contribute" className="group focus-visible:outline-none">
-                <Card className="flex h-full flex-col justify-between rounded-sm border-2 border-dashed bg-muted/20 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50">
+              {/* Sixth cell: the Circle, set as a sealed envelope rather than a plate */}
+              <Link to="/circle" className="group focus-visible:outline-none">
+                <Card className="flex h-full flex-col justify-between overflow-hidden rounded-sm border-2 bg-[hsl(var(--poster-green))] p-5 text-[hsl(42_52%_96%)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div className="space-y-3">
-                    <span className="font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                      Plate VI · unassigned
+                    <span className="inline-flex items-center gap-1.5 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ochre))]">
+                      <Lock className="h-3 w-3" />
+                      Sealed · private
                     </span>
                     <h3 className="font-serif text-2xl font-bold leading-snug">
-                      Write the unit that is missing
+                      The Circle
                     </h3>
-                    <p className="text-[15px] leading-relaxed text-muted-foreground">
-                      If you have a method that works in your household, it belongs in the book.
-                      Publish it to Nostr and it stays yours.
+                    <p className="text-[15px] leading-relaxed text-[hsl(42_44%_88%)]">
+                      Share photos and video of your children with the family you name — encrypted
+                      for each of them, and invisible to the rest of the network.
                     </p>
                   </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 font-slab text-xs font-bold uppercase tracking-[0.14em] text-primary transition-all group-hover:gap-3">
-                    Contribute a unit
+                  <span className="mt-6 inline-flex items-center gap-1.5 font-slab text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ochre))] transition-all group-hover:gap-3">
+                    Open your circle
                     <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </Card>

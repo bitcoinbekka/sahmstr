@@ -42,8 +42,8 @@ export default function Guidelines() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
-                      <Heart className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(16_58%_48%)] to-[hsl(10_52%_36%)] flex items-center justify-center shadow-sm">
+                      <Heart className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Be Respectful</h3>
                     <p className="text-muted-foreground">
@@ -55,8 +55,8 @@ export default function Guidelines() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
-                      <Sparkles className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] flex items-center justify-center shadow-sm">
+                      <Sparkles className="h-6 w-6 text-[hsl(25_30%_14%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Share Authentically</h3>
                     <p className="text-muted-foreground">
@@ -68,8 +68,8 @@ export default function Guidelines() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                      <Users className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(150_34%_28%)] to-[hsl(155_38%_18%)] flex items-center justify-center shadow-sm">
+                      <Users className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Support Each Other</h3>
                     <p className="text-muted-foreground">
@@ -80,8 +80,8 @@ export default function Guidelines() {
 
                 <Card>
                   <CardContent className="p-6 space-y-3">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
-                      <Shield className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-sm bg-gradient-to-br from-[hsl(210_58%_46%)] to-[hsl(216_50%_32%)] flex items-center justify-center shadow-sm">
+                      <Shield className="h-6 w-6 text-[hsl(42_52%_96%)]" />
                     </div>
                     <h3 className="text-xl font-semibold">Stay On Topic</h3>
                     <p className="text-muted-foreground">

@@ -128,7 +128,7 @@ export default function NewRecipe() {
       <main className="flex-1 py-12 bg-background">
         <div className="container max-w-3xl">
           <div className="mb-8 text-center space-y-2">
-            <div className="inline-flex h-14 w-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 items-center justify-center mx-auto mb-4">
+            <div className="inline-flex h-14 w-14 rounded-sm bg-gradient-to-br from-[hsl(38_72%_52%)] to-[hsl(30_66%_42%)] items-center justify-center mx-auto mb-4 shadow-sm">
               <ChefHat className="h-7 w-7 text-white" />
             </div>
             <h1 className="text-3xl md:text-4xl font-serif font-bold">

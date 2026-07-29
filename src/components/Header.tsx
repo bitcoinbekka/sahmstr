@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings } from 'lucide-react';
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
@@ -20,11 +20,12 @@ export function Header() {
 
   const navLinks = [
     { to: '/', icon: Home, label: 'Home' },
+    { to: '/circle', icon: Lock, label: 'Circle' },
     { to: '/recipes', icon: ChefHat, label: 'Recipes' },
+    { to: '/tips', icon: Lightbulb, label: 'Home Ec' },
+    { to: '/wardrobe', icon: Shirt, label: 'Style' },
     { to: '/vlogs', icon: Video, label: 'Vlogs' },
     { to: '/live', icon: Radio, label: 'Live' },
-    { to: '/tips', icon: Lightbulb, label: 'Home Tips' },
-    { to: '/wardrobe', icon: Shirt, label: 'Style' },
   ];
 
   return (
