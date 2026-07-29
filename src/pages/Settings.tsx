@@ -7,9 +7,10 @@ import { Separator } from '@/components/ui/separator';
 import { RelayListManager } from '@/components/RelayListManager';
 import { EditProfileForm } from '@/components/EditProfileForm';
 import { LoginArea } from '@/components/auth/LoginArea';
+import { TypeSettingPicker } from '@/components/TypeSettingPicker';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useTheme } from '@/hooks/useTheme';
-import { Settings as SettingsIcon, Wifi, User, Sun, Moon } from 'lucide-react';
+import { Settings as SettingsIcon, Wifi, User, Sun, Moon, Type } from 'lucide-react';
 
 export default function Settings() {
   useSeoMeta({
@@ -25,12 +26,24 @@ export default function Settings() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-primary/10 py-12">
+        <section className="paper-grain relative overflow-hidden border-b bg-[hsl(var(--poster-cream))] py-12 dark:bg-background">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+          />
           <div className="container max-w-3xl relative space-y-4">
             <div className="inline-flex h-14 w-14 rounded-sm bg-gradient-to-br from-[hsl(158_40%_24%)] to-[hsl(162_46%_15%)] items-center justify-center shadow-sm">
-              <SettingsIcon className="h-7 w-7 text-white" />
+              <SettingsIcon className="h-7 w-7 text-[hsl(41_56%_95%)]" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif font-bold">Settings</h1>
+            <h1 className="poster-title text-3xl md:text-5xl">Settings</h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
               Your relays determine where this app reads and writes. Choosing them yourself is
               the difference between using a service and running your own.
@@ -83,7 +96,7 @@ export default function Settings() {
                     variant={theme === 'light' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setTheme('light')}
-                    className="gap-2 rounded-full"
+                    className="gap-2 rounded-sm"
                   >
                     <Sun className="h-4 w-4" />
                     Light
@@ -92,12 +105,31 @@ export default function Settings() {
                     variant={theme === 'dark' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setTheme('dark')}
-                    className="gap-2 rounded-full"
+                    className="gap-2 rounded-sm"
                   >
                     <Moon className="h-4 w-4" />
                     Dark
                   </Button>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Typography */}
+            <Card className="border-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2.5">
+                  <Type className="h-5 w-5 text-primary" />
+                  Type
+                </CardTitle>
+                <CardDescription className="leading-relaxed">
+                  The lettering carries more of the period character than the colour does.
+                  Each setting is a complete voice — a display face for titles, a text face
+                  for reading, and a label face for small caps. Pick one and the whole site
+                  is reset in it.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TypeSettingPicker />
               </CardContent>
             </Card>
 

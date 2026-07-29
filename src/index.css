@@ -53,6 +53,19 @@
     --radius: 0.5rem;
 
     /*
+     * Typography. These are overwritten at runtime by the active type setting
+     * (see lib/typeSettings.ts); the values here are the default, so the site
+     * is correctly set even before any script runs.
+     */
+    --font-display: 'Bodoni Moda Variable', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-slab: 'Bitter', Georgia, serif;
+    --display-tracking: -0.015em;
+    --display-leading: 1.04;
+    --display-weight: 700;
+    --display-transform: none;
+
+    /*
      * The ink drawer. Six solid colours plus paper and ink, matching the
      * poster series. These carry the character of the theme — components reach
      * for these rather than inventing their own colour.
@@ -146,13 +159,21 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
   }
 
-  /* Serif headings throughout — the posters use display serifs */
+  /*
+   * Display serifs for headings throughout. The optical metrics come from the
+   * active setting, because a fat face and a Didone need very different
+   * tracking and leading to sit correctly at the same size.
+   */
   h1,
   h2,
   h3 {
-    @apply font-serif;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    line-height: var(--display-leading);
   }
 }
 
@@ -223,7 +244,11 @@
    * mimics the way an impressed character catches the light on soft paper.
    */
   .poster-title {
-    @apply font-serif font-bold tracking-tight;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    line-height: var(--display-leading);
+    text-transform: var(--display-transform);
     text-wrap: balance;
     text-shadow: 0 1px 0 hsl(var(--poster-cream) / 0.6);
   }

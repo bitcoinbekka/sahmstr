@@ -20,10 +20,17 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['DM Sans', 'system-ui', 'sans-serif'],
-				serif: ['Playfair Display Variable', 'Georgia', 'serif'],
+				/*
+				 * All three families resolve through CSS variables so the active
+				 * type setting (lib/typeSettings.ts) restyles the whole site by
+				 * rewriting three custom properties. Utilities keep working
+				 * exactly as before — font-serif is simply now "the display
+				 * face of the current setting" rather than one hardcoded font.
+				 */
+				sans: ['var(--font-body)'],
+				serif: ['var(--font-display)'],
 				// Slab serif for poster-style labels, numerals and small caps
-				slab: ['Bitter', 'Georgia', 'serif'],
+				slab: ['var(--font-slab)'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
