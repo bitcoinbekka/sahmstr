@@ -13,47 +13,11 @@ import {
   Sparkles,
   CheckCircle2,
   Bitcoin,
-  Lightbulb,
-  Wallet,
-  UtensilsCrossed,
-  Scissors,
-  ClipboardList,
-  HeartPulse,
-  Users,
-  Baby,
-  ShoppingBag,
-  Home,
-  SprayCan,
-  ShieldCheck,
-  Heart,
-  Sprout,
-  Activity,
-  Network,
-  BookOpen,
   PenLine,
-  type LucideIcon,
 } from 'lucide-react';
 import { CURRICULUM, getModule } from '@/lib/homeEc';
+import { resolveUnitIcon } from '@/lib/homeEc/icons';
 import NotFound from './NotFound';
-
-const ICONS: Record<string, LucideIcon> = {
-  Wallet,
-  UtensilsCrossed,
-  Scissors,
-  ClipboardList,
-  HeartPulse,
-  Users,
-  Baby,
-  ShoppingBag,
-  Home,
-  SprayCan,
-  ShieldCheck,
-  Heart,
-  Sprout,
-  Activity,
-  Network,
-  BookOpen,
-};
 
 export default function HomeEcModule() {
   const { moduleId } = useParams<{ moduleId: string }>();
@@ -68,7 +32,7 @@ export default function HomeEcModule() {
     return <NotFound />;
   }
 
-  const Icon = ICONS[module.icon] ?? Lightbulb;
+  const Icon = resolveUnitIcon(module.icon);
   const index = CURRICULUM.findIndex((m) => m.id === module.id);
   const prev = index > 0 ? CURRICULUM[index - 1] : null;
   const next = index < CURRICULUM.length - 1 ? CURRICULUM[index + 1] : null;

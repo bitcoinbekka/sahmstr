@@ -8,6 +8,8 @@ import Vlogs from "./pages/Vlogs";
 import Live from "./pages/Live";
 import Tips from "./pages/Tips";
 import HomeEcModule from "./pages/HomeEcModule";
+import ContributeUnit from "./pages/ContributeUnit";
+import Settings from "./pages/Settings";
 import About from "./pages/About";
 import Guidelines from "./pages/Guidelines";
 import Wardrobe from "./pages/Wardrobe";
@@ -26,6 +28,8 @@ export function AppRouter() {
         <Route path="/live" element={<Live />} />
         <Route path="/tips" element={<Tips />} />
         <Route path="/tips/:moduleId" element={<HomeEcModule />} />
+        <Route path="/contribute" element={<ContributeUnit />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/about" element={<About />} />
         <Route path="/wardrobe" element={<Wardrobe />} />
         <Route path="/guidelines" element={<Guidelines />} />

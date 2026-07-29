@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu } from 'lucide-react';
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
@@ -51,11 +51,18 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
+          <Link to="/settings" className="hidden md:block">
+            <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Settings">
+              <Settings className="h-4 w-4" />
+            </Button>
+          </Link>
+
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             className="h-9 w-9"
+            aria-label="Toggle theme"
           >
             {theme === 'light' ? (
               <Moon className="h-4 w-4" />
@@ -94,6 +101,18 @@ export function Header() {
                     </Button>
                   </Link>
                 ))}
+                <Link to="/contribute" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start gap-3 text-base">
+                    <PenLine className="h-5 w-5" />
+                    <span>Contribute</span>
+                  </Button>
+                </Link>
+                <Link to="/settings" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start gap-3 text-base">
+                    <Settings className="h-5 w-5" />
+                    <span>Settings</span>
+                  </Button>
+                </Link>
               </nav>
               <div className="mt-8 pt-8 border-t">
                 <LoginArea className="w-full" />

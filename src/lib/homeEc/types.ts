@@ -6,6 +6,8 @@
  * what this material is and what it is not.
  */
 
+import type { UnitIconName } from './icons';
+
 export interface Lesson {
   id: string;
   /** The lesson framed as a question, in the classic "problem" style */
@@ -33,8 +35,11 @@ export interface UnitDefinition {
   description: string;
   /** The unit's opening passage, meant to be read before the problems */
   opening?: string;
-  /** Lucide icon name */
-  icon: string;
+  /**
+   * Icon key from the registry in `icons.ts`. Typed, so an unregistered name is
+   * a build error rather than a runtime crash.
+   */
+  icon: UnitIconName;
   /** Tailwind gradient classes for the unit badge */
   gradient: string;
   /**

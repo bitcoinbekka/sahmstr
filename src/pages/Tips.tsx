@@ -1,4 +1,5 @@
 import { useSeoMeta } from '@unhead/react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -9,46 +10,140 @@ import {
   Lightbulb,
   ArrowRight,
   BookOpen,
-  Wallet,
-  UtensilsCrossed,
-  Scissors,
-  ClipboardList,
-  HeartPulse,
-  Users,
-  Baby,
-  ShoppingBag,
-  Home,
-  SprayCan,
-  ShieldCheck,
-  Heart,
-  Sprout,
-  Activity,
-  Network,
   Library,
   ExternalLink,
-  type LucideIcon,
+  Users,
+  PenLine,
 } from 'lucide-react';
 import { CURRICULUM, TOTAL_LESSONS, PROVENANCE } from '@/lib/homeEc';
+import { resolveUnitIcon } from '@/lib/homeEc/icons';
+import { useCommunityUnits, SUBJECT_AREAS } from '@/hooks/useCommunityUnits';
+import { CommunityUnitCard } from '@/components/CommunityUnitCard';
+import { Skeleton } from '@/components/ui/skeleton';
 
-/** Map icon names from the curriculum data to Lucide components */
-const ICONS: Record<string, LucideIcon> = {
-  Wallet,
-  UtensilsCrossed,
-  Scissors,
-  ClipboardList,
-  HeartPulse,
-  Users,
-  Baby,
-  ShoppingBag,
-  Home,
-  SprayCan,
-  ShieldCheck,
-  Heart,
-  Sprout,
-  Activity,
-  Network,
-  BookOpen,
-};
+/**
+ * Contributed units, fetched from relays. Rendered below the canonical
+ * curriculum so the authored material is always present even when relays are
+ * slow or unreachable.
+ */
+function CommunityUnitsSection() {
+  const [subject, setSubject] = useState<string | undefined>(undefined);
+  const { data: units, isLoading } = useCommunityUnits(subject);
+
+  return (
+    <section className="py-14 bg-muted/20 border-y">
+      <div className="container">
+        <div className="max-w-3xl mb-8 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <Users className="h-5 w-5 text-primary" />
+            <h2 className="text-2xl md:text-3xl font-serif font-bold">
+              From the Community
+            </h2>
+          </div>
+          <p className="text-muted-foreground leading-relaxed">
+            Units written by the mothers using this curriculum, published to Nostr and owned by
+            their authors. The sixteen units above are ours; everything here belongs to someone
+            else.
+          </p>
+        </div>
+
+        {/* Subject filter */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          <button
+            type="button"
+            onClick={() => setSubject(undefined)}
+            aria-pressed={subject === undefined}
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <Badge
+              variant={subject === undefined ? 'default' : 'outline'}
+              className="cursor-pointer px-3 py-1 text-sm"
+            >
+              All
+            </Badge>
+          </button>
+          {SUBJECT_AREAS.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => setSubject(s.value)}
+              aria-pressed={subject === s.value}
+              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Badge
+                variant={subject === s.value ? 'default' : 'outline'}
+                className="cursor-pointer px-3 py-1 text-sm"
+              >
+                {s.label}
+              </Badge>
+            </button>
+          ))}
+        </div>
+
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Card key={i} className="border-2">
+                <CardHeader className="space-y-3">
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-6 w-3/4" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-3 w-full" />
+                    <Skeleton className="h-3 w-4/5" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2 border-t pt-4">
+                    <Skeleton className="h-7 w-7 rounded-full" />
+                    <div className="space-y-1.5">
+                      <Skeleton className="h-3 w-24" />
+                      <Skeleton className="h-2.5 w-16" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : units && units.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {units.map((unit) => (
+              <CommunityUnitCard key={`${unit.event.pubkey}:${unit.identifier}`} unit={unit} />
+            ))}
+          </div>
+        ) : (
+          <Card className="border-dashed border-2">
+            <CardContent className="py-14 px-8 text-center">
+              <div className="max-w-md mx-auto space-y-5">
+                <p className="text-muted-foreground leading-relaxed">
+                  {subject
+                    ? 'No contributed units in this subject yet. Yours could be the first.'
+                    : 'No contributed units yet. If you have a method that works in your household, write it down — someone else needs it.'}
+                </p>
+                <Link to="/contribute">
+                  <Button className="gap-2 rounded-full">
+                    <PenLine className="h-4 w-4" />
+                    Contribute a Unit
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {units && units.length > 0 && (
+          <div className="text-center mt-10">
+            <Link to="/contribute">
+              <Button variant="outline" className="gap-2 rounded-full">
+                <PenLine className="h-4 w-4" />
+                Contribute a Unit
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 export default function Tips() {
   useSeoMeta({
@@ -178,7 +273,7 @@ export default function Tips() {
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {CURRICULUM.map((module) => {
-                const Icon = ICONS[module.icon] ?? Lightbulb;
+                const Icon = resolveUnitIcon(module.icon);
                 return (
                   <Link key={module.id} to={`/tips/${module.id}`} className="group">
                     <Card className="h-full border-2 hover:border-primary/50 hover:shadow-lg transition-all duration-300 flex flex-col">
@@ -251,6 +346,9 @@ export default function Tips() {
           </div>
         </section>
 
+        {/* Community-contributed units */}
+        <CommunityUnitsSection />
+
         {/* Closing CTA */}
         <section className="py-16 bg-gradient-to-br from-primary/5 to-background">
           <div className="container">
@@ -261,18 +359,18 @@ export default function Tips() {
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
                   This curriculum improves when the women using it contribute what actually works
-                  in their homes. Share a recipe, a method, or a hard-won lesson.
+                  in their homes. Write a unit, share a recipe, or add a hard-won lesson.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
-                  <Link to="/recipes/new">
+                  <Link to="/contribute">
                     <Button className="gap-2 rounded-full">
-                      Share a Recipe
+                      Contribute a Unit
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link to="/about">
+                  <Link to="/recipes/new">
                     <Button variant="outline" className="rounded-full">
-                      Why sovereignty matters
+                      Share a Recipe
                     </Button>
                   </Link>
                 </div>
