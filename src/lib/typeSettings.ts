@@ -194,15 +194,28 @@ export function bootstrapTypeSetting(): void {
  * Everything downstream reads these, so one write restyles the whole site.
  */
 export function applyTypeSetting(id: TypeSettingId): void {
-  const setting = TYPE_SETTINGS[id] ?? TYPE_SETTINGS[DEFAULT_TYPE_SETTING];
-  const root = document.documentElement;
+  /*
+   * Typography is decoration: it must never be able to take the site down.
+   * Everything here is wrapped so that a missing setting, a frozen style
+   * object or an unavailable DOM degrades to the defaults baked into
+   * index.css rather than throwing during render.
+   */
+  try {
+    const setting = TYPE_SETTINGS[id] ?? TYPE_SETTINGS[DEFAULT_TYPE_SETTING];
+    if (!setting) return;
 
-  root.style.setProperty('--font-display', setting.display);
-  root.style.setProperty('--font-body', setting.body);
-  root.style.setProperty('--font-slab', setting.slab);
-  root.style.setProperty('--display-tracking', setting.displayTracking);
-  root.style.setProperty('--display-leading', setting.displayLeading);
-  root.style.setProperty('--display-weight', setting.displayWeight);
-  root.style.setProperty('--display-transform', setting.displayTransform);
-  root.dataset.type = id;
+    const root = document.documentElement;
+    if (!root) return;
+
+    root.style.setProperty('--font-display', setting.display);
+    root.style.setProperty('--font-body', setting.body);
+    root.style.setProperty('--font-slab', setting.slab);
+    root.style.setProperty('--display-tracking', setting.displayTracking);
+    root.style.setProperty('--display-leading', setting.displayLeading);
+    root.style.setProperty('--display-weight', setting.displayWeight);
+    root.style.setProperty('--display-transform', setting.displayTransform);
+    root.dataset.type = setting.id;
+  } catch (error) {
+    console.warn('Could not apply the type setting; using defaults.', error);
+  }
 }

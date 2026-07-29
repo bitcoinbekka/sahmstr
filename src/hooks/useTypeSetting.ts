@@ -1,5 +1,4 @@
-import { useCallback, useEffect } from 'react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useCallback, useEffect, useState } from 'react';
 import {
   DEFAULT_TYPE_SETTING,
   TYPE_SETTINGS,
@@ -9,38 +8,61 @@ import {
   type TypeSettingId,
 } from '@/lib/typeSettings';
 
+/** Read the saved setting, tolerating anything at all in storage. */
+function readStored(): TypeSettingId {
+  try {
+    const raw = localStorage.getItem(TYPE_SETTING_STORAGE_KEY);
+    if (!raw) return DEFAULT_TYPE_SETTING;
+    const parsed: unknown = JSON.parse(raw);
+    return isTypeSettingId(parsed) ? parsed : DEFAULT_TYPE_SETTING;
+  } catch {
+    return DEFAULT_TYPE_SETTING;
+  }
+}
+
 /**
  * The active typographic setting.
  *
- * Persists to localStorage and writes the font variables onto the document
- * root, so the choice survives a reload. On return visits the saved setting is
- * applied ahead of first render by bootstrapTypeSetting() in main.tsx.
+ * This hook runs inside the Header, which renders on every page — so a throw
+ * here would blank the entire site. It therefore owns its storage access
+ * directly and guards every step, rather than depending on a generic helper.
+ * The worst case is that the site stays on the default face.
  */
 export function useTypeSetting() {
-  const [stored, setStored] = useLocalStorage<TypeSettingId>(
-    TYPE_SETTING_STORAGE_KEY,
-    DEFAULT_TYPE_SETTING,
-  );
+  const [settingId, setSettingId] = useState<TypeSettingId>(readStored);
 
-  // Guard against a stale or hand-edited value in storage.
-  const settingId = isTypeSettingId(stored) ? stored : DEFAULT_TYPE_SETTING;
-
+  // Keep the document in step with the state.
   useEffect(() => {
     applyTypeSetting(settingId);
   }, [settingId]);
 
-  const setSetting = useCallback(
-    (id: TypeSettingId) => {
-      setStored(id);
-      // Apply straight away so the change is felt on click, not on next paint.
-      applyTypeSetting(id);
-    },
-    [setStored],
-  );
+  // Follow changes made in another tab.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== TYPE_SETTING_STORAGE_KEY) return;
+      setSettingId(readStored());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const setSetting = useCallback((id: TypeSettingId) => {
+    if (!isTypeSettingId(id)) return;
+
+    setSettingId(id);
+    // Apply straight away so the change is felt on click, not on next paint.
+    applyTypeSetting(id);
+
+    try {
+      localStorage.setItem(TYPE_SETTING_STORAGE_KEY, JSON.stringify(id));
+    } catch {
+      // Private browsing or a full quota: the choice simply won't persist.
+    }
+  }, []);
 
   return {
     settingId,
-    setting: TYPE_SETTINGS[settingId],
+    setting: TYPE_SETTINGS[settingId] ?? TYPE_SETTINGS[DEFAULT_TYPE_SETTING],
     setSetting,
   };
 }
