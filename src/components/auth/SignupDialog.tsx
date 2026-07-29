@@ -6,7 +6,7 @@ import { Download, Key, UserPlus, FileText, Shield, User, Sparkles, LogIn, Check
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/useToast';
 import { useLoginActions } from '@/hooks/useLoginActions';
@@ -300,6 +300,9 @@ const SignupDialog: React.FC<SignupDialogProps> = ({ isOpen, onClose, onComplete
           <DialogTitle className={cn('font-semibold text-center text-lg')}>
             {getTitle()}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Create a new Nostr account to join the community
+          </DialogDescription>
         </DialogHeader>
         <div className='px-6 pt-2 pb-4 space-y-4 overflow-y-scroll flex-1'>
           {/* Welcome Step - New engaging introduction */}
