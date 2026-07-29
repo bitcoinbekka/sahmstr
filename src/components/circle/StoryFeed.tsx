@@ -7,6 +7,7 @@ import { genUserName } from '@/lib/genUserName';
 import { useCircleStories } from '@/hooks/useCircleStories';
 import { formatConversationTime } from '@/lib/dmUtils';
 import { isVideoStory, type CircleStory } from '@/lib/circleTypes';
+import { EncryptedMedia } from '@/components/circle/EncryptedMedia';
 
 function StoryCard({ story }: { story: CircleStory }) {
   const author = useAuthor(story.pubkey);
@@ -37,7 +38,7 @@ function StoryCard({ story }: { story: CircleStory }) {
         />
       </div>
 
-      {/* Media */}
+      {/* Media — decrypted on this device before display */}
       <ul
         className={
           story.media.length > 1
@@ -47,23 +48,16 @@ function StoryCard({ story }: { story: CircleStory }) {
       >
         {story.media.map((item, i) => (
           <li key={item.url} className="overflow-hidden">
-            {video || item.mimeType?.startsWith('video/') ? (
-              <video
-                src={item.url}
-                controls
-                playsInline
-                preload="metadata"
-                className="max-h-[70vh] w-full bg-black object-contain"
-              />
-            ) : (
-              <img
-                src={item.url}
-                alt={item.alt || `${name}'s story, image ${i + 1}`}
-                loading="lazy"
-                decoding="async"
-                className="max-h-[70vh] w-full object-cover"
-              />
-            )}
+            <EncryptedMedia
+              media={item}
+              alt={item.alt || `${name}'s story, image ${i + 1}`}
+              /* Trust the attachment's own MIME type. Falling back to the story
+                 kind would render a still image inside a <video> element when a
+                 story mixes the two. */
+              isVideo={
+                item.mimeType ? item.mimeType.startsWith('video/') : video
+              }
+            />
           </li>
         ))}
       </ul>

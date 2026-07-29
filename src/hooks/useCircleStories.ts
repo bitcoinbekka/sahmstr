@@ -10,7 +10,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNostr } from '@nostrify/react';
-import type { NostrEvent } from '@nostrify/nostrify';
+import type { NostrEvent, NRelay } from '@nostrify/nostrify';
 import { generateSecretKey, getEventHash } from 'nostr-tools';
 import { NSecSigner } from '@nostrify/nostrify';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -20,6 +20,7 @@ import {
   KIND_SEAL,
   KIND_PICTURE,
   KIND_SHORT_VIDEO,
+  KIND_DM_RELAY_LIST,
   buildImetaTag,
   parseImetaTags,
   sortWraps,
@@ -45,6 +46,55 @@ interface PublishStoryArgs {
   media: StoryMedia[];
   /** Video stories use kind:22, pictures use kind:20. */
   isVideo?: boolean;
+}
+
+/**
+ * Resolve each recipient's preferred inbox relays (NIP-17 `kind:10050`).
+ *
+ * This matters more than it looks. The app's default event router publishes to
+ * the *author's* write relays, which is correct for public posts and wrong for
+ * gift wraps: a wrap sent only to relays your aunt does not read is a story she
+ * will never see. NIP-17 is explicit that clients must publish to the relays
+ * listed in the recipient's own `kind:10050`.
+ *
+ * Recipients with no published list fall back to the author's relays — not
+ * ideal, but silently dropping the story would be worse, and many users have
+ * never published a 10050.
+ */
+async function resolveInboxRelays(
+  nostr: NRelay,
+  pubkeys: string[],
+  signal: AbortSignal,
+): Promise<Map<string, string[]>> {
+  const routes = new Map<string, string[]>();
+  if (pubkeys.length === 0) return routes;
+
+  try {
+    const lists = await nostr.query(
+      [{ kinds: [KIND_DM_RELAY_LIST], authors: pubkeys, limit: pubkeys.length * 2 }],
+      { signal },
+    );
+
+    // Keep only the newest list per author.
+    const newest = new Map<string, NostrEvent>();
+    for (const event of lists) {
+      const prev = newest.get(event.pubkey);
+      if (!prev || event.created_at > prev.created_at) newest.set(event.pubkey, event);
+    }
+
+    for (const [pubkey, event] of newest) {
+      const relays = event.tags
+        .filter((t) => t[0] === 'relay' && typeof t[1] === 'string')
+        .map((t) => t[1])
+        .filter((url) => url.startsWith('wss://') || url.startsWith('ws://'));
+
+      if (relays.length > 0) routes.set(pubkey, relays);
+    }
+  } catch {
+    // A failed lookup must not block sending; fall back for everyone.
+  }
+
+  return routes;
 }
 
 /** Publish a story, gift wrapped once per recipient plus a copy to yourself. */
@@ -97,6 +147,12 @@ export function usePublishStory() {
       // recipient's conversation key.
       const recipients = Array.from(new Set([...audience, user.pubkey]));
 
+      const inboxes = await resolveInboxRelays(
+        nostr,
+        recipients,
+        AbortSignal.timeout(4000),
+      );
+
       const wraps = await Promise.all(
         recipients.map(async (recipient) => {
           // Seal: the rumor, encrypted to this recipient, signed by the author.
@@ -120,17 +176,27 @@ export function usePublishStory() {
             JSON.stringify(seal),
           );
 
-          return throwawaySigner.signEvent({
+          const wrap = await throwawaySigner.signEvent({
             kind: KIND_GIFT_WRAP,
             content: wrapContent,
             created_at: randomPastTimestamp(),
             tags: [['p', recipient]],
           });
+
+          return { wrap, recipient };
         }),
       );
 
-      // Publish every wrap. One failing relay must not lose the whole story.
-      const results = await Promise.allSettled(wraps.map((w) => nostr.event(w)));
+      // Send each wrap to its own recipient's inbox relays. Recipients without a
+      // published 10050 fall through to the default router (our write relays).
+      const results = await Promise.allSettled(
+        wraps.map(({ wrap, recipient }) => {
+          const relays = inboxes.get(recipient);
+          const target = relays && relays.length > 0 ? nostr.group(relays) : nostr;
+          return target.event(wrap, { signal: AbortSignal.timeout(8000) });
+        }),
+      );
+
       const delivered = results.filter((r) => r.status === 'fulfilled').length;
 
       if (delivered === 0) {
@@ -139,7 +205,14 @@ export function usePublishStory() {
 
       queryClient.invalidateQueries({ queryKey: ['circle-stories', user.pubkey] });
 
-      return { delivered, recipients: recipients.length };
+      return {
+        delivered,
+        recipients: recipients.length,
+        /** Recipients we could not find an inbox for — worth telling the user. */
+        withoutInbox: recipients.filter(
+          (r) => r !== user.pubkey && !inboxes.has(r),
+        ).length,
+      };
     },
   });
 }

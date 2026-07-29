@@ -8,9 +8,72 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuthor } from '@/hooks/useAuthor';
 import { genUserName } from '@/lib/genUserName';
-import { useCircle, useCircleActions } from '@/hooks/useCircle';
+import {
+  useCircle,
+  useCircleActions,
+  useInboxRelayList,
+  usePublishInboxRelays,
+} from '@/hooks/useCircle';
 import { useToast } from '@/hooks/useToast';
 import type { CircleMember } from '@/lib/circleTypes';
+
+/**
+ * Without a NIP-17 inbox list, other people's clients have nowhere specific to
+ * deliver stories to us, and they may never arrive. Surface that rather than
+ * letting it fail silently.
+ *
+ * Exported so the stories tab can show it too — a household that cannot receive
+ * is just as broken as one that cannot send, and the fix is the same.
+ */
+export function InboxRelayNotice() {
+  const { data: relays, isLoading } = useInboxRelayList();
+  const { mutateAsync: publish, isPending } = usePublishInboxRelays();
+  const { toast } = useToast();
+
+  if (isLoading || (relays && relays.length > 0)) return null;
+
+  const handlePublish = async () => {
+    try {
+      const published = await publish();
+      toast({
+        title: 'Inbox relays published',
+        description: `Family can now deliver stories to you via ${published.length} ${published.length === 1 ? 'relay' : 'relays'}.`,
+      });
+    } catch (err) {
+      toast({
+        title: 'Could not publish your inbox relays',
+        description: err instanceof Error ? err.message : 'Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  return (
+    <Card className="rounded-sm border-2 border-[hsl(var(--poster-ochre))]/50 bg-[hsl(var(--poster-ochre))]/10">
+      <CardContent className="space-y-4 p-5">
+        <div className="space-y-1.5">
+          <h3 className="font-serif text-lg font-bold">
+            One step so stories can reach you
+          </h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            You have not told the network where to deliver your private mail. Until you do,
+            stories shared with you may not arrive. This publishes a short list of your relays —
+            it reveals nothing about your circle.
+          </p>
+        </div>
+        <Button
+          onClick={handlePublish}
+          disabled={isPending}
+          className="gap-2 rounded-sm"
+          size="sm"
+        >
+          {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+          Publish my inbox relays
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
 
 /** One row in the circle roster. */
 function MemberRow({

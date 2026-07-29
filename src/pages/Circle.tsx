@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { CircleManager } from '@/components/circle/CircleManager';
+import { CircleManager, InboxRelayNotice } from '@/components/circle/CircleManager';
 import { StoryComposer } from '@/components/circle/StoryComposer';
 import { StoryFeed } from '@/components/circle/StoryFeed';
 
@@ -72,6 +72,7 @@ export default function Circle() {
                 </TabsList>
 
                 <TabsContent value="stories" className="space-y-8">
+                  <InboxRelayNotice />
                   <StoryComposer />
                   <StoryFeed />
                 </TabsContent>

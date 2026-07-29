@@ -7,6 +7,7 @@ import { useUploadFile } from '@/hooks/useUploadFile';
 import { usePublishStory } from '@/hooks/useCircleStories';
 import { useCircle } from '@/hooks/useCircle';
 import { useToast } from '@/hooks/useToast';
+import { encryptFile } from '@/lib/circleCrypto';
 import type { StoryMedia } from '@/lib/circleTypes';
 
 /** Turn NIP-94 tags from the uploader into our media shape. */
@@ -16,11 +17,22 @@ function mediaFromTags(tags: string[][]): StoryMedia | null {
   if (!url) return null;
   return {
     url,
-    mimeType: get('m'),
     sha256: get('x') ?? get('ox'),
     dim: get('dim'),
     blurhash: get('blurhash'),
   };
+}
+
+/**
+ * A local preview of an attachment.
+ *
+ * The uploaded blob is ciphertext, so it cannot be previewed directly — we keep
+ * an object URL of the original bytes for the composer only.
+ */
+interface Attachment {
+  media: StoryMedia;
+  previewUrl: string;
+  isVideo: boolean;
 }
 
 /**
@@ -31,7 +43,7 @@ function mediaFromTags(tags: string[][]): StoryMedia | null {
  */
 export function StoryComposer() {
   const [caption, setCaption] = useState('');
-  const [media, setMedia] = useState<StoryMedia[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const { mutateAsync: uploadFile, isPending: uploading } = useUploadFile();
@@ -39,18 +51,40 @@ export function StoryComposer() {
   const { data: members = [] } = useCircle();
   const { toast } = useToast();
 
-  const isVideo = media.some((m) => m.mimeType?.startsWith('video/'));
+  const isVideo = attachments.some((a) => a.isVideo);
+
+  // Object URLs are process-wide; release them when the composer clears.
+  const clearAttachments = () => {
+    setAttachments((prev) => {
+      for (const a of prev) URL.revokeObjectURL(a.previewUrl);
+      return [];
+    });
+  };
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
     for (const file of Array.from(files)) {
       try {
-        const tags = await uploadFile(file);
+        // Encrypt before upload: the Blossom server stores bytes it cannot read.
+        const encrypted = await encryptFile(file);
+        const tags = await uploadFile(encrypted.file);
         const item = mediaFromTags(tags);
+
         if (item) {
-          // Blossom does not always report the MIME type back; trust the File.
-          setMedia((prev) => [...prev, { ...item, mimeType: item.mimeType ?? file.type }]);
+          setAttachments((prev) => [
+            ...prev,
+            {
+              media: {
+                ...item,
+                mimeType: encrypted.mimeType,
+                decryptionKey: encrypted.key,
+                decryptionNonce: encrypted.nonce,
+              },
+              previewUrl: URL.createObjectURL(file),
+              isVideo: file.type.startsWith('video/'),
+            },
+          ]);
         }
       } catch (err) {
         toast({
@@ -64,17 +98,35 @@ export function StoryComposer() {
     if (fileInput.current) fileInput.current.value = '';
   };
 
+  const removeAttachment = (previewUrl: string) => {
+    setAttachments((prev) => {
+      const match = prev.find((a) => a.previewUrl === previewUrl);
+      if (match) URL.revokeObjectURL(match.previewUrl);
+      return prev.filter((a) => a.previewUrl !== previewUrl);
+    });
+  };
+
   const handleShare = async () => {
     try {
-      const { recipients } = await publishStory({ caption, media, isVideo });
+      const { recipients, withoutInbox } = await publishStory({
+        caption,
+        media: attachments.map((a) => a.media),
+        isVideo,
+      });
+
       setCaption('');
-      setMedia([]);
+      clearAttachments();
+
+      const others = recipients - 1;
+
       toast({
         title: 'Story shared privately',
         description:
-          recipients <= 1
+          others <= 0
             ? 'Saved for you. Add people to your circle so they can see the next one.'
-            : `Delivered to ${recipients - 1} ${recipients - 1 === 1 ? 'person' : 'people'} in your circle, encrypted.`,
+            : withoutInbox > 0
+              ? `Sent to ${others} ${others === 1 ? 'person' : 'people'}. ${withoutInbox} of them has not listed inbox relays, so delivery is not guaranteed.`
+              : `Delivered to ${others} ${others === 1 ? 'person' : 'people'} in your circle, encrypted.`,
       });
     } catch (err) {
       toast({
@@ -102,22 +154,23 @@ export function StoryComposer() {
           className="resize-none rounded-sm text-base"
         />
 
-        {/* Attachments */}
-        {media.length > 0 && (
+        {/* Attachments — previewed from the original bytes, since the uploaded
+            blob is ciphertext and cannot be rendered directly. */}
+        {attachments.length > 0 && (
           <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-            {media.map((item, i) => (
-              <li key={item.url} className="relative">
+            {attachments.map((item, i) => (
+              <li key={item.previewUrl} className="relative">
                 <div className="aspect-square overflow-hidden rounded-sm border-2 bg-muted">
-                  {item.mimeType?.startsWith('video/') ? (
+                  {item.isVideo ? (
                     <video
-                      src={item.url}
+                      src={item.previewUrl}
                       className="h-full w-full object-cover"
                       muted
                       playsInline
                     />
                   ) : (
                     <img
-                      src={item.url}
+                      src={item.previewUrl}
                       alt={`Attachment ${i + 1}`}
                       className="h-full w-full object-cover"
                     />
@@ -125,7 +178,7 @@ export function StoryComposer() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setMedia((prev) => prev.filter((m) => m.url !== item.url))}
+                  onClick={() => removeAttachment(item.previewUrl)}
                   className="absolute -right-2 -top-2 rounded-full bg-background p-1 shadow-md ring-1 ring-border transition-colors hover:text-destructive"
                   aria-label={`Remove attachment ${i + 1}`}
                 >
@@ -171,7 +224,7 @@ export function StoryComposer() {
               type="button"
               className="gap-2 rounded-sm"
               onClick={handleShare}
-              disabled={publishing || uploading || media.length === 0}
+              disabled={publishing || uploading || attachments.length === 0}
             >
               {publishing ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -184,8 +237,9 @@ export function StoryComposer() {
         </div>
 
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Encrypted for each person individually and sent under one-time keys. Relays cannot see
-          the photo, the caption, your name, or who received it.{' '}
+          Files are encrypted on this device before upload, so the media host stores bytes it
+          cannot read. The event itself is encrypted per person and sent under one-time keys, so
+          relays cannot see the photo, the caption, your name, or who received it.{' '}
           <strong className="font-medium text-foreground">
             Anyone in your circle could still save or forward what you send them
           </strong>{' '}

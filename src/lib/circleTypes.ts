@@ -35,6 +35,9 @@ export const CIRCLE_IDENTIFIER = 'sahmstr-circle';
 /** NIP-51 follow set. */
 export const KIND_FOLLOW_SET = 30000;
 
+/** NIP-17 / NIP-51 preferred relays for receiving gift wrapped events. */
+export const KIND_DM_RELAY_LIST = 10050;
+
 /** NIP-59 seal and gift wrap. */
 export const KIND_SEAL = 13;
 export const KIND_GIFT_WRAP = 1059;
@@ -69,6 +72,12 @@ export interface StoryMedia {
   dim?: string;
   /** Per-image description, for accessibility. */
   alt?: string;
+  /**
+   * AES-GCM key and nonce, present when the blob was encrypted before upload.
+   * These travel only inside the gift wrap, never on a public event.
+   */
+  decryptionKey?: string;
+  decryptionNonce?: string;
 }
 
 /** A decrypted story, as rendered in the Circle feed. */
@@ -134,6 +143,12 @@ export function parseImetaTags(tags: string[][]): StoryMedia[] {
         case 'alt':
           item.alt = value;
           break;
+        case 'decryption-key':
+          item.decryptionKey = value;
+          break;
+        case 'decryption-nonce':
+          item.decryptionNonce = value;
+          break;
       }
     }
 
@@ -151,7 +166,15 @@ export function buildImetaTag(media: StoryMedia): string[] {
   if (media.blurhash) parts.push(`blurhash ${media.blurhash}`);
   if (media.dim) parts.push(`dim ${media.dim}`);
   if (media.alt) parts.push(`alt ${media.alt}`);
+  // Only ever inside a gift wrap — never on a publicly visible event.
+  if (media.decryptionKey) parts.push(`decryption-key ${media.decryptionKey}`);
+  if (media.decryptionNonce) parts.push(`decryption-nonce ${media.decryptionNonce}`);
   return ['imeta', ...parts];
+}
+
+/** True when this attachment needs client-side decryption before display. */
+export function isEncryptedMedia(media: StoryMedia): boolean {
+  return !!media.decryptionKey && !!media.decryptionNonce;
 }
 
 /**

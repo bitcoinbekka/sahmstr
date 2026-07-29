@@ -116,6 +116,30 @@ Attachments are carried in **NIP-92 `imeta`** tags (`url`, `m`, `x`, `dim`,
 `blurhash`, `alt`). Video rumors additionally carry a `title` tag per NIP-71, and
 all rumors carry an `alt` tag for accessibility.
 
+#### Encrypted attachments
+
+Gift wrapping hides the caption, the author and the audience — but the file
+itself would otherwise sit unencrypted on a public Blossom server, where a
+sha256 URL is unguessable but permanent, and readable by the host.
+
+So Circle attachments are **encrypted with AES-GCM before upload**, using the
+scheme NIP-17 defines for `kind:15` file messages. Two extra `imeta` fields
+carry the material:
+
+| `imeta` field | Meaning |
+|---------------|---------|
+| `decryption-key` | Base64 AES-256-GCM key |
+| `decryption-nonce` | Base64 96-bit nonce |
+
+A fresh key and nonce are generated per file. Because these live inside the
+rumor, they are only ever transmitted within the encrypted gift wrap — they
+never appear on a publicly readable event. The uploaded blob is renamed to
+`blob.bin` and typed `application/octet-stream`, so the host learns nothing from
+the metadata either.
+
+Clients decrypt in the browser and render from an object URL. Note that this
+requires `blob:` in the `media-src` CSP directive for video playback.
+
 The rumor is left **unsigned**, per NIP-59, so a leaked story cannot be
 cryptographically attributed to its author. It is sealed (`kind:13`, signed by
 the author, encrypted to one recipient) and gift wrapped (`kind:1059`, signed by
@@ -130,6 +154,17 @@ rumor (kind:20/22, unsigned)
   └─ seal (kind:13, signed by author, nip44 → recipient)
        └─ gift wrap (kind:1059, signed by throwaway key, p-tag = recipient)
 ```
+
+### Delivery
+
+Wraps are published to each recipient's **NIP-17 `kind:10050`** inbox relays,
+not to the author's write relays. This is the difference between a story that
+arrives and one that silently does not: a wrap sitting on a relay the recipient
+never reads is invisible to them.
+
+Recipients with no published `kind:10050` fall back to the author's write relays
+and the UI reports that delivery is not guaranteed. SAHMstr also prompts the
+logged-in user to publish their own `kind:10050` so others can reach them.
 
 ### Reading
 
@@ -165,6 +200,7 @@ The UI states this plainly rather than implying otherwise.
 | 1111 | Comments | NIP-22 |
 | 4 | Legacy direct messages | NIP-04 |
 | 10002 | Relay list metadata | NIP-65 |
+| 10050 | Inbox relays for gift wrapped events | NIP-17 |
 | 30000 | Family circle membership | NIP-51 |
 | 30023 | Recipes and contributed units | NIP-23 |
 | 9734 / 9735 | Zap requests and receipts | NIP-57 |

@@ -11,9 +11,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNostr } from '@nostrify/react';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useNostrPublish } from '@/hooks/useNostrPublish';
+import { useAppContext } from '@/hooks/useAppContext';
 import {
   CIRCLE_IDENTIFIER,
   KIND_FOLLOW_SET,
+  KIND_DM_RELAY_LIST,
   parsePrivateMembers,
   type CircleMember,
 } from '@/lib/circleTypes';
@@ -68,6 +70,73 @@ export function useCircle() {
       }
 
       return members;
+    },
+  });
+}
+
+/**
+ * Does the logged-in user advertise inbox relays for gift wrapped events?
+ *
+ * Without a `kind:10050`, other people's clients have nowhere specific to send
+ * stories, and delivery falls back to guesswork. This lets the UI prompt the
+ * user to publish one rather than leaving them wondering why nothing arrives.
+ */
+export function useInboxRelayList() {
+  const { nostr } = useNostr();
+  const { user } = useCurrentUser();
+
+  return useQuery({
+    queryKey: ['dm-relay-list', user?.pubkey],
+    enabled: !!user,
+    queryFn: async (c) => {
+      if (!user) return null;
+
+      const signal = AbortSignal.any([c.signal, AbortSignal.timeout(4000)]);
+
+      const events = await nostr.query(
+        [{ kinds: [KIND_DM_RELAY_LIST], authors: [user.pubkey], limit: 1 }],
+        { signal },
+      );
+
+      const event = events[0];
+      if (!event) return null;
+
+      return event.tags
+        .filter((t) => t[0] === 'relay' && typeof t[1] === 'string')
+        .map((t) => t[1]);
+    },
+  });
+}
+
+/** Publish a NIP-17 inbox relay list so others can deliver stories to us. */
+export function usePublishInboxRelays() {
+  const { user } = useCurrentUser();
+  const { config } = useAppContext();
+  const { mutateAsync: publishEvent } = useNostrPublish();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!user) throw new Error('You must be logged in.');
+
+      // NIP-17 advises keeping this list short — 1 to 3 relays.
+      const relays = config.relayMetadata.relays
+        .filter((r) => r.read)
+        .slice(0, 3)
+        .map((r) => r.url);
+
+      if (relays.length === 0) {
+        throw new Error('You have no read relays configured.');
+      }
+
+      await publishEvent({
+        kind: KIND_DM_RELAY_LIST,
+        content: '',
+        tags: relays.map((url) => ['relay', url]),
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['dm-relay-list', user.pubkey] });
+      return relays;
     },
   });
 }
