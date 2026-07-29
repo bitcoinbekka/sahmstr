@@ -7,6 +7,7 @@ import NewRecipe from "./pages/NewRecipe";
 import Vlogs from "./pages/Vlogs";
 import Live from "./pages/Live";
 import Tips from "./pages/Tips";
+import HomeEcModule from "./pages/HomeEcModule";
 import About from "./pages/About";
 import Guidelines from "./pages/Guidelines";
 import Wardrobe from "./pages/Wardrobe";
@@ -24,6 +25,7 @@ export function AppRouter() {
         <Route path="/vlogs" element={<Vlogs />} />
         <Route path="/live" element={<Live />} />
         <Route path="/tips" element={<Tips />} />
+        <Route path="/tips/:moduleId" element={<HomeEcModule />} />
         <Route path="/about" element={<About />} />
         <Route path="/wardrobe" element={<Wardrobe />} />
         <Route path="/guidelines" element={<Guidelines />} />
