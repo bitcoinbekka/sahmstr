@@ -42,6 +42,11 @@ export function Footer() {
                   Home Tips
                 </Link>
               </li>
+              <li>
+                <Link to="/wardrobe" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Wardrobe & Style
+                </Link>
+              </li>
             </ul>
           </div>
 

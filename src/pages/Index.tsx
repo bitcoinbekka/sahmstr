@@ -1,6 +1,6 @@
 import { useSeoMeta } from '@unhead/react';
 import { Link } from 'react-router-dom';
-import { ChefHat, Video, Lightbulb, Radio, ArrowRight, Sparkles, Heart, Users } from 'lucide-react';
+import { ChefHat, Video, Lightbulb, Radio, Shirt, ArrowRight, Sparkles, Heart, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Header } from '@/components/Header';
@@ -86,7 +86,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img
@@ -201,6 +201,36 @@ const Index = () => {
                   <Link to="/tips">
                     <Button variant="ghost" className="gap-2 group-hover:gap-3 transition-all">
                       Learn More
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.pexels.com/photos/6765165/pexels-photo-6765165.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Woman choosing outfit from wardrobe"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-lg">
+                      <Shirt className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-2xl">Wardrobe & Style</CardTitle>
+                  <CardDescription className="text-base">
+                    Upload your closet, set your style profile, and get personalized outfit suggestions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Link to="/wardrobe">
+                    <Button variant="ghost" className="gap-2 group-hover:gap-3 transition-all">
+                      Style Me
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>

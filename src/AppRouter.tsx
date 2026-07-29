@@ -9,6 +9,7 @@ import Live from "./pages/Live";
 import Tips from "./pages/Tips";
 import About from "./pages/About";
 import Guidelines from "./pages/Guidelines";
+import Wardrobe from "./pages/Wardrobe";
 import { NIP19Page } from "./pages/NIP19Page";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +25,7 @@ export function AppRouter() {
         <Route path="/live" element={<Live />} />
         <Route path="/tips" element={<Tips />} />
         <Route path="/about" element={<About />} />
+        <Route path="/wardrobe" element={<Wardrobe />} />
         <Route path="/guidelines" element={<Guidelines />} />
         {/* NIP-19 route for npub1, note1, naddr1, nevent1, nprofile1 */}
         <Route path="/:nip19" element={<NIP19Page />} />

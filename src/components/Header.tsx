@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Home, ChefHat, Video, Lightbulb, Radio, Menu } from 'lucide-react';
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
@@ -23,6 +23,7 @@ export function Header() {
     { to: '/vlogs', icon: Video, label: 'Vlogs' },
     { to: '/live', icon: Radio, label: 'Live' },
     { to: '/tips', icon: Lightbulb, label: 'Home Tips' },
+    { to: '/wardrobe', icon: Shirt, label: 'Style' },
   ];
 
   return (
