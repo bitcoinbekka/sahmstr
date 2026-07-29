@@ -40,8 +40,9 @@ export default function Vlogs() {
                 </h2>
                 <p className="mx-auto max-w-md leading-relaxed text-muted-foreground">
                   Public vlogs are coming. But if what you actually want is to show your mother a
-                  clip of the children without publishing it to the whole network, that already
-                  works — the Circle encrypts it for the people you name.
+                  clip of the children without handing it to a platform, that already works — the
+                  Circle encrypts it end-to-end for the people you name, and nobody else can read
+                  it. Not the relays, not us.
                 </p>
                 <Link to="/circle">
                   <Button className="gap-2 rounded-sm">

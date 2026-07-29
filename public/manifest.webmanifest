@@ -1,7 +1,7 @@
 {
   "name": "SAHMstr — Home Economics for Sovereign Households",
   "short_name": "SAHMstr",
-  "description": "A home economics curriculum, recipe collection and private family sharing for mothers who keep their own money. Built on Nostr and bitcoin.",
+  "description": "Home economics for households on freedom tech. A full curriculum, recipes and end-to-end encrypted family sharing for mothers who hold their own keys — peer-to-peer on Nostr and bitcoin.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f0e8d9",

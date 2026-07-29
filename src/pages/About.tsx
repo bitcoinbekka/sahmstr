@@ -15,26 +15,26 @@ const PILLARS: Array<{
   {
     icon: Bitcoin,
     tone: 'ochre',
-    title: 'Bitcoin-Focused',
-    body: 'We embrace bitcoin as a tool for financial independence and generational wealth building.',
+    title: 'Sound Money',
+    body: 'Bitcoin held in self-custody. Not your keys, not your coins — and no one can inflate away what your household has saved.',
   },
   {
     icon: Shield,
     tone: 'green',
-    title: 'Decentralized',
-    body: 'Built on the Nostr protocol — censorship-resistant, user-owned, and truly open.',
+    title: 'Self-Sovereign',
+    body: 'Built on Nostr. Your keys are your account — censorship-resistant, permissionless, and impossible to deplatform you from.',
   },
   {
     icon: Heart,
     tone: 'terracotta',
-    title: 'Supportive Community',
-    body: 'Real connections with women who share your values and understand your journey.',
+    title: 'Not Surveillance Capital',
+    body: 'No ads, no tracking, no engagement algorithm. Your family is not training data and your attention is not the product.',
   },
   {
     icon: Users,
     tone: 'teal',
-    title: 'Knowledge Sharing',
-    body: 'From recipes to budgeting tips, we share practical wisdom that matters.',
+    title: 'Peer-to-Peer',
+    body: 'Women talking directly to each other, with no intermediary deciding who gets heard. Self-host it all if you would rather.',
   },
 ];
 
@@ -89,9 +89,11 @@ export default function About() {
               <div className="space-y-4">
                 <h2 className="text-3xl font-serif font-bold">Our Mission</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  SAHMstr is a vibrant community for stay-at-home moms who embrace bitcoin and value financial sovereignty.
-                  We believe in the power of decentralized technology to give families more control over their future, while
-                  celebrating the timeless wisdom of homemaking.
+                  SAHMstr is a community for stay-at-home mothers who have opted out of the
+                  extractive web. We think the household is the smallest unit of real independence,
+                  and that self-custody, self-hosting and peer-to-peer protocols are how it gets its
+                  footing back — while keeping the timeless craft of homemaking exactly where it
+                  belongs, at the centre.
                 </p>
               </div>
 

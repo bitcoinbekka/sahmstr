@@ -98,21 +98,59 @@ const SECTIONS: Array<{
 const VALUES = [
   {
     icon: Bitcoin,
-    title: 'Money you hold',
+    title: 'Self-custody',
     tone: 'ochre' as const,
-    body: 'Savings the household keeps custody of, in a currency nobody can quietly dilute.',
-  },
-  {
-    icon: Heart,
-    title: 'A real community',
-    tone: 'terracotta' as const,
-    body: 'Women who know the work, answering each other directly rather than performing for an algorithm.',
+    body: 'Not your keys, not your coins. Savings the household holds outright, in sound money nobody can print, freeze, or quietly debase out from under you.',
   },
   {
     icon: Users,
-    title: 'Yours to take',
+    title: 'Self-sovereign identity',
     tone: 'green' as const,
-    body: 'Your identity, writing and connections live on Nostr. If this site vanished, you would keep all of it.',
+    body: 'Your keys are your account. No email, no phone number, no permission. Your identity, writing and following list live on Nostr — take them anywhere, or self-host the whole thing at home.',
+  },
+  {
+    icon: Heart,
+    title: 'Peer-to-peer, not platform',
+    tone: 'terracotta' as const,
+    body: 'You are not the product here. No ads, no engagement algorithm, no surveillance capitalism harvesting your family for data. Just women talking to each other directly.',
+  },
+];
+
+/**
+ * The sovereign toolkit — the alternatives to the extractive platforms.
+ *
+ * Every entry is something a household can actually use today, and every one
+ * of them can be self-hosted or left behind without losing your identity or
+ * your customers. Kept short deliberately: a long list of tools reads as
+ * homework, three reads as a starting point.
+ */
+const TOOLKIT: Array<{
+  label: string;
+  kicker: string;
+  body: string;
+  href: string;
+  tone: 'ochre' | 'green' | 'terracotta' | 'teal';
+}> = [
+  {
+    label: 'Plebeian Market',
+    kicker: 'Peer-to-peer trade',
+    body: 'Sell what your household makes without a middleman taking a cut or owning your customers. Listings are events you sign yourself, payment is bitcoin over Lightning straight to you, and you can run the whole shop from a node in your own closet.',
+    href: 'https://plebeian.market',
+    tone: 'ochre',
+  },
+  {
+    label: 'Nostr',
+    kicker: 'Censorship-resistant',
+    body: 'The protocol underneath this site. One keypair is your account everywhere — no email, no phone number, nothing to be locked out of. Run your own relay and your family\'s words live on hardware you control.',
+    href: 'https://nostr.com',
+    tone: 'green',
+  },
+  {
+    label: 'Start9 & Umbrel',
+    kicker: 'Self-hosting',
+    body: 'Sovereignty is a server in the cupboard, not a subscription. Both turn a small computer at home into your own relay, node and cloud — your photos, your money, your data, on your own hardware.',
+    href: 'https://start9.com',
+    tone: 'teal',
   },
 ];
 
@@ -120,7 +158,7 @@ const Index = () => {
   useSeoMeta({
     title: 'SAHMstr — Home Economics for Sovereign Households',
     description:
-      'A home economics curriculum, recipe collection and community for mothers who keep their own money. Built on Nostr and bitcoin.',
+      'Home economics for households on freedom tech. A full curriculum, recipes and private family sharing for mothers who hold their own keys — built peer-to-peer on Nostr and bitcoin, with no ads and no data harvesting.',
   });
 
   return (
@@ -161,8 +199,9 @@ const Index = () => {
 
                 <p className="max-w-xl text-lg md:text-xl leading-relaxed text-muted-foreground">
                   The old curriculum was serious about this work — the family, the house, the
-                  money, the children, the health. We have rebuilt it unit by unit, and closed it
-                  where the original could not: with a currency that keeps its promises.
+                  money, the children, the health. We have rebuilt it unit by unit and closed it
+                  where the original could not: with sound money, self-custody, and a
+                  peer-to-peer network no corporation owns.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-1">
@@ -305,8 +344,9 @@ const Index = () => {
                       The Circle
                     </h3>
                     <p className="text-[15px] leading-relaxed text-[hsl(40_44%_88%)]">
-                      Share photos and video of your children with the family you name — encrypted
-                      for each of them, and invisible to the rest of the network.
+                      Share photos and video of your children with the family you name — end-to-end
+                      encrypted for each of them, and unreadable to relays, to us, and to anyone
+                      training a model on your children's faces.
                     </p>
                   </div>
                   <span className="mt-6 inline-flex items-center gap-1.5 font-slab text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ochre))] transition-all group-hover:gap-3">
@@ -340,7 +380,13 @@ const Index = () => {
               <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-ochre))]">
                 What this rests on
               </span>
-              <h2 className="poster-title text-3xl md:text-5xl">Three plain commitments</h2>
+              <h2 className="poster-title text-3xl md:text-5xl">
+                Built on freedom tech
+              </h2>
+              <p className="max-w-xl text-lg leading-relaxed text-[hsl(40_44%_88%)]">
+                The household has always been the smallest unit of real independence. These are
+                the tools that give it back its footing.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -397,6 +443,75 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ───────────────────────── The sovereign toolkit ───────────────────────── */}
+        <section className="paper-grain relative overflow-hidden border-y bg-[hsl(var(--poster-cream))] py-16 md:py-20 dark:bg-card">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+            }}
+          />
+
+          <div className="container relative">
+            <div className="max-w-2xl space-y-4 mb-12">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-[hsl(var(--poster-terracotta))]" />
+                <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
+                  Appendix · The toolkit
+                </span>
+              </div>
+              <h2 className="poster-title text-3xl md:text-5xl">
+                Leaving the extractive web
+              </h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                The centralised platforms are not free — you pay in attention, in data, and in the
+                standing risk of being deplatformed on someone else's whim. These are the
+                alternatives, and none of them need anyone's permission.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {TOOLKIT.map(({ label, kicker, body, href, tone }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <Card className="flex h-full flex-col overflow-hidden rounded-sm border-2 bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                    <div
+                      aria-hidden
+                      className={`h-1.5 bg-gradient-to-r ${TONE_WASH[tone]}`}
+                    />
+                    <CardContent className="flex flex-1 flex-col p-6">
+                      <span className="font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-terracotta))]">
+                        {kicker}
+                      </span>
+                      <h3 className="mt-2 font-serif text-2xl font-bold">{label}</h3>
+                      <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+                        {body}
+                      </p>
+                      <span className="mt-5 inline-flex items-center gap-1.5 font-slab text-xs font-bold uppercase tracking-[0.14em] text-primary transition-all group-hover:gap-3">
+                        Visit
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </CardContent>
+                  </Card>
+                </a>
+              ))}
+            </div>
+
+            <p className="mt-10 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Unit 16 of the curriculum works through the household side of all this — running your
+              own relay, self-hosting what you can, and holding your own keys without turning
+              sovereignty into a single point of failure.
+            </p>
           </div>
         </section>
 

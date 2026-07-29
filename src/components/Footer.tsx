@@ -11,12 +11,12 @@ export function Footer() {
               SAHM<span className="text-[hsl(var(--poster-terracotta))]">str</span>
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Home economics for households that hold their own money. Recipes, curriculum, and
-              the plain wisdom of women doing the work.
+              Home economics for households that hold their own keys. Recipes, curriculum, and the
+              plain wisdom of women doing the work — peer-to-peer, no ads, no data harvesting.
             </p>
             <div className="flex items-center gap-2 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               <Bitcoin className="h-3.5 w-3.5 text-[hsl(var(--poster-ochre))]" />
-              <span>Built on Nostr</span>
+              <span>Freedom tech · Nostr &amp; bitcoin</span>
             </div>
           </div>
 
@@ -78,14 +78,32 @@ export function Footer() {
 
           <div>
             <h4 className="mb-4 font-slab text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              Connect
+              Freedom tech
             </h4>
-            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            <ul className="space-y-2 text-sm">
+              {[
+                { href: 'https://plebeian.market', label: 'Plebeian Market' },
+                { href: 'https://nostr.com', label: 'What is Nostr?' },
+                { href: 'https://start9.com', label: 'Self-host at home' },
+              ].map(({ href, label }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Publish to Nostr and your writing stays yours — here and anywhere else you take it.
             </p>
             <Link
               to="/contribute"
-              className="inline-flex items-center gap-1.5 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-primary hover:underline"
+              className="mt-3 inline-flex items-center gap-1.5 font-slab text-[11px] font-bold uppercase tracking-[0.14em] text-primary hover:underline"
             >
               Contribute a unit
             </Link>
