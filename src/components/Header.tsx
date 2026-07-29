@@ -7,6 +7,7 @@ import { Sun, Moon } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -87,6 +88,9 @@ export function Header() {
                 <SheetTitle className="text-left font-serif text-2xl bg-gradient-to-r from-primary to-amber-500 bg-clip-text text-transparent">
                   SAHMstr
                 </SheetTitle>
+                <SheetDescription className="sr-only">
+                  Site navigation menu.
+                </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col gap-4 mt-8">
                 {navLinks.map(({ to, icon: Icon, label }) => (
