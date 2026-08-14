@@ -1,0 +1,51 @@
+##
+## SAHMstr relay — Docker Compose
+##
+## Runs strfry (the relay) and exposes it ONLY on the internal Docker network.
+## Caddy is the single public entry point and terminates HTTPS.
+##
+## Two ways to front this with Caddy — see docs/RELAY.md:
+##
+##   A) Plain Caddy (a Caddyfile): map port 7777 to the host and reverse_proxy
+##      to it from your Caddyfile. Uncomment the `ports:` block below.
+##
+##   B) caddy-docker-proxy: the `labels:` below configure the proxy
+##      automatically. Requires an external Docker network named `caddy`.
+##
+## Use ONE approach, not both.
+##
+
+services:
+  strfry:
+    # dockurr/strfry is a maintained image with Node available, which our
+    # write-policy.js plugin needs. Pin a tag in production if you prefer.
+    image: dockurr/strfry:latest
+    container_name: sahmstr-relay
+    restart: unless-stopped
+    volumes:
+      # Persistent event database. Survives restarts and image upgrades.
+      - ./data:/app/strfry-db
+      # Config and write policy, mounted read-only.
+      - ./strfry.conf:/app/strfry.conf:ro
+      - ./write-policy.js:/app/write-policy.js:ro
+
+    # --- Approach A: plain Caddy on the host ---------------------------------
+    # Expose the relay to the host so a host-level Caddy can reverse_proxy to
+    # 127.0.0.1:7777. Keep it bound to localhost so it is NOT reachable from
+    # the public internet directly — all traffic must go through Caddy/HTTPS.
+    ports:
+      - "127.0.0.1:7777:7777"
+
+    # --- Approach B: caddy-docker-proxy --------------------------------------
+    # Delete the `ports:` block above, uncomment the network + labels below,
+    # and ensure the external `caddy` network exists (docker network create caddy).
+    #
+    # networks:
+    #   - caddy
+    # labels:
+    #   caddy: relay.sahmstr.com
+    #   caddy.reverse_proxy: "{{upstreams 7777}}"
+
+# networks:
+#   caddy:
+#     external: true
