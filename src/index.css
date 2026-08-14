@@ -13,9 +13,9 @@
      * colour appears sparingly, so the page feels composed rather than busy.
      */
 
-    /* Warm off-white — the calm ground the whole site sits on */
-    --background: 40 30% 97%;
-    --foreground: 30 8% 15%;
+    /* Soft off-white with the barest warmth — airy, not creamy-brown */
+    --background: 40 20% 98%;
+    --foreground: 200 10% 16%;
 
     /* Cards are the same warm white, just clean and lifted with soft shadow */
     --card: 0 0% 100%;
@@ -76,8 +76,8 @@
     --poster-oxblood: 8 46% 46%; /* muted brick */
     --poster-sage: 130 14% 56%; /* pale sage */
     --poster-blue: 210 24% 52%; /* dusty blue */
-    --poster-cream: 40 30% 96%; /* warm off-white */
-    --poster-ink: 30 8% 15%; /* near-black warm ink */
+    --poster-cream: 44 24% 95%; /* soft off-white section ground */
+    --poster-ink: 200 10% 16%; /* near-black neutral ink */
 
     --sidebar-background: 40 26% 96%;
     --sidebar-foreground: 30 8% 20%;
@@ -91,60 +91,62 @@
 
   .dark {
     /*
-     * A soft, warm charcoal dark mode — never a cold black. Reads calm and
-     * modern, with the sage lifting to a lighter, fresher green so it still
-     * carries the brand on a dark ground.
+     * A clean, neutral charcoal dark mode with the faintest cool-green cast —
+     * deliberately NOT brown. High-contrast off-white text, and a fresh sage
+     * that carries the brand on a dark ground. Layers are clearly separated:
+     * background is darkest, cards lift, borders read clearly.
      */
 
-    /* Warm charcoal */
-    --background: 30 8% 11%;
-    --foreground: 40 20% 92%;
+    /* Neutral slate-charcoal, a whisper of green rather than any brown */
+    --background: 200 6% 10%;
+    --foreground: 150 6% 95%;
 
-    --card: 30 7% 14%;
-    --card-foreground: 40 20% 92%;
+    /* Cards lift clearly off the background */
+    --card: 200 6% 14%;
+    --card-foreground: 150 6% 95%;
 
-    --popover: 30 7% 14%;
-    --popover-foreground: 40 20% 92%;
+    --popover: 200 6% 14%;
+    --popover-foreground: 150 6% 95%;
 
-    /* Lifted sage leads in the dark */
-    --primary: 140 22% 62%;
-    --primary-foreground: 30 12% 12%;
+    /* Fresh, clear sage leads in the dark */
+    --primary: 145 30% 62%;
+    --primary-foreground: 160 20% 10%;
 
-    --secondary: 30 6% 20%;
-    --secondary-foreground: 40 20% 92%;
+    --secondary: 200 5% 20%;
+    --secondary-foreground: 150 6% 95%;
 
-    --muted: 30 6% 18%;
-    --muted-foreground: 36 10% 64%;
+    --muted: 200 5% 18%;
+    --muted-foreground: 200 6% 68%;
 
-    --accent: 20 16% 24%;
-    --accent-foreground: 22 40% 82%;
+    --accent: 145 12% 22%;
+    --accent-foreground: 145 30% 82%;
 
-    --destructive: 8 50% 54%;
-    --destructive-foreground: 40 24% 94%;
+    --destructive: 8 55% 56%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 30 6% 24%;
-    --input: 30 6% 24%;
-    --ring: 140 22% 62%;
+    --border: 200 5% 24%;
+    --input: 200 5% 24%;
+    --ring: 145 30% 62%;
 
     /* The accents lift so they still read as colour on a dark ground. */
-    --poster-ochre: 36 58% 64%;
-    --poster-green: 140 22% 62%;
-    --poster-terracotta: 16 52% 64%;
-    --poster-teal: 180 24% 58%;
-    --poster-oxblood: 8 52% 62%;
-    --poster-sage: 130 20% 64%;
-    --poster-blue: 210 34% 66%;
-    --poster-cream: 36 14% 80%;
-    --poster-ink: 40 20% 92%;
+    --poster-ochre: 40 60% 66%;
+    --poster-green: 145 30% 62%;
+    --poster-terracotta: 16 54% 66%;
+    --poster-teal: 178 30% 60%;
+    --poster-oxblood: 8 56% 64%;
+    --poster-sage: 135 26% 66%;
+    --poster-blue: 205 40% 68%;
+    --poster-cream: 200 6% 82%;
+    --poster-ink: 150 6% 95%;
 
-    --sidebar-background: 30 8% 9%;
-    --sidebar-foreground: 40 18% 88%;
-    --sidebar-primary: 140 22% 62%;
-    --sidebar-primary-foreground: 30 12% 12%;
-    --sidebar-accent: 30 6% 16%;
-    --sidebar-accent-foreground: 40 18% 88%;
-    --sidebar-border: 30 6% 18%;
-    --sidebar-ring: 140 22% 62%;
+    --sidebar-background: 200 7% 8%;
+    --sidebar-foreground: 150 6% 92%;
+    --sidebar-primary: 145 30% 62%;
+    --sidebar-primary-foreground: 160 20% 10%;
+    --sidebar-accent: 200 5% 15%;
+    --sidebar-accent-foreground: 150 6% 92%;
+    --sidebar-border: 200 5% 17%;
+    --sidebar-ring: 145 30% 62%;
   }
 }
 

@@ -41,7 +41,7 @@ const NotFound = () => {
           className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)",
+              "none",
           }}
         />
 

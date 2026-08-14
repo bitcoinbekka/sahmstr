@@ -137,7 +137,7 @@ const Index = () => {
             className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
             style={{
               backgroundImage:
-                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+                'none',
             }}
           />
 
@@ -330,7 +330,7 @@ const Index = () => {
             className="pointer-events-none absolute inset-0 opacity-[0.10]"
             style={{
               backgroundImage:
-                'repeating-linear-gradient(135deg, hsl(41 56% 95%) 0 1px, transparent 1px 18px)',
+                'none',
             }}
           />
           {/* A goldenrod rule closes the panel at the foot */}
@@ -416,7 +416,7 @@ const Index = () => {
             className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
             style={{
               backgroundImage:
-                'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
+                'none',
             }}
           />
 

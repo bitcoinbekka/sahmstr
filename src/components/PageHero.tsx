@@ -42,20 +42,10 @@ export function PageHero({
         className,
       )}
     >
-      {/* Feint horizontal ruling, as on the page of a workbook */}
+      {/* A soft sage hairline closes the section, quiet and modern. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.1]"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, hsl(var(--poster-ink)) 0 1px, transparent 1px 44px)',
-        }}
-      />
-
-      {/* Goldenrod rule closing the title page, as at the foot of a plate */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--poster-ochre))]/70"
+        className="absolute inset-x-0 bottom-0 h-px bg-border"
       />
 
       <div className="container relative">
