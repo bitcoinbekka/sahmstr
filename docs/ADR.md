@@ -390,3 +390,42 @@ Nostr events (ADR-002).
   intended to be stable and reviewed, unlike contributions.
 - Two rendering paths exist — `HomeEcModule` for canonical, `CommunityUnitView`
   for contributed. Keep them visually consistent.
+
+---
+
+## ADR-011 — Private personal data: encrypt-to-self on Nostr, not localStorage
+
+**Status:** Accepted
+
+### Context
+
+Some features hold data that is personal but not social: the pantry inventory,
+and (retroactively) the wardrobe. It has to persist, but it is nobody's business
+but the owner's, and there is no backend (ADR-001).
+
+### Decision
+
+Private personal collections are stored as a single **NIP-78 addressable event
+(`kind:30078`)** with a feature-specific `d` tag, whose `.content` is the payload
+**NIP-44 encrypted to the author's own pubkey**. The pantry (`d:sahmstr-pantry`)
+is the first to use this.
+
+### Alternatives considered
+
+- **`localStorage`** (as the wardrobe does). Rejected for new work: it is
+  device-only, so the data does not follow the user to her phone, and it is lost
+  when a browser is cleared. Acceptable for the wardrobe's throwaway styling
+  data; not acceptable for an inventory she is expected to maintain over time.
+- **A custom kind.** Rejected per ADR-002. NIP-78 exists precisely for
+  app-specific data and needs no new kind.
+
+### Consequences
+
+- Private, portable, durable, and backend-free — the data syncs across devices
+  via relays the user already uses, and the relay only ever sees an opaque blob.
+- Requires a NIP-44 capable signer. Where absent, the feature degrades to
+  read-only/empty with a clear message rather than throwing (ADR-006 spirit).
+- Read paths must validate decrypted rows (ADR-007); a corrupt payload drops bad
+  rows rather than crashing.
+- The wardrobe remains on `localStorage` for now; migrating it to this pattern
+  is a reasonable future task but not required.

@@ -192,6 +192,47 @@ rest of the audience.
 It does **not** stop a recipient from saving or forwarding what they receive.
 The UI states this plainly rather than implying otherwise.
 
+## The Pantry — Private Provisions Inventory
+
+SAHMstr's pantry and preserving tracker is a private, cross-device inventory of
+what is on a household's shelves. It introduces **no custom kind**; it is a
+single **NIP-78 application-specific data event (`kind:30078`)**.
+
+### Storage
+
+| Tag | Value |
+|-----|-------|
+| `d` | `sahmstr-pantry` |
+| `alt` | Human-readable description |
+
+The item list is a JSON array **NIP-44 encrypted to the author's own pubkey**
+and placed in `.content` — the same encrypt-to-self pattern the Circle uses for
+its membership. The relay stores an opaque blob; only the owner can read it.
+
+Because `kind:30078` is addressable, the latest event per `pubkey`+`d`
+supersedes the previous one, so the pantry is a single evolving document rather
+than an append log.
+
+```json
+{
+  "kind": 30078,
+  "content": "<nip44(JSON.stringify([{ id, name, location, kind, quantity, unit, bestBy?, madeOn?, note? }, ...]))>",
+  "tags": [
+    ["d", "sahmstr-pantry"],
+    ["alt", "SAHMstr private pantry & preserving inventory"]
+  ]
+}
+```
+
+Each item records where it lives (`pantry` / `fridge` / `freezer` / `canning`),
+whether it is a bought staple or a home preserve, a quantity and unit, and
+optional `bestBy` and `madeOn` dates. The client validates every decrypted row
+on read (ADR-007) and silently drops anything malformed rather than failing.
+
+This choice is portable and durable without a backend: the inventory follows the
+user to any device she logs in from, and survives clearing a browser — unlike
+the device-only `localStorage` used by the wardrobe.
+
 ## Other Kinds in Use
 
 | Kind | Purpose | NIP |
@@ -207,4 +248,5 @@ The UI states this plainly rather than implying otherwise.
 | 10050 | Inbox relays for gift wrapped events | NIP-17 |
 | 30000 | Family circle membership | NIP-51 |
 | 30023 | Recipes and contributed units | NIP-23 |
+| 30078 | Private pantry & preserving inventory | NIP-78 |
 | 9734 / 9735 | Zap requests and receipts | NIP-57 |

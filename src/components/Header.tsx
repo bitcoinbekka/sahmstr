@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
  * tries to call, throwing "Illegal constructor". `ShieldCheck` carries the same
  * meaning and resolves reliably.
  */
-import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, ShieldCheck, Type } from 'lucide-react';
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, ShieldCheck, Type, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
@@ -40,6 +40,7 @@ export function Header() {
     { to: '/', icon: Home, label: 'Home' },
     { to: '/circle', icon: ShieldCheck, label: 'Circle' },
     { to: '/recipes', icon: ChefHat, label: 'Recipes' },
+    { to: '/pantry', icon: Package, label: 'Pantry' },
     { to: '/tips', icon: Lightbulb, label: 'Home Ec' },
     { to: '/wardrobe', icon: Shirt, label: 'Style' },
     { to: '/vlogs', icon: Video, label: 'Vlogs' },
