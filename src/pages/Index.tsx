@@ -10,6 +10,9 @@ import {
   Bitcoin,
   Heart,
   Users,
+  KeyRound,
+  EyeOff,
+  Sparkles,
   // `Lock` is avoided project-wide: it shadows the Web Locks API global and can
   // resolve to the native class under the ESM CDN build.
   ShieldCheck,
@@ -223,6 +226,107 @@ const Index = () => {
           </div>
         </section>
 
+        {/* ───────────────────────── The Circle: the flagship feature ───────────────────────── */}
+        <section className="relative overflow-hidden border-b bg-[hsl(var(--poster-green))] py-16 md:py-24 text-[hsl(41_56%_95%)]">
+          {/* A goldenrod rule closes the panel at the foot */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-1 bg-[hsl(var(--poster-ochre))]"
+          />
+          <div className="container relative">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              {/* Words */}
+              <div className="order-2 space-y-7 lg:order-1">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[hsl(var(--poster-ochre))] px-3 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ink))]">
+                    <ShieldCheck className="h-3 w-3" />
+                    The Circle
+                  </span>
+                  <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-ochre))]">
+                    Private family sharing
+                  </span>
+                </div>
+
+                <h2 className="poster-title text-4xl leading-[1.02] md:text-6xl">
+                  Share your children's faces
+                  <span className="block italic font-normal text-[hsl(var(--poster-ochre))]">
+                    with family only.
+                  </span>
+                </h2>
+
+                <p className="max-w-xl text-lg leading-relaxed text-[hsl(40_44%_88%)]">
+                  Every other app turns your family photos into training data and ad targeting. The
+                  Circle does the opposite: photos and video, end-to-end encrypted individually for
+                  each person you name — unreadable to relays, to us, and to anyone building a model
+                  on your children's faces.
+                </p>
+
+                <ul className="grid gap-4 sm:grid-cols-3">
+                  {[
+                    {
+                      icon: EyeOff,
+                      title: 'Encrypted per person',
+                      body: 'Sealed individually for each family member. No one outside the Circle can read it.',
+                    },
+                    {
+                      icon: KeyRound,
+                      title: 'Yours to keep',
+                      body: 'No account we control. Your keys, your family, portable anywhere.',
+                    },
+                    {
+                      icon: Sparkles,
+                      title: 'No harvesting',
+                      body: 'No ads, no algorithm, no faces fed to a model. Ever.',
+                    },
+                  ].map(({ icon: Icon, title, body }) => (
+                    <li key={title} className="space-y-2">
+                      <Icon className="h-6 w-6 text-[hsl(var(--poster-ochre))]" />
+                      <h3 className="font-serif text-base font-bold">{title}</h3>
+                      <p className="text-sm leading-relaxed text-[hsl(40_44%_82%)]">{body}</p>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="pt-1">
+                  <Link to="/circle">
+                    <Button
+                      size="lg"
+                      className="gap-2 rounded-sm bg-[hsl(var(--poster-ochre))] px-7 text-base font-bold text-[hsl(var(--poster-ink))] shadow-md hover:bg-[hsl(var(--poster-ochre))]/90"
+                    >
+                      Open your Circle
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Image */}
+              <div className="order-1 lg:order-2">
+                <div className="relative mx-auto max-w-md lg:max-w-none">
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 translate-x-3 translate-y-3 rounded-sm bg-[hsl(var(--poster-ochre))]/30"
+                  />
+                  <div className="relative overflow-hidden rounded-sm ring-1 ring-black/10 shadow-2xl">
+                    <img
+                      src="https://blossom.ditto.pub/4a16f05ff35f66c673d06da1a5da9588b61df7022c4be9f55a771b858fe14dfa.jpeg"
+                      alt="A mother sitting on a linen sofa in warm light, smiling softly as she looks at photos of her children."
+                      loading="eager"
+                      decoding="async"
+                      className="aspect-[4/3] h-full w-full object-cover"
+                    />
+                    {/* A sealed-envelope mark, bottom corner */}
+                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[hsl(var(--poster-green))]/90 px-3 py-1.5 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ochre))] backdrop-blur">
+                      <ShieldCheck className="h-3 w-3" />
+                      End-to-end encrypted
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ───────────────────────── The five sections ───────────────────────── */}
         <section className="py-16 md:py-20 bg-background">
           <div className="container">
@@ -283,30 +387,6 @@ Five rooms, one household
                   </Card>
                 </Link>
               ))}
-
-              {/* Sixth cell: the Circle, set as a sealed envelope rather than a plate */}
-              <Link to="/circle" className="group focus-visible:outline-none">
-                <Card className="halftone flex h-full flex-col justify-between overflow-hidden rounded-sm border-2 bg-[hsl(var(--poster-green))] p-5 text-[hsl(41_56%_95%)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <div className="space-y-3">
-                    <span className="inline-flex items-center gap-1.5 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ochre))]">
-                      <ShieldCheck className="h-3 w-3" />
-                      Sealed · private
-                    </span>
-                    <h3 className="font-serif text-2xl font-bold leading-snug">
-                      The Circle
-                    </h3>
-                    <p className="text-[15px] leading-relaxed text-[hsl(40_44%_88%)]">
-                      Share photos and video of your children with the family you name — end-to-end
-                      encrypted for each of them, and unreadable to relays, to us, and to anyone
-                      training a model on your children's faces.
-                    </p>
-                  </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 font-slab text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-ochre))] transition-all group-hover:gap-3">
-                    Open your circle
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </Card>
-              </Link>
             </div>
           </div>
         </section>
