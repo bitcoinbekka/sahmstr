@@ -168,53 +168,54 @@ export function isTypeSettingId(value: unknown): value is TypeSettingId {
  */
 export const TYPE_SETTING_STORAGE_KEY = 'sahmstr:type-setting:v1';
 
+/*
+ * The site now ships a single, locked modern setting (clean Inter throughout).
+ * The switcher and its historical faces have been retired; these definitions
+ * remain only so existing imports and tests keep compiling. Every id resolves
+ * to the one modern voice below, which also matches the defaults in index.css.
+ */
+const MODERN_SETTING: Omit<TypeSetting, 'id' | 'name' | 'era' | 'note'> = {
+  display: `'Inter Variable', system-ui, sans-serif`,
+  body: `'Inter Variable', system-ui, sans-serif`,
+  slab: `'Inter Variable', system-ui, sans-serif`,
+  displayTracking: '-0.02em',
+  displayLeading: '1.08',
+  displayWeight: '650',
+  displayTransform: 'none',
+};
+
 /**
  * Read the saved setting and apply it, before React mounts. Kept dependency
  * free and defensive so a bad storage value can never block startup.
  */
 export function bootstrapTypeSetting(): void {
-  let id: TypeSettingId = DEFAULT_TYPE_SETTING;
-
-  try {
-    const raw = localStorage.getItem(TYPE_SETTING_STORAGE_KEY);
-    if (raw) {
-      // useLocalStorage stores JSON, so the value arrives quoted.
-      const parsed: unknown = JSON.parse(raw);
-      if (isTypeSettingId(parsed)) id = parsed;
-    }
-  } catch {
-    // Unreadable or unparseable storage: fall through to the default.
-  }
-
-  applyTypeSetting(id);
+  // Typography is locked to the modern setting; the stored value is ignored.
+  applyTypeSetting(DEFAULT_TYPE_SETTING);
 }
 
 /**
- * Apply a setting by writing the font variables onto the document root.
- * Everything downstream reads these, so one write restyles the whole site.
+ * Apply the (single, locked) modern setting by writing the font variables onto
+ * the document root. The `id` is accepted for API compatibility but no longer
+ * changes the result — the site uses one voice.
  */
 export function applyTypeSetting(id: TypeSettingId): void {
   /*
    * Typography is decoration: it must never be able to take the site down.
-   * Everything here is wrapped so that a missing setting, a frozen style
-   * object or an unavailable DOM degrades to the defaults baked into
-   * index.css rather than throwing during render.
+   * Everything here is wrapped so that an unavailable DOM degrades to the
+   * defaults baked into index.css rather than throwing during render.
    */
   try {
-    const setting = TYPE_SETTINGS[id] ?? TYPE_SETTINGS[DEFAULT_TYPE_SETTING];
-    if (!setting) return;
-
     const root = document.documentElement;
     if (!root) return;
 
-    root.style.setProperty('--font-display', setting.display);
-    root.style.setProperty('--font-body', setting.body);
-    root.style.setProperty('--font-slab', setting.slab);
-    root.style.setProperty('--display-tracking', setting.displayTracking);
-    root.style.setProperty('--display-leading', setting.displayLeading);
-    root.style.setProperty('--display-weight', setting.displayWeight);
-    root.style.setProperty('--display-transform', setting.displayTransform);
-    root.dataset.type = setting.id;
+    root.style.setProperty('--font-display', MODERN_SETTING.display);
+    root.style.setProperty('--font-body', MODERN_SETTING.body);
+    root.style.setProperty('--font-slab', MODERN_SETTING.slab);
+    root.style.setProperty('--display-tracking', MODERN_SETTING.displayTracking);
+    root.style.setProperty('--display-leading', MODERN_SETTING.displayLeading);
+    root.style.setProperty('--display-weight', MODERN_SETTING.displayWeight);
+    root.style.setProperty('--display-transform', MODERN_SETTING.displayTransform);
+    root.dataset.type = isTypeSettingId(id) ? id : DEFAULT_TYPE_SETTING;
   } catch (error) {
     console.warn('Could not apply the type setting; using defaults.', error);
   }

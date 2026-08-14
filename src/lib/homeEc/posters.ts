@@ -30,31 +30,31 @@ export interface Poster {
 }
 
 /**
- * Flat ink washes keyed by tone. Two stops only — the posters are screen-printed,
- * not airbrushed, so gradients stay short and stay within one ink family. These
- * track the ink drawer in index.css; keep them in step.
+ * Soft two-stop washes keyed by tone. Muted and modern — quiet earthy fills
+ * rather than saturated inks. These track the accent drawer in index.css; keep
+ * them in step (ADR-004).
  */
 export const TONE_WASH: Record<PosterTone, string> = {
-  ochre: 'from-[hsl(40_82%_50%)] to-[hsl(32_74%_38%)]',
-  green: 'from-[hsl(158_40%_24%)] to-[hsl(162_46%_15%)]',
-  terracotta: 'from-[hsl(14_66%_45%)] to-[hsl(8_58%_33%)]',
-  sage: 'from-[hsl(96_20%_46%)] to-[hsl(100_24%_32%)]',
-  blue: 'from-[hsl(205_56%_40%)] to-[hsl(210_50%_27%)]',
-  teal: 'from-[hsl(188_48%_32%)] to-[hsl(192_52%_20%)]',
-  oxblood: 'from-[hsl(356_52%_35%)] to-[hsl(352_50%_23%)]',
-  cream: 'from-[hsl(39_50%_78%)] to-[hsl(34_40%_62%)]',
+  ochre: 'from-[hsl(36_54%_58%)] to-[hsl(32_46%_46%)]',
+  green: 'from-[hsl(145_18%_42%)] to-[hsl(148_20%_30%)]',
+  terracotta: 'from-[hsl(16_44%_56%)] to-[hsl(12_40%_44%)]',
+  sage: 'from-[hsl(130_16%_58%)] to-[hsl(134_18%_44%)]',
+  blue: 'from-[hsl(210_26%_56%)] to-[hsl(212_26%_42%)]',
+  teal: 'from-[hsl(180_22%_46%)] to-[hsl(182_24%_34%)]',
+  oxblood: 'from-[hsl(8_44%_52%)] to-[hsl(6_42%_40%)]',
+  cream: 'from-[hsl(40_28%_90%)] to-[hsl(36_22%_80%)]',
 };
 
-/** Foreground that reads on each wash. Cream and ochre are light, so they take ink. */
+/** Foreground that reads on each wash. Cream is light, so it takes dark ink. */
 export const TONE_INK: Record<PosterTone, string> = {
-  ochre: 'text-[hsl(22_36%_13%)]',
-  green: 'text-[hsl(41_56%_95%)]',
-  terracotta: 'text-[hsl(41_56%_95%)]',
-  sage: 'text-[hsl(100_30%_10%)]',
-  blue: 'text-[hsl(41_56%_95%)]',
-  teal: 'text-[hsl(41_56%_95%)]',
-  oxblood: 'text-[hsl(41_56%_95%)]',
-  cream: 'text-[hsl(22_36%_16%)]',
+  ochre: 'text-[hsl(40_30%_98%)]',
+  green: 'text-[hsl(40_30%_98%)]',
+  terracotta: 'text-[hsl(40_30%_98%)]',
+  sage: 'text-[hsl(130_28%_14%)]',
+  blue: 'text-[hsl(40_30%_98%)]',
+  teal: 'text-[hsl(40_30%_98%)]',
+  oxblood: 'text-[hsl(40_30%_98%)]',
+  cream: 'text-[hsl(30_10%_20%)]',
 };
 
 /** The hero poster for the site as a whole. */

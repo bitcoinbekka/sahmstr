@@ -7,10 +7,9 @@ import { Separator } from '@/components/ui/separator';
 import { RelayListManager } from '@/components/RelayListManager';
 import { EditProfileForm } from '@/components/EditProfileForm';
 import { LoginArea } from '@/components/auth/LoginArea';
-import { TypeSettingPicker } from '@/components/TypeSettingPicker';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useTheme } from '@/hooks/useTheme';
-import { Settings as SettingsIcon, Wifi, User, Sun, Moon, Type } from 'lucide-react';
+import { Settings as SettingsIcon, Wifi, User, Sun, Moon } from 'lucide-react';
 
 export default function Settings() {
   useSeoMeta({
@@ -111,25 +110,6 @@ export default function Settings() {
                     Dark
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Typography */}
-            <Card className="border-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2.5">
-                  <Type className="h-5 w-5 text-primary" />
-                  Type
-                </CardTitle>
-                <CardDescription className="leading-relaxed">
-                  The lettering carries more of the period character than the colour does.
-                  Each setting is a complete voice — a display face for titles, a text face
-                  for reading, and a label face for small caps. Pick one and the whole site
-                  is reset in it.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TypeSettingPicker />
               </CardContent>
             </Card>
 

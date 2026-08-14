@@ -6,20 +6,10 @@ import { Link } from 'react-router-dom';
  * tries to call, throwing "Illegal constructor". `ShieldCheck` carries the same
  * meaning and resolves reliably.
  */
-import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, ShieldCheck, Type, Package } from 'lucide-react';
+import { Home, ChefHat, Video, Lightbulb, Radio, Shirt, Menu, PenLine, Settings, ShieldCheck, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useTheme } from '@/hooks/useTheme';
-import { useTypeSetting } from '@/hooks/useTypeSetting';
-import { TYPE_SETTING_LIST } from '@/lib/typeSettings';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Sun, Moon } from 'lucide-react';
 import {
   Sheet,
@@ -33,7 +23,6 @@ import { useState } from 'react';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
-  const { settingId, setSetting } = useTypeSetting();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -84,60 +73,6 @@ export function Header() {
               <Settings className="h-4 w-4" />
             </Button>
           </Link>
-
-          {/*
-            Type specimen switcher. Kept in the header rather than buried in
-            settings so a setting can be judged against real pages.
-          */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                aria-label="Change typeface"
-              >
-                <Type className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64">
-              <DropdownMenuLabel className="font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                Type specimen
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {TYPE_SETTING_LIST.map((setting) => (
-                <DropdownMenuItem
-                  key={setting.id}
-                  onSelect={() => setSetting(setting.id)}
-                  className="flex cursor-pointer items-baseline justify-between gap-3 py-2"
-                >
-                  <span
-                    className="text-xl leading-none"
-                    style={{
-                      fontFamily: setting.display,
-                      fontWeight: setting.displayWeight,
-                    }}
-                  >
-                    {setting.name}
-                  </span>
-                  {setting.id === settingId && (
-                    <span className="font-slab text-[9px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--poster-terracotta))]">
-                      Set
-                    </span>
-                  )}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link
-                  to="/settings"
-                  className="font-slab text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
-                >
-                  See full specimens
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
           <Button
             variant="ghost"

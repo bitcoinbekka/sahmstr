@@ -5,150 +5,146 @@
 @layer base {
   :root {
     /*
-     * Lithographic travel-poster palette, c. 1880–1920.
+     * Soft-modern palette — calm, warm and premium.
      *
-     * The period presses ran a small number of solid, highly saturated inks on
-     * cheap warm stock: spruce green, peacock teal, goldenrod, burnt sienna and
-     * oxblood, over oatmeal paper. Nothing is greyed off or pastel — the colour
-     * is bold, but the ground is soft and aged, which is what keeps it inviting
-     * rather than loud. Every ink here is a flat plane, never a glow.
+     * A warm off-white ground, deep near-black ink for text, and a small set of
+     * muted, earthy accents (sage, warm clay, soft taupe). Nothing is loud;
+     * everything reads quiet and considered, with plenty of light. The accent
+     * colour appears sparingly, so the page feels composed rather than busy.
      */
 
-    /* Oatmeal stock — warmer and a shade deeper than white paper */
-    --background: 39 42% 91%;
-    --foreground: 22 30% 13%;
+    /* Warm off-white — the calm ground the whole site sits on */
+    --background: 40 30% 97%;
+    --foreground: 30 8% 15%;
 
-    /* Cards are freshly trimmed sheets against the aged ground */
-    --card: 38 50% 96%;
-    --card-foreground: 22 30% 13%;
+    /* Cards are the same warm white, just clean and lifted with soft shadow */
+    --card: 0 0% 100%;
+    --card-foreground: 30 8% 15%;
 
-    --popover: 38 50% 96%;
-    --popover-foreground: 22 30% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 8% 15%;
 
-    /* Deep spruce — the title bands across the foot of each plate */
-    --primary: 158 44% 19%;
-    --primary-foreground: 41 56% 95%;
+    /* Muted sage — the brand's quiet signature colour */
+    --primary: 145 16% 38%;
+    --primary-foreground: 40 30% 98%;
 
-    /* Secondary reads as a second run of the same stock */
-    --secondary: 40 32% 85%;
-    --secondary-foreground: 22 32% 18%;
+    /* Secondary is a soft warm sand for gentle fills */
+    --secondary: 38 22% 92%;
+    --secondary-foreground: 30 10% 22%;
 
-    /* Muted linen tones */
-    --muted: 40 30% 87%;
-    --muted-foreground: 26 18% 37%;
+    /* Muted warm greige */
+    --muted: 36 18% 93%;
+    --muted-foreground: 30 6% 44%;
 
-    /* Burnt sienna accent, tinted right back for surfaces */
-    --accent: 16 62% 89%;
-    --accent-foreground: 12 58% 26%;
+    /* Warm clay accent, kept soft for surfaces */
+    --accent: 20 32% 92%;
+    --accent-foreground: 16 34% 32%;
 
-    /* Oxblood, the period's red — deeper and less orange than a modern red */
-    --destructive: 356 54% 36%;
-    --destructive-foreground: 41 56% 95%;
+    /* A muted brick red, modern and calm rather than vivid */
+    --destructive: 8 52% 48%;
+    --destructive-foreground: 40 30% 98%;
 
-    --border: 36 26% 78%;
-    --input: 36 26% 78%;
-    --ring: 158 44% 19%;
+    --border: 34 16% 88%;
+    --input: 34 16% 88%;
+    --ring: 145 16% 38%;
 
-    /* Printed matter has gentle corners, not rounded ones */
-    --radius: 0.5rem;
+    /* Generous, modern rounding for a soft, premium feel */
+    --radius: 0.9rem;
 
     /*
-     * Typography. These are overwritten at runtime by the active type setting
-     * (see lib/typeSettings.ts); the values here are the default, so the site
-     * is correctly set even before any script runs.
+     * Typography — clean and modern, one locked setting.
+     * Inter throughout: a heavier optical weight for display headings, the
+     * regular for body, and the same family for small-caps labels.
      */
-    --font-display: 'Bodoni Moda Variable', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
-    --font-slab: 'Bitter', Georgia, serif;
-    --display-tracking: -0.015em;
-    --display-leading: 1.04;
-    --display-weight: 700;
+    --font-display: 'Inter Variable', system-ui, sans-serif;
+    --font-body: 'Inter Variable', system-ui, sans-serif;
+    --font-slab: 'Inter Variable', system-ui, sans-serif;
+    --display-tracking: -0.02em;
+    --display-leading: 1.08;
+    --display-weight: 650;
     --display-transform: none;
 
     /*
-     * The ink drawer. Six solid colours plus paper and ink, matching the
-     * poster series. These carry the character of the theme — components reach
-     * for these rather than inventing their own colour.
+     * The accent drawer. Named for the components that reach for them; the
+     * values are now a soft-modern set rather than the old poster inks. These
+     * are kept as the same variable names so components need not change.
      */
-    --poster-ochre: 40 82% 48%; /* goldenrod */
-    --poster-green: 158 44% 19%; /* spruce */
-    --poster-terracotta: 14 66% 42%; /* burnt sienna */
-    --poster-teal: 188 48% 29%; /* peacock */
-    --poster-oxblood: 356 52% 32%; /* deep red */
-    --poster-sage: 96 18% 50%; /* olive */
-    --poster-blue: 205 56% 37%; /* lithograph blue */
-    --poster-cream: 39 54% 89%;
-    --poster-ink: 22 32% 12%;
+    --poster-ochre: 36 54% 56%; /* warm honey */
+    --poster-green: 145 16% 38%; /* sage — the signature */
+    --poster-terracotta: 16 46% 52%; /* soft clay */
+    --poster-teal: 180 20% 42%; /* muted eucalyptus */
+    --poster-oxblood: 8 46% 46%; /* muted brick */
+    --poster-sage: 130 14% 56%; /* pale sage */
+    --poster-blue: 210 24% 52%; /* dusty blue */
+    --poster-cream: 40 30% 96%; /* warm off-white */
+    --poster-ink: 30 8% 15%; /* near-black warm ink */
 
-    --sidebar-background: 40 40% 89%;
-    --sidebar-foreground: 22 30% 18%;
-    --sidebar-primary: 158 44% 19%;
-    --sidebar-primary-foreground: 41 56% 95%;
-    --sidebar-accent: 40 32% 84%;
-    --sidebar-accent-foreground: 22 32% 18%;
-    --sidebar-border: 36 26% 76%;
-    --sidebar-ring: 158 44% 19%;
+    --sidebar-background: 40 26% 96%;
+    --sidebar-foreground: 30 8% 20%;
+    --sidebar-primary: 145 16% 38%;
+    --sidebar-primary-foreground: 40 30% 98%;
+    --sidebar-accent: 38 22% 91%;
+    --sidebar-accent-foreground: 30 10% 22%;
+    --sidebar-border: 34 16% 87%;
+    --sidebar-ring: 145 16% 38%;
   }
 
   .dark {
     /*
-     * Evening lamplight rather than true black — the posters are warm, and a
-     * cold dark mode would make them look pasted on. Read as tobacco-brown
-     * board stock under a lamp, with the goldenrod ink leading.
+     * A soft, warm charcoal dark mode — never a cold black. Reads calm and
+     * modern, with the sage lifting to a lighter, fresher green so it still
+     * carries the brand on a dark ground.
      */
 
-    /* Deep walnut board */
-    --background: 24 26% 9%;
-    --foreground: 40 42% 91%;
+    /* Warm charcoal */
+    --background: 30 8% 11%;
+    --foreground: 40 20% 92%;
 
-    --card: 22 22% 13%;
-    --card-foreground: 40 42% 91%;
+    --card: 30 7% 14%;
+    --card-foreground: 40 20% 92%;
 
-    --popover: 22 22% 13%;
-    --popover-foreground: 40 42% 91%;
+    --popover: 30 7% 14%;
+    --popover-foreground: 40 20% 92%;
 
-    /* Goldenrod leads in the dark, where deep spruce would disappear */
-    --primary: 40 78% 55%;
-    --primary-foreground: 24 34% 11%;
+    /* Lifted sage leads in the dark */
+    --primary: 140 22% 62%;
+    --primary-foreground: 30 12% 12%;
 
-    --secondary: 24 18% 19%;
-    --secondary-foreground: 40 42% 91%;
+    --secondary: 30 6% 20%;
+    --secondary-foreground: 40 20% 92%;
 
-    --muted: 24 16% 17%;
-    --muted-foreground: 38 20% 65%;
+    --muted: 30 6% 18%;
+    --muted-foreground: 36 10% 64%;
 
-    --accent: 14 34% 22%;
-    --accent-foreground: 28 66% 82%;
+    --accent: 20 16% 24%;
+    --accent-foreground: 22 40% 82%;
 
-    --destructive: 356 52% 46%;
-    --destructive-foreground: 40 44% 93%;
+    --destructive: 8 50% 54%;
+    --destructive-foreground: 40 24% 94%;
 
-    --border: 24 16% 23%;
-    --input: 24 16% 23%;
-    --ring: 40 78% 55%;
+    --border: 30 6% 24%;
+    --input: 30 6% 24%;
+    --ring: 140 22% 62%;
 
-    /*
-     * The inks lift in the dark so they still read as colour on a dark ground.
-     * Spruce in particular has to come well up or it goes to mud.
-     */
-    --poster-ochre: 40 84% 60%;
-    --poster-green: 158 34% 40%;
-    --poster-terracotta: 14 62% 53%;
-    --poster-teal: 188 44% 48%;
-    --poster-oxblood: 356 50% 50%;
-    --poster-sage: 96 22% 54%;
-    --poster-blue: 205 54% 55%;
-    --poster-cream: 40 26% 80%;
-    --poster-ink: 40 42% 91%;
+    /* The accents lift so they still read as colour on a dark ground. */
+    --poster-ochre: 36 58% 64%;
+    --poster-green: 140 22% 62%;
+    --poster-terracotta: 16 52% 64%;
+    --poster-teal: 180 24% 58%;
+    --poster-oxblood: 8 52% 62%;
+    --poster-sage: 130 20% 64%;
+    --poster-blue: 210 34% 66%;
+    --poster-cream: 36 14% 80%;
+    --poster-ink: 40 20% 92%;
 
-    --sidebar-background: 24 28% 7%;
-    --sidebar-foreground: 40 38% 88%;
-    --sidebar-primary: 40 78% 55%;
-    --sidebar-primary-foreground: 24 34% 11%;
-    --sidebar-accent: 24 16% 15%;
-    --sidebar-accent-foreground: 40 38% 88%;
-    --sidebar-border: 24 16% 19%;
-    --sidebar-ring: 40 78% 55%;
+    --sidebar-background: 30 8% 9%;
+    --sidebar-foreground: 40 18% 88%;
+    --sidebar-primary: 140 22% 62%;
+    --sidebar-primary-foreground: 30 12% 12%;
+    --sidebar-accent: 30 6% 16%;
+    --sidebar-accent-foreground: 40 18% 88%;
+    --sidebar-border: 30 6% 18%;
+    --sidebar-ring: 140 22% 62%;
   }
 }
 
@@ -179,69 +175,39 @@
 
 @layer components {
   /*
-   * Paper grain. Applied to large surfaces to keep flat colour from reading as
-   * flat screen. Slightly stronger than a pure noise dither, because period
-   * stock was coarse — but still low enough not to fight the text over it.
+   * Paper grain — retained as a no-op hook so existing markup keeps working.
+   * The soft-modern theme wants clean, flat surfaces, so the grain texture is
+   * intentionally removed.
    */
   .paper-grain {
     position: relative;
   }
 
-  .paper-grain::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.055;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  .dark .paper-grain::after {
-    opacity: 0.07;
-  }
-
   /*
-   * Halftone dot screen. The period's way of getting a tint from a solid ink:
-   * a fine dot grid rather than a lighter mix. Lay over coloured panels.
+   * Halftone — likewise retained as a no-op. The modern theme uses light and
+   * space rather than dot screens.
    */
   .halftone {
     position: relative;
   }
 
-  .halftone::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.14;
-    background-image: radial-gradient(
-      hsl(var(--poster-ink)) 0.5px,
-      transparent 0.5px
-    );
-    background-size: 5px 5px;
-  }
-
   /*
-   * A framed poster: cream mount, hairline rule, and a soft drop shadow so it
-   * reads as a physical print pinned to the page. The inner ring stands in for
-   * the plate edge where the ink stopped short of the mount.
+   * A soft, modern image frame: clean white mount, generous rounding, and a
+   * gentle diffuse shadow so it lifts off the page without looking printed.
    */
   .poster-frame {
-    @apply relative overflow-hidden rounded-sm bg-[hsl(var(--poster-cream))] p-2;
+    @apply relative overflow-hidden rounded-2xl bg-card p-1.5;
     box-shadow:
-      0 1px 2px hsl(var(--poster-ink) / 0.16),
-      0 6px 16px -4px hsl(var(--poster-ink) / 0.24);
-    outline: 1px solid hsl(var(--poster-ink) / 0.14);
-    outline-offset: -1px;
+      0 1px 2px hsl(var(--poster-ink) / 0.06),
+      0 12px 30px -10px hsl(var(--poster-ink) / 0.18);
   }
 
   .poster-frame img {
-    @apply block w-full rounded-sm;
+    @apply block w-full rounded-xl;
   }
 
   /*
-   * Letterpress heading treatment. The faint light edge beneath each letter
-   * mimics the way an impressed character catches the light on soft paper.
+   * Display heading treatment. Clean, tight, modern — no letterpress effect.
    */
   .poster-title {
     font-family: var(--font-display);
@@ -250,36 +216,23 @@
     line-height: var(--display-leading);
     text-transform: var(--display-transform);
     text-wrap: balance;
-    text-shadow: 0 1px 0 hsl(var(--poster-cream) / 0.6);
-    /*
-     * Fat faces and wood type ship a single weight. Without this the browser
-     * fakes a bold by smearing the outline, which on an already-heavy display
-     * face turns the counters to mud.
-     */
-    font-synthesis: none;
   }
 
-  .dark .poster-title {
-    text-shadow: none;
-  }
-
-  /* The title band that runs across the foot of each poster */
+  /* A soft filled band, e.g. across the foot of a card */
   .poster-band {
     @apply bg-primary text-primary-foreground;
   }
 
   /*
-   * The three-ink rule used at the head of the page and the foot of cards.
-   * Hard stops, not a blend — these were three separate passes through the
-   * press, so the colours butt against each other.
+   * The accent rule at the head of a section or foot of a card. Now a single
+   * calm sage line with a soft fade, rather than four butted inks.
    */
   .ink-rule {
     background-image: linear-gradient(
       to right,
-      hsl(var(--poster-green)) 0 25%,
-      hsl(var(--poster-teal)) 25% 45%,
-      hsl(var(--poster-ochre)) 45% 72%,
-      hsl(var(--poster-terracotta)) 72% 100%
+      hsl(var(--poster-green)) 0%,
+      hsl(var(--poster-sage)) 60%,
+      hsl(var(--poster-green) / 0) 100%
     );
   }
 }

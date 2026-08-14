@@ -203,7 +203,7 @@ Gradient washes per tone live in `TONE_WASH` / `TONE_INK` in
 
 ## ADR-005 — Runtime-switchable typography
 
-**Status:** Accepted
+**Status:** Superseded by ADR-012
 
 ### Context
 
@@ -429,3 +429,44 @@ is the first to use this.
   rows rather than crashing.
 - The wardrobe remains on `localStorage` for now; migrating it to this pattern
   is a reasonable future task but not required.
+
+---
+
+## ADR-012 — Soft-modern rebrand; one locked typeface (supersedes ADR-005)
+
+**Status:** Accepted
+
+### Context
+
+The c. 1880–1920 lithographic poster identity (ADR-004) and the six-way
+typography experiment (ADR-005) were evaluated on the running site and judged
+too "old-timey" for the audience. The owner asked for a soft, modern, premium
+feel in the vein of contemporary lifestyle brands (Lululemon was the reference).
+
+### Decision
+
+1. **Palette:** the ink drawer variable *names* in `index.css` are retained
+   (so components need not change, per ADR-004), but the *values* are re-mapped
+   to a muted, earthy, soft-modern set — warm off-white ground, sage as the
+   signature, soft clay and dusty accents, warm-charcoal dark mode. Rounding is
+   increased (`--radius: 0.9rem`).
+2. **Typography:** the six historical settings and the runtime switcher are
+   retired. The site is locked to one modern voice — **Inter** throughout.
+   `applyTypeSetting()` now resolves every id to that one setting, preserving
+   the fail-safe contract of ADR-006. The switcher UI is removed from the header
+   and Settings.
+3. **Decoration:** paper grain and halftone become no-op hooks; the letterpress
+   text-shadow and the four-ink hard-stop rule are replaced with clean surfaces
+   and a single soft sage rule.
+
+### Consequences
+
+- `TONE_WASH` / `TONE_INK` in `posters.ts` were updated in step with the new
+  drawer (the ADR-004 two-sources-of-truth wart still applies — change together).
+- The poster *images* themselves are still the old vintage plates. They read as
+  warm illustration against the new palette; replacing them with softer imagery
+  is a reasonable future task but was out of scope for the rebrand.
+- `typeSettings.ts` keeps its exported types/constants so existing imports and
+  tests compile; the historical face definitions are now inert.
+- The unused vintage font packages are no longer imported (only Inter loads),
+  which shrinks the font payload considerably versus ADR-005's ~112 woff2 refs.
