@@ -109,7 +109,7 @@ export function StoryComposer() {
 
   const handleShare = async () => {
     try {
-      const { recipients, withoutInbox } = await publishStory({
+      const { recipients, viaSharedRelay } = await publishStory({
         caption,
         media: attachments.map((a) => a.media),
         isVideo,
@@ -125,8 +125,8 @@ export function StoryComposer() {
         description:
           others <= 0
             ? 'Saved for you. Add people to your circle so they can see the next one.'
-            : withoutInbox > 0
-              ? `Sent to ${others} ${others === 1 ? 'person' : 'people'}. ${withoutInbox} of them has not listed inbox relays, so delivery is not guaranteed.`
+            : viaSharedRelay > 0
+              ? `Delivered to ${others} ${others === 1 ? 'person' : 'people'} in your circle, encrypted. ${viaSharedRelay === others ? 'They will' : `${viaSharedRelay} will`} receive it through SAHMstr; family on other apps should turn on their inbox relays to be sure.`
               : `Delivered to ${others} ${others === 1 ? 'person' : 'people'} in your circle, encrypted.`,
       });
     } catch (err) {

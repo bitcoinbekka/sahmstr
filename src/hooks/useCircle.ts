@@ -16,6 +16,7 @@ import {
   CIRCLE_IDENTIFIER,
   KIND_FOLLOW_SET,
   KIND_DM_RELAY_LIST,
+  SAHMSTR_RELAY,
   parsePrivateMembers,
   type CircleMember,
 } from '@/lib/circleTypes';
@@ -120,14 +121,18 @@ export function usePublishInboxRelays() {
       if (!user) throw new Error('You must be logged in.');
 
       // NIP-17 advises keeping this list short — 1 to 3 relays.
-      const relays = config.relayMetadata.relays
+      const userRelays = config.relayMetadata.relays
         .filter((r) => r.read)
-        .slice(0, 3)
         .map((r) => r.url);
 
-      if (relays.length === 0) {
-        throw new Error('You have no read relays configured.');
-      }
+      // Always advertise the SAHMstr relay as an inbox, and put it first: it is
+      // where other SAHMstr users read and write, so a story wrapped to us lands
+      // somewhere we reliably check. Then fill the remaining slots (NIP-17
+      // suggests 1–3 total) with the user's own read relays, de-duplicated.
+      const relays = [
+        SAHMSTR_RELAY,
+        ...userRelays.filter((url) => url !== SAHMSTR_RELAY),
+      ].slice(0, 3);
 
       await publishEvent({
         kind: KIND_DM_RELAY_LIST,

@@ -53,12 +53,12 @@ export function InboxRelayNotice() {
       <CardContent className="space-y-4 p-5">
         <div className="space-y-1.5">
           <h3 className="font-serif text-lg font-bold">
-            One step so stories can reach you
+            Make sure stories always reach you
           </h3>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            You have not told the network where to deliver your private mail. Until you do,
-            stories shared with you may not arrive. This publishes a short list of your relays —
-            it reveals nothing about your circle.
+            Stories shared with you already arrive through SAHMstr's own relay. Publishing your
+            inbox relays as well means family on <em>other</em> apps can reach you too, and adds a
+            second route so nothing is missed. It reveals nothing about your circle.
           </p>
         </div>
         <Button

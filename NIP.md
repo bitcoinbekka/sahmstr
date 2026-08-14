@@ -162,9 +162,13 @@ not to the author's write relays. This is the difference between a story that
 arrives and one that silently does not: a wrap sitting on a relay the recipient
 never reads is invisible to them.
 
-Recipients with no published `kind:10050` fall back to the author's write relays
-and the UI reports that delivery is not guaranteed. SAHMstr also prompts the
-logged-in user to publish their own `kind:10050` so others can reach them.
+Recipients with no published `kind:10050` fall back to **SAHMstr's own relay**
+(`wss://relay.sahmstr.com`) — the shared home that every app user reads — rather
+than the author's write relays, which the recipient may not read. This makes
+app-to-app delivery reliable even when a family member has never configured
+their own inbox. SAHMstr also seeds the logged-in user's `kind:10050` with the
+shared relay first, and prompts them to publish it so family on other clients
+can reach them too.
 
 ### Reading
 

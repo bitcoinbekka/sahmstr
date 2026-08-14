@@ -32,6 +32,14 @@ import type { NostrEvent } from '@nostrify/nostrify';
 /** The `d` identifier of the family circle follow set. */
 export const CIRCLE_IDENTIFIER = 'sahmstr-circle';
 
+/**
+ * SAHMstr's own relay. It is included by default in a user's inbox (NIP-17
+ * `kind:10050`) relay list so that private stories between SAHMstr users are
+ * delivered to a place both ends reliably read, rather than depending on each
+ * household having independently configured inbox relays.
+ */
+export const SAHMSTR_RELAY = 'wss://relay.sahmstr.com';
+
 /** NIP-51 follow set. */
 export const KIND_FOLLOW_SET = 30000;
 

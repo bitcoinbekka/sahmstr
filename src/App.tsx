@@ -35,6 +35,10 @@ const defaultConfig: AppConfig = {
   theme: "light",
   relayMetadata: {
     relays: [
+      // SAHMstr's own relay, listed first so it is the default read/write home
+      // for the community's recipes, curriculum contributions, and — crucially —
+      // the delivery point for private Circle stories between app users.
+      { url: 'wss://relay.sahmstr.com', read: true, write: true },
       { url: 'wss://relay.ditto.pub', read: true, write: true },
       { url: 'wss://relay.nostr.band', read: true, write: true },
       { url: 'wss://relay.damus.io', read: true, write: true },

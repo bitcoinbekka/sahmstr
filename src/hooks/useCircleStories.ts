@@ -21,6 +21,7 @@ import {
   KIND_PICTURE,
   KIND_SHORT_VIDEO,
   KIND_DM_RELAY_LIST,
+  SAHMSTR_RELAY,
   buildImetaTag,
   parseImetaTags,
   sortWraps,
@@ -188,11 +189,17 @@ export function usePublishStory() {
       );
 
       // Send each wrap to its own recipient's inbox relays. Recipients without a
-      // published 10050 fall through to the default router (our write relays).
+      // published 10050 fall back to the SAHMstr relay — the shared home that
+      // every app user reads — rather than the author's write relays, which the
+      // recipient may not read at all. This is what makes app-to-app delivery
+      // reliable even when a family member has never configured their own inbox.
       const results = await Promise.allSettled(
         wraps.map(({ wrap, recipient }) => {
           const relays = inboxes.get(recipient);
-          const target = relays && relays.length > 0 ? nostr.group(relays) : nostr;
+          const target =
+            relays && relays.length > 0
+              ? nostr.group(relays)
+              : nostr.group([SAHMSTR_RELAY]);
           return target.event(wrap, { signal: AbortSignal.timeout(8000) });
         }),
       );
@@ -208,8 +215,13 @@ export function usePublishStory() {
       return {
         delivered,
         recipients: recipients.length,
-        /** Recipients we could not find an inbox for — worth telling the user. */
-        withoutInbox: recipients.filter(
+        /**
+         * Recipients with no published inbox list. Their wrap was delivered to
+         * the shared SAHMstr relay as a fallback, so they will receive it if
+         * they use SAHMstr (or any client that reads that relay). Surfaced to
+         * the user as reassurance, not a warning.
+         */
+        viaSharedRelay: recipients.filter(
           (r) => r !== user.pubkey && !inboxes.has(r),
         ).length,
       };
