@@ -1,12 +1,12 @@
 /**
- * The SAHMstr poster series.
+ * The SAHMstr image set.
  *
- * A set of original vintage-style posters in the WPA / mid-century travel
- * poster tradition — flat planes of colour, strong silhouettes, warm ochres and
- * forest greens, and a title band across the foot. They set the visual register
- * for the whole site: grandmillennial, domestic, unironically warm.
+ * Soft-modern editorial lifestyle photography — warm natural light, muted
+ * earthy tones (off-white, sage, clay, oak), calm uncluttered domestic scenes.
+ * It matches the ADR-012 rebrand (premium, contemporary, unironically warm) and
+ * replaces the earlier vintage-poster plates.
  *
- * Units reference posters by unit id. Anything without a poster falls back to
+ * Units reference images by unit id. Anything without an image falls back to
  * its gradient badge, so the site never depends on an image loading.
  */
 
@@ -57,78 +57,78 @@ export const TONE_INK: Record<PosterTone, string> = {
   cream: 'text-[hsl(30_10%_20%)]',
 };
 
-/** The hero poster for the site as a whole. */
+/** The hero image for the site as a whole. */
 export const HERO_POSTER: Poster = {
-  url: 'https://blossom.dreamith.to/1a7868e393234ade76f16c87d8fbbf804ccd27689821150d47d8b7fa8f4d2570.jpeg',
-  alt: 'Vintage-style poster of a woman standing at a sunlit kitchen window, reading "Stay at Home SAHMstr", with a small bitcoin mark in the corner.',
-  tone: 'ochre',
+  url: 'https://blossom.ditto.pub/c840c9a6d8bd7708a6073c390259f64f901dcb0c78c34c958f387eb76d1f6b2c.jpeg',
+  alt: 'A mother standing at a sunlit kitchen window in the early morning, holding a mug of tea, in warm natural light.',
+  tone: 'sage',
 };
 
-/** Posters keyed by curriculum unit id. */
+/** Images keyed by curriculum unit id. */
 export const UNIT_POSTERS: Record<string, Poster> = {
   'successful-family': {
-    url: 'https://blossom.ditto.pub/27cdaa4e7021f6194b0a68d265c2b0f25616e1f9e341d7ea96fcf684986d4c03.jpeg',
-    alt: 'Vintage-style poster of a family of five gathered around a table in warm terracotta light, titled "The Successful Family".',
+    url: 'https://blossom.ditto.pub/82de3e7bf801e19ba9e24e92d2f46f8fd57b5bf2c7a37fbffa926c372050cfdf.jpeg',
+    alt: 'A family gathered warmly around a wooden dining table sharing a simple meal in soft golden light.',
     tone: 'terracotta',
   },
   'growing-up': {
-    url: 'https://blossom.primal.net/cadc3dc51dc629bd6b33e805057c7604f230070a2b630544962cf30a7526d9ab.jpg',
-    alt: 'Vintage-style poster of a mother and small child in sun hats walking hand in hand through a garden gate, titled "Growing Up".',
+    url: 'https://blossom.ditto.pub/d20681375d39f5f6218d71dec6bb7ec0568742099775c277e910d25233e2c542.jpeg',
+    alt: 'A mother and small child walking hand in hand through a sunlit garden of soft green foliage.',
     tone: 'sage',
   },
   'home-management': {
-    url: 'https://blossom.primal.net/8f3088f0d6e94fa1d1cc078098d72404ef31678a5d4a2d771fdc56fee88f1d11.jpg',
-    alt: 'Vintage-style poster of a woman silhouetted at a green kitchen counter with bold slanting sunlight, titled "Managing a Home".',
+    url: 'https://blossom.ditto.pub/d1c8d25528ef326ad83b26472b34ff26e83bf84b618718d4882a4cacaf2bd353.jpeg',
+    alt: 'A serene living-room corner with a linen sofa, woven basket and trailing plant in soft daylight.',
     tone: 'green',
   },
   'house-and-home': {
-    url: 'https://blossom.primal.net/b8ad0fe4a9b3dc8f993c1effd8918523f839f0f3ed2c90c8fc74674637de9f25.jpg',
-    alt: 'Vintage-style poster of two white rocking chairs on a rose-covered porch with a lit doorway, titled "Making the House a Home".',
+    url: 'https://blossom.ditto.pub/d40927ca59b8e8956f7ec76b2dc9591f3e544d20ebb7027ca758b1339e1dec9a.jpeg',
+    alt: 'An inviting front porch at golden hour with two wooden chairs, a linen throw and a warm glowing doorway.',
     tone: 'terracotta',
   },
   'caring-for-the-house': {
-    url: 'https://blossom.primal.net/44fe0c6316ad184a4cd7c019d8effbf78ab3980c7c2acf865389c262e1d52669.jpg',
-    alt: 'Vintage-style poster of a woman folding linens beside a basket of vegetables in a warm brown room, titled "Managing the Home".',
+    url: 'https://blossom.ditto.pub/e5ccbd48b76c8de07305c58a07c9f5b96fcf848026f1c84314887efda8e0e173.jpeg',
+    alt: 'Freshly folded linens in a woven basket beside natural soap and a sprig of lavender in warm light.',
     tone: 'terracotta',
   },
   'food-nutrition': {
-    url: 'https://blossom.primal.net/2eb16cfb9a9f0e88745d6b51143fdafd983898acb2e109d6d707d4f333c0ef72.jpg',
-    alt: 'Vintage-style poster of an open larder cupboard filled with preserves, bread and fruit, titled "The Family as a Consumer".',
+    url: 'https://blossom.ditto.pub/b78c2c8bcd5fee546e60a96041bf5a7695ad6709391edcd8f91941c84362d319.jpeg',
+    alt: 'A wooden kitchen table with fresh seasonal vegetables, homemade sourdough and a bowl of fruit in morning light.',
     tone: 'cream',
   },
   'textiles-clothing': {
-    url: 'https://blossom.primal.net/863e6eea09dc3299b37ca95d1f0810b1b96a952252d257730eb5f267c8d2b65b.jpg',
-    alt: 'Vintage-style poster of a woman at a window sorting folded cloth and garden vegetables in golden light, titled "Managing the Home".',
+    url: 'https://blossom.ditto.pub/aa0166b0a0bf2c0078b676feca5c90205e6ee2360d4bb773a8aa29207d90b650.jpeg',
+    alt: 'Neatly folded natural-fibre clothing in oatmeal, cream and sage stacked on a wooden shelf beside a basket.',
     tone: 'ochre',
   },
   'consumer-education': {
-    url: 'https://blossom.primal.net/2eb16cfb9a9f0e88745d6b51143fdafd983898acb2e109d6d707d4f333c0ef72.jpg',
-    alt: 'Vintage-style poster of an open larder cupboard filled with preserves, bread and fruit, titled "The Family as a Consumer".',
+    url: 'https://blossom.ditto.pub/2b954d934a714840348af6c4d4c195bdf8743848990e8fe2f91dfe4262cf5a30.jpeg',
+    alt: 'A beautifully organised pantry shelf of glass jars, homemade preserves and dried herbs in warm light.',
     tone: 'cream',
   },
   'young-child': {
-    url: 'https://blossom.primal.net/ee67e18145e67d296f7be1c5a639557d23f1ee4344c2db79c30c6c3c15013da5.jpg',
-    alt: 'Vintage-style poster of a baby in a wicker basket beside a bentwood chair in a sunlit room, titled "Caring for the Young Child".',
+    url: 'https://blossom.ditto.pub/7c3ce765efc18193b23f5218afd99cfa4676b56eb1b5f244933f439e60224f41.jpeg',
+    alt: 'A peaceful nursery corner with a baby resting in a woven bassinet beside a wooden rocking chair.',
     tone: 'sage',
   },
   'child-development': {
-    url: 'https://blossom.primal.net/35614c2920181f2a11d26db3709c30e833538746a11310bee54f51dd0ddffa7f.jpg',
-    alt: 'Vintage-style poster of three children walking a sunlit garden path between flowering borders, titled "Understanding and Guiding Children".',
+    url: 'https://blossom.ditto.pub/d8a45e829ae6f6212f7cfe52f942e5f75eadfddb65c8ada7e58db7a03ccdb4e7.jpeg',
+    alt: 'Children walking a sunlit garden path between soft flowering borders of green and cream.',
     tone: 'green',
   },
   'keeping-good-health': {
-    url: 'https://blossom.ditto.pub/219c60bf509eb00dcf3f9b1dddeb15be29e4829fd2a148ecd7af314038a80e15.jpeg',
-    alt: 'Vintage-style poster of an open window over rolling green hills with a bowl of apples and a glass of milk, titled "Keeping in Good Health".',
+    url: 'https://blossom.ditto.pub/027e0afea673a60bf079af28e17ff05a1476d8ea9676d6a1b47b11c84038312a.jpeg',
+    alt: 'A calm windowsill still life with a glass of water, a bowl of fresh apples and green sprigs in soft daylight.',
     tone: 'teal',
   },
   'health-home-nursing': {
-    url: 'https://blossom.primal.net/9d17d4e02026c5251a11544ac64fa7a40ff0570b9dd9eb20950545dacc64315f.jpg',
-    alt: 'Vintage-style poster of two glass bottles on a sunlit windowsill in muted sage tones, titled "The Physician\'s Home Helper".',
+    url: 'https://blossom.ditto.pub/e5ccbd48b76c8de07305c58a07c9f5b96fcf848026f1c84314887efda8e0e173.jpeg',
+    alt: 'Fresh linens, natural soap and a sprig of lavender arranged on a wooden surface in warm light.',
     tone: 'sage',
   },
   hospitality: {
-    url: 'https://blossom.primal.net/de9c1ace304fd1ae1528868ef53cc41556e63bc8aa329af98eb27c1903a13d92.jpg',
-    alt: 'Vintage-style poster of a rose-covered porch at golden hour with two rocking chairs and an open door, titled "Making the House a Home".',
+    url: 'https://blossom.ditto.pub/d40927ca59b8e8956f7ec76b2dc9591f3e544d20ebb7027ca758b1339e1dec9a.jpeg',
+    alt: 'A welcoming porch at golden hour with two chairs, greenery and an open, glowing front door.',
     tone: 'terracotta',
   },
 };

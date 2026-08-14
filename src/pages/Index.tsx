@@ -32,14 +32,12 @@ import {
 import { TOOLKIT } from '@/lib/toolkit';
 
 /**
- * The five standing sections of the site, each printed as a plate from the
- * poster series with a title band across the foot — the same treatment the
- * posters themselves use.
+ * The five standing sections of the site, each shown as a warm lifestyle image
+ * with a title band across the foot.
  */
 const SECTIONS: Array<{
   to: string;
   label: string;
-  plate: string;
   icon: typeof ChefHat;
   blurb: string;
   cta: string;
@@ -48,7 +46,6 @@ const SECTIONS: Array<{
   {
     to: '/recipes',
     label: 'Recipes & Cooking',
-    plate: 'Plate I',
     icon: ChefHat,
     blurb:
       'Cooking from staples, putting up the harvest, and feeding a family well on what the week actually allows.',
@@ -58,7 +55,6 @@ const SECTIONS: Array<{
   {
     to: '/tips',
     label: 'Home Economics',
-    plate: 'Plate II',
     icon: Lightbulb,
     blurb: `A full curriculum in the classic tradition — ${CURRICULUM.length} units, ${TOTAL_LESSONS} problems, rebuilt for households that hold their own money.`,
     cta: 'Open the curriculum',
@@ -67,7 +63,6 @@ const SECTIONS: Array<{
   {
     to: '/wardrobe',
     label: 'Wardrobe & Style',
-    plate: 'Plate III',
     icon: Shirt,
     blurb:
       'Know your fibres, keep what lasts, and dress well from a closet you already own.',
@@ -77,7 +72,6 @@ const SECTIONS: Array<{
   {
     to: '/vlogs',
     label: 'Vlogs & Stories',
-    plate: 'Plate IV',
     icon: Video,
     blurb:
       'The ordinary record of a household kept honestly — what worked this week and what did not.',
@@ -87,7 +81,6 @@ const SECTIONS: Array<{
   {
     to: '/live',
     label: 'Live & Gathering',
-    plate: 'Plate V',
     icon: Radio,
     blurb:
       'Cooking together in real time, questions answered plainly, and the door left open.',
@@ -148,7 +141,7 @@ const Index = () => {
                 <div className="flex items-center gap-3">
                   <span className="h-px w-10 bg-[hsl(var(--poster-terracotta))]" />
                   <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
-                    A household series · No. 1
+                    Home economics · reimagined
                   </span>
                 </div>
 
@@ -190,7 +183,7 @@ const Index = () => {
                   {[
                     { k: 'Units', v: String(CURRICULUM.length) },
                     { k: 'Problems', v: String(TOTAL_LESSONS) },
-                    { k: 'Plates', v: String(POSTER_GALLERY.length) },
+                    { k: 'Recipes', v: '∞' },
                   ].map(({ k, v }) => (
                     <div key={k}>
                       <dd className="font-serif text-3xl font-bold leading-none">{v}</dd>
@@ -222,7 +215,7 @@ const Index = () => {
                     className="relative hover:rotate-0"
                   />
                   <p className="mt-4 text-center font-slab text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                    Frontispiece · Stay at Home
+                    Stay-at-home, on your own terms
                   </p>
                 </div>
               </div>
@@ -230,7 +223,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ───────────────────────── The five plates ───────────────────────── */}
+        {/* ───────────────────────── The five sections ───────────────────────── */}
         <section className="py-16 md:py-20 bg-background">
           <div className="container">
             <div className="max-w-2xl space-y-4 mb-12">
@@ -238,7 +231,7 @@ const Index = () => {
                 Contents
               </span>
               <h2 className="poster-title text-3xl md:text-5xl">
-                Five plates, one household
+Five rooms, one household
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Everything here is written to be used on an ordinary Tuesday, not admired on a
@@ -247,7 +240,7 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-              {SECTIONS.map(({ to, label, plate, icon: Icon, blurb, cta, poster }, i) => (
+              {SECTIONS.map(({ to, label, icon: Icon, blurb, cta, poster }, i) => (
                 <Link
                   key={to}
                   to={to}
@@ -259,7 +252,7 @@ const Index = () => {
                       i === 0 ? 'lg:col-span-1' : ''
                     }`}
                   >
-                    {/* The plate itself */}
+                    {/* The image itself */}
                     <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                       <img
                         src={poster.url}
@@ -268,13 +261,9 @@ const Index = () => {
                         decoding="async"
                         className="h-full w-full object-cover transition-transform [transition-duration:900ms] ease-out group-hover:scale-[1.06]"
                       />
-                      {/* Plate number, printed in the corner */}
-                      <span className="absolute left-0 top-0 bg-[hsl(var(--poster-cream))]/95 px-2.5 py-1 font-slab text-[10px] font-bold uppercase tracking-[0.16em] text-[hsl(var(--poster-ink))]">
-                        {plate}
-                      </span>
                     </div>
 
-                    {/* Title band across the foot, as on the posters */}
+                    {/* Title band across the foot */}
                     <div
                       className={`flex items-center gap-3 bg-gradient-to-r px-5 py-3.5 ${
                         TONE_WASH[poster.tone]
@@ -373,13 +362,12 @@ const Index = () => {
           <div className="container">
             <div className="max-w-2xl space-y-4 mb-12">
               <span className="font-slab text-[11px] font-bold uppercase tracking-[0.22em] text-[hsl(var(--poster-terracotta))]">
-                The plates
+                The series
               </span>
-              <h2 className="poster-title text-3xl md:text-5xl">The SAHMstr poster series</h2>
+              <h2 className="poster-title text-3xl md:text-5xl">A whole household, one look</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                One plate for each unit of the curriculum. Flat colour, strong silhouettes, a title
-                band across the foot — the way this subject was illustrated when it was still
-                taught seriously.
+                One image for each unit of the curriculum — warm, quiet scenes of a home actually
+                being kept. Tap any of them to open its unit.
               </p>
             </div>
 
