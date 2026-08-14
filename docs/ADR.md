@@ -470,3 +470,52 @@ feel in the vein of contemporary lifestyle brands (Lululemon was the reference).
   tests compile; the historical face definitions are now inert.
 - The unused vintage font packages are no longer imported (only Inter loads),
   which shrinks the font payload considerably versus ADR-005's ~112 woff2 refs.
+
+---
+
+## ADR-013 — AI features are sovereign and pay-per-use via contextVM
+
+**Status:** Accepted
+
+### Context
+
+The wardrobe and pantry benefit from vision AI (auto-tagging a photo into form
+fields). The original wardrobe stylist called the Shakespeare AI API directly.
+For the product's ethos — and as a revenue path — the owner wanted a
+sats-native model rather than a hosted key or a subscription backend.
+
+### Decision
+
+AI tagging runs over **contextVM** (MCP over Nostr, `kind:25910`) with **CEP-8**
+Lightning payments settled through the user's existing NWC wallet:
+
+- The app is only the **client**. It holds no API key and operates no backend.
+- The AI itself is a separate **contextVM server we run** (on the VPS), pointed
+  at by a single swappable config in `src/lib/contextvm.ts`
+  (`CONTEXTVM_PROVIDER`: pubkey, relays, tool name, indicative price).
+- The client encrypts requests to the provider (NIP-44), pays the returned
+  invoice via NWC, and parses the tool result into form fields.
+- The AI "brain" behind the server is deliberately swappable (any
+  OpenAI-compatible endpoint — a hosted open model like Qwen2.5-VL, or a
+  self-hosted model later) and is a server-side concern, invisible to the app.
+
+### Alternatives considered
+
+- **Hosted key + premium subscription.** Rejected as the primary path: it needs
+  a backend to keep the key secret and track subscribers, reintroducing the
+  platform dependency ADR-001 rejects. Could be layered on later via CEP-8's
+  `waive` (prepaid/subscription) mechanism without changing the client.
+- **Point at a public third-party contextVM provider.** Viable and the client
+  supports it (just change the config), but the sats then flow to that operator,
+  not to us — so running our own is the revenue path.
+
+### Consequences
+
+- Revenue accrues in sats directly to the provider's wallet; pricing is set
+  server-side (`resolvePrice`), so it can be tuned without an app deploy.
+- Requires the user to have an NWC wallet connected; the UI degrades honestly
+  when one is absent, and when no provider is configured yet.
+- Until the server is deployed, `CONTEXTVM_PROVIDER.pubkey` is empty and the UI
+  shows an "AI tagging coming soon" state rather than failing.
+- The old `useAIStylist` Shakespeare path is superseded for tagging; outfit
+  generation still uses it and can migrate to contextVM later if desired.

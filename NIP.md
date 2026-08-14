@@ -233,6 +233,29 @@ This choice is portable and durable without a backend: the inventory follows the
 user to any device she logs in from, and survives clearing a browser — unlike
 the device-only `localStorage` used by the wardrobe.
 
+## AI Tagging — contextVM (MCP over Nostr)
+
+SAHMstr's photo auto-tagging (wardrobe and pantry) is sovereign and pay-per-use.
+It speaks **contextVM**: the Model Context Protocol carried over Nostr in
+ephemeral **kind:25910** events, with **CEP-8** Lightning payments settled
+through the user's NWC wallet.
+
+Flow for one tagging request:
+
+1. The client publishes a `kind:25910` event to the provider's relays, `p`-tagged
+   to the provider and NIP-44 encrypted, whose content is an MCP `tools/call`
+   request (`{ name: "tag_image", arguments: { image_url, instruction } }`).
+2. The provider replies (also `kind:25910`, encrypted, `e`-tagged to the request)
+   with a CEP-8 `notifications/payment_required` carrying a bolt11 invoice.
+3. The client pays the invoice via NWC and waits.
+4. The provider returns the MCP `tools/call` result; the client parses the JSON
+   the tool produced into form fields.
+
+No API key ships in the bundle and there is no backend we operate on the app
+side — the AI provider is a separate contextVM server (ours, on the VPS), pointed
+at via a single swappable config (`src/lib/contextvm.ts`). Payment is
+peer-to-peer in sats.
+
 ## Other Kinds in Use
 
 | Kind | Purpose | NIP |
@@ -241,6 +264,7 @@ the device-only `localStorage` used by the wardrobe.
 | 13 | Seal (Circle stories) | NIP-59 |
 | 20 | Private picture story | NIP-68 |
 | 22 | Private short video story | NIP-71 |
+| 25910 | AI tagging over contextVM (MCP+CEP-8) | contextVM |
 | 1059 | Gift wrap (Circle stories, DMs) | NIP-59 / NIP-17 |
 | 1111 | Comments | NIP-22 |
 | 4 | Legacy direct messages | NIP-04 |

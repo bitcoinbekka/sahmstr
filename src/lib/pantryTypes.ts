@@ -121,6 +121,66 @@ export function isPantryItem(value: unknown): value is PantryItem {
   );
 }
 
+/** Fields the AI can suggest from a photo of pantry items. */
+export interface PantryItemTags {
+  name: string;
+  location: PantryLocation;
+  kind: PantryItemKind;
+  quantity: number;
+  unit: string;
+}
+
+/** The instruction sent to the vision AI for tagging a pantry photo. */
+export function buildPantryTagInstruction(): string {
+  return `You analyze a photo of food or household provisions and return structured metadata as JSON only — no markdown, no commentary.
+
+Return this exact shape:
+{
+  "name": "Short plain name, e.g. 'Strawberry jam' or 'All-purpose flour'",
+  "location": one of ["pantry","fridge","freezer","canning"],
+  "kind": "preserve" if it looks home-canned/preserved (mason jar, homemade label), otherwise "staple",
+  "quantity": a number (count of items visible, default 1),
+  "unit": short unit word like "jars", "cans", "bags", "lbs", "each"
+}
+
+Guidance:
+- A mason/ball jar of jam, pickles, sauce, or preserves is usually "canning" + "preserve".
+- Boxed/bagged dry goods are usually "pantry" + "staple".
+- Obvious cold items are "fridge"; frozen bags are "freezer".`;
+}
+
+/** Parse the AI's JSON answer into clean PantryItemTags, or null. */
+export function parsePantryTagResponse(raw: string): PantryItemTags | null {
+  // Strip markdown fences if present, then find the first JSON object.
+  const cleaned = raw.replace(/```json|```/gi, '').trim();
+  const start = cleaned.indexOf('{');
+  const end = cleaned.lastIndexOf('}');
+  if (start === -1 || end === -1 || end < start) return null;
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(cleaned.slice(start, end + 1));
+  } catch {
+    return null;
+  }
+  if (typeof parsed !== 'object' || parsed === null) return null;
+  const p = parsed as Record<string, unknown>;
+
+  const location: PantryLocation = (['pantry', 'fridge', 'freezer', 'canning'] as const).includes(
+    p.location as PantryLocation,
+  )
+    ? (p.location as PantryLocation)
+    : 'pantry';
+
+  return {
+    name: typeof p.name === 'string' ? p.name : '',
+    location,
+    kind: p.kind === 'preserve' ? 'preserve' : 'staple',
+    quantity: typeof p.quantity === 'number' && p.quantity > 0 ? p.quantity : 1,
+    unit: typeof p.unit === 'string' ? p.unit : '',
+  };
+}
+
 /** Coerce a decrypted array into clean PantryItems, dropping anything invalid. */
 export function parsePantryItems(value: unknown): PantryItem[] {
   if (!Array.isArray(value)) return [];

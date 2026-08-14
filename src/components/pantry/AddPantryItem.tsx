@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,9 +13,15 @@ import {
 } from '@/components/ui/select';
 import { usePantryActions } from '@/hooks/usePantry';
 import { useToast } from '@/hooks/useToast';
+import { useUploadFile } from '@/hooks/useUploadFile';
+import { useWallet } from '@/hooks/useWallet';
+import { useContextVMVision } from '@/hooks/useContextVMVision';
+import { AITagButton } from '@/components/AITagButton';
 import {
   PANTRY_LOCATIONS,
   UNIT_SUGGESTIONS,
+  buildPantryTagInstruction,
+  parsePantryTagResponse,
   type PantryItem,
   type PantryLocation,
   type PantryItemKind,
@@ -32,7 +38,19 @@ function makeId(): string {
 export function AddPantryItem() {
   const { addItem } = usePantryActions();
   const { toast } = useToast();
+  const { mutateAsync: uploadFile, isPending: isUploading } = useUploadFile();
+  const { hasNWC } = useWallet();
+  const {
+    tagImage,
+    stage,
+    error: tagError,
+    paidSats,
+    isConfigured,
+    reset: resetTagging,
+  } = useContextVMVision();
 
+  const [imageUrl, setImageUrl] = useState('');
+  const [autoTagged, setAutoTagged] = useState(false);
   const [name, setName] = useState('');
   const [location, setLocation] = useState<PantryLocation>('pantry');
   const [kind, setKind] = useState<PantryItemKind>('staple');
@@ -43,12 +61,46 @@ export function AddPantryItem() {
   const [note, setNote] = useState('');
 
   const reset = () => {
+    setImageUrl('');
+    setAutoTagged(false);
+    resetTagging();
     setName('');
     setQuantity('1');
     setUnit('');
     setBestBy('');
     setMadeOn('');
     setNote('');
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const [[, url]] = await uploadFile(file);
+      setImageUrl(url);
+      setAutoTagged(false);
+      resetTagging();
+    } catch (err) {
+      toast({
+        title: 'Upload failed',
+        description: err instanceof Error ? err.message : 'Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleAutoTag = async () => {
+    if (!imageUrl) return;
+    const result = await tagImage(imageUrl, buildPantryTagInstruction());
+    if (!result) return;
+    const tags = parsePantryTagResponse(result.text);
+    if (!tags) return;
+    if (tags.name) setName(tags.name);
+    setLocation(tags.location);
+    setKind(tags.kind);
+    setQuantity(String(tags.quantity));
+    if (tags.unit) setUnit(tags.unit);
+    setAutoTagged(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,6 +146,49 @@ export function AddPantryItem() {
             Record what is on your shelves so nothing is forgotten or wasted. It
             is encrypted to you alone — private, and it follows you to any device.
           </p>
+        </div>
+
+        {/* Optional photo + AI tagging */}
+        <div className="space-y-2">
+          {imageUrl ? (
+            <div className="relative mx-auto aspect-square max-h-40 overflow-hidden rounded-lg border-2">
+              <img src={imageUrl} alt="Provision" className="h-full w-full object-cover" />
+              <button
+                type="button"
+                onClick={() => { setImageUrl(''); setAutoTagged(false); resetTagging(); }}
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
+                aria-label="Remove photo"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <label className="flex h-28 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:border-primary/50">
+              {isUploading ? (
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              ) : (
+                <>
+                  <Upload className="mb-1.5 h-6 w-6 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
+                    Add a photo (optional) — let AI fill it in
+                  </span>
+                </>
+              )}
+              <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={isUploading} />
+            </label>
+          )}
+
+          {imageUrl && (
+            <AITagButton
+              onTag={handleAutoTag}
+              stage={stage}
+              isConfigured={isConfigured}
+              hasWallet={hasNWC}
+              error={tagError}
+              paidSats={paidSats}
+              applied={autoTagged}
+            />
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

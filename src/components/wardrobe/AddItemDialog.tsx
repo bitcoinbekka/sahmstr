@@ -18,11 +18,18 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Upload, Loader2, X, Wand2, Check } from 'lucide-react';
+import { Plus, Upload, Loader2, X } from 'lucide-react';
 import { useUploadFile } from '@/hooks/useUploadFile';
 import { useWardrobe } from '@/hooks/useWardrobe';
-import { useAIStylist } from '@/hooks/useAIStylist';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useWallet } from '@/hooks/useWallet';
+import { useContextVMVision } from '@/hooks/useContextVMVision';
+import { AITagButton } from '@/components/AITagButton';
+import {
+  buildAutoTagSystemPrompt,
+  buildAutoTagUserPrompt,
+  parseAutoTagResponse,
+} from '@/lib/stylistPrompts';
 import type {
   ClothingCategory,
   ColorFamily,
@@ -45,7 +52,9 @@ export function AddItemDialog() {
   const { addItem } = useWardrobe();
   const { user } = useCurrentUser();
   const { mutateAsync: uploadFile, isPending: isUploading } = useUploadFile();
-  const { autoTagImage, isTagging, tagError } = useAIStylist();
+  const { hasNWC } = useWallet();
+  const { tagImage, stage, error: tagError, paidSats, isConfigured, reset: resetTagging } =
+    useContextVMVision();
   const [open, setOpen] = useState(false);
   const [autoTagged, setAutoTagged] = useState(false);
 
@@ -67,6 +76,7 @@ export function AddItemDialog() {
       const [[, url]] = await uploadFile(file);
       setImageUrl(url);
       setAutoTagged(false);
+      resetTagging();
     } catch (err) {
       console.error('Upload failed:', err);
     }
@@ -74,7 +84,11 @@ export function AddItemDialog() {
 
   const handleAutoTag = async () => {
     if (!imageUrl) return;
-    const tags = await autoTagImage(imageUrl);
+    const instruction = `${buildAutoTagSystemPrompt()}\n\n${buildAutoTagUserPrompt()}`;
+    const result = await tagImage(imageUrl, instruction);
+    if (!result) return;
+
+    const tags = parseAutoTagResponse(result.text);
     if (!tags) return;
 
     setName(tags.name);
@@ -105,6 +119,7 @@ export function AddItemDialog() {
     setSeasons([]);
     setOccasions([]);
     setAutoTagged(false);
+    resetTagging();
   };
 
   const handleSubmit = () => {
@@ -174,40 +189,17 @@ export function AddItemDialog() {
             )}
           </div>
 
-          {/* AI Auto-fill */}
+          {/* AI Auto-fill — sovereign, pay-per-use over contextVM */}
           {imageUrl && user && (
-            <div className="space-y-2">
-              <Button
-                type="button"
-                variant={autoTagged ? 'secondary' : 'outline'}
-                className="w-full gap-2"
-                onClick={handleAutoTag}
-                disabled={isTagging}
-              >
-                {isTagging ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Analyzing photo...
-                  </>
-                ) : autoTagged ? (
-                  <>
-                    <Check className="h-4 w-4 text-primary" />
-                    Filled in by AI — edit anything below
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="h-4 w-4" />
-                    Fill in details with AI
-                  </>
-                )}
-              </Button>
-              {tagError && <p className="text-xs text-destructive">{tagError}</p>}
-              {!autoTagged && !isTagging && !tagError && (
-                <p className="text-xs text-muted-foreground text-center">
-                  Let AI read the photo and fill in the fields for you
-                </p>
-              )}
-            </div>
+            <AITagButton
+              onTag={handleAutoTag}
+              stage={stage}
+              isConfigured={isConfigured}
+              hasWallet={hasNWC}
+              error={tagError}
+              paidSats={paidSats}
+              applied={autoTagged}
+            />
           )}
 
           {/* Name */}
