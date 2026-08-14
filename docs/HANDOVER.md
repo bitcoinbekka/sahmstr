@@ -22,6 +22,10 @@ does:
 Plus a wardrobe/AI stylist section, live streams, and vlogs (the last two are
 mostly placeholder).
 
+**AI photo tagging** (wardrobe + pantry) is sovereign and pay-per-use: the app
+is only a client, and the AI is a separate *contextVM server* we host, paid in
+sats over Lightning. See ADR-013 and `docs/CONTEXTVM.md`.
+
 ### The product thesis, because it constrains the code
 
 The site rejects platform capitalism. No accounts we control, no ads, no data
@@ -76,6 +80,7 @@ This project was developed inside Shakespeare, a browser-based environment with
 | Routing | React Router 6 |
 | Head / SEO | Unhead (`useSeoMeta`) |
 | Payments | WebLN + NWC via `@getalby/sdk` |
+| AI (tagging) | contextVM — MCP over Nostr (`kind:25910`), CEP-8 sats payment |
 | Tests | Vitest + Testing Library, jsdom |
 
 ---
@@ -129,14 +134,17 @@ src/
 │   ├── circle/        private sharing UI (composer, feed, manager)
 │   ├── dm/            direct messages (disabled by default)
 │   ├── wardrobe/      AI stylist
+│   ├── AITagButton.tsx    shared "tag this photo, paid in sats" control
 │   ├── Header.tsx     global nav + theme + type switcher
 │   ├── PageHero.tsx   the standard section title page
 │   └── PosterFrame.tsx
 ├── hooks/             useNostr wrappers, useCurrentUser, useTypeSetting, …
+│   └── useContextVMVision.ts  the paid AI-tagging flow (request → pay → result)
 ├── lib/
 │   ├── homeEc/        curriculum: one module per unit + posters, types
 │   ├── circleCrypto.ts    AES-GCM attachment encryption
 │   ├── circleGiftWrap.ts  NIP-59 seal/wrap
+│   ├── contextvm.ts       the AI provider config + MCP/CEP-8 helpers
 │   ├── typeSettings.ts    the six typographic settings
 │   └── toolkit.ts         freedom-tech links (Plebeian et al.)
 ├── pages/             one per route
@@ -207,6 +215,38 @@ Relevant tests: `circleCrypto.test.ts`, `circleGiftWrap.test.ts`,
 
 ---
 
+## 7a. AI photo tagging (contextVM) — how it hangs together
+
+Read ADR-013, then `docs/CONTEXTVM.md` (the server runbook).
+
+The app is **only the client**. There is no API key in the bundle and no backend
+we run. The AI is a separate **contextVM server** (MCP over Nostr, `kind:25910`)
+that we host on the VPS; the user pays it a few sats per photo via their NWC
+wallet (CEP-8), and it reads the image into form fields.
+
+- `src/lib/contextvm.ts` — `CONTEXTVM_PROVIDER` is a single **swappable config**
+  (server pubkey, relays, tool name `tag_image`, indicative price) plus the
+  MCP/CEP-8 helpers. `isProviderConfigured` gates the whole feature.
+- `src/hooks/useContextVMVision.ts` — the flow: encrypt request → publish →
+  handle `payment_required` (pay via NWC) → return the tool result. 90s timeout,
+  honest error/degraded states.
+- `src/components/AITagButton.tsx` — the shared control. Used by the wardrobe
+  `AddItemDialog` and the pantry `AddPantryItem`. States the price up front;
+  degrades to "coming soon" (no provider) or "connect a wallet" (no NWC).
+
+**The switch that turns it on:** `CONTEXTVM_PROVIDER.pubkey` is **empty** in the
+repo, so the UI shows "AI tagging coming soon" everywhere. Once the server is
+deployed (`docs/CONTEXTVM.md`), paste its 64-char **hex** pubkey into that one
+line and redeploy. Nothing else changes.
+
+- Price is authoritative **server-side** (tunable without an app deploy);
+  `estimatedSats` is only the cosmetic "About N sats" the button shows.
+- `toolName` must match the server's config on both sides (`tag_image`).
+- Outfit generation still uses the old `useAIStylist` Shakespeare path; only
+  tagging moved to contextVM.
+
+---
+
 ## 8. Known state, open items, and honest gaps
 
 ### Verified working
@@ -226,7 +266,8 @@ Relevant tests: `circleCrypto.test.ts`, `circleGiftWrap.test.ts`,
 | **DMs** | Fully implemented but **disabled** — pass `enabled: true` to `DMProvider` to turn on. Untested in production. |
 | **Type switcher** | User-facing in the header. Was for evaluation; decide whether it ships. See ADR-005. |
 | **`PageHero` adoption** | Several pages inline equivalent markup instead. |
-| **AI stylist** | Depends on an external AI endpoint; review cost and failure handling before promoting it. |
+| **AI stylist (outfit gen)** | Still on the old `useAIStylist` Shakespeare path; review cost/failure handling, or migrate it to contextVM like tagging. |
+| **AI photo tagging** | Fully built (§7a) but **dormant** until the contextVM server is deployed and its hex pubkey is pasted into `CONTEXTVM_PROVIDER`. See `docs/CONTEXTVM.md`. |
 
 ### Deliberate non-obvious choices
 
@@ -246,7 +287,17 @@ Do not "fix" these without reading the reasoning:
 
 ## 9. Deployment
 
-Static output; any static host works.
+Static output; any static host works. In practice the project is self-hosted on
+a VPS behind Caddy, with its own relay and (optionally) its own AI server. Three
+runbooks cover it, written one-command-at-a-time:
+
+| Runbook | Stands up |
+|---|---|
+| `docs/DEPLOY.md` | The app itself (Caddy + Docker) on `sahmstr.com` |
+| `docs/RELAY.md` | The community relay `wss://relay.sahmstr.com` (strfry) |
+| `docs/CONTEXTVM.md` | The sovereign, pay-per-use AI server (contextVM) — optional; the app runs fine without it, AI features just stay dormant |
+
+The bare static flow:
 
 1. `npm test` — must pass.
 2. `npm run build` — emits `dist/`, including `404.html`.

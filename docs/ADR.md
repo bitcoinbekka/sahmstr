@@ -1,6 +1,6 @@
 # Architecture Decision Record — SAHMstr
 
-Status of this document: current as of the `74426d2` commit. Each entry records a
+Status of this document: current as of the `a37683d` commit (contextVM AI). Each entry records a
 decision that is expensive to reverse, the alternatives that were weighed, and
 the consequences the team inherits. Entries are append-only: if a decision is
 revisited, add a new entry that supersedes the old one rather than editing
@@ -519,3 +519,26 @@ Lightning payments settled through the user's existing NWC wallet:
   shows an "AI tagging coming soon" state rather than failing.
 - The old `useAIStylist` Shakespeare path is superseded for tagging; outfit
   generation still uses it and can migrate to contextVM later if desired.
+
+### Operational reality
+
+- The server is **not the app's concern**. It is a separate Nostr identity
+  running on the VPS, allowlisted on `wss://relay.sahmstr.com`, pointed at any
+  OpenAI-compatible vision endpoint. Standing it up is documented step by step in
+  **`docs/CONTEXTVM.md`** — that runbook is the counterpart to this decision.
+- **Turning AI on is a one-line app change:** set `CONTEXTVM_PROVIDER.pubkey` in
+  `src/lib/contextvm.ts` to the server's 64-char **hex** pubkey and redeploy. Until
+  then `isProviderConfigured` is false and every AI control renders a "coming
+  soon" state (see `AITagButton`).
+- **Price is server-side and app-side.** The invoice amount (`PRICE_SATS` on the
+  server) is authoritative and tunable without an app deploy; `estimatedSats` in
+  the config is only the cosmetic "About N sats" the button shows. Keep them
+  roughly in step so the UI stays honest.
+- `toolName` (`tag_image`) is a contract shared by the app config and the
+  server's `.env`. Change one, change the other.
+
+### Revisit if
+
+The contextVM ecosystem or server images change materially, or if a hosted
+premium tier is wanted — CEP-8's `waive` (prepaid/subscription) mechanism can be
+layered on server-side without touching the client, per the alternatives above.
