@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Hls from 'hls.js';
 import { Loader2, VideoOff } from 'lucide-react';
 
 interface HlsPlayerProps {
@@ -27,7 +26,7 @@ export function HlsPlayer({ src, poster, className }: HlsPlayerProps) {
 
     setState('loading');
 
-    // Native HLS (Safari / iOS).
+    // Native HLS (Safari / iOS) needs no library.
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = src;
       const onLoaded = () => setState('ready');
@@ -40,19 +39,32 @@ export function HlsPlayer({ src, poster, className }: HlsPlayerProps) {
       };
     }
 
-    // hls.js everywhere else.
-    if (Hls.isSupported()) {
-      const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
-      hls.loadSource(src);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => setState('ready'));
-      hls.on(Hls.Events.ERROR, (_evt, data) => {
-        if (data.fatal) setState('error');
-      });
-      return () => hls.destroy();
-    }
+    // Everywhere else, load hls.js on demand. Importing it dynamically keeps
+    // this ~1 MB library out of the main bundle — it is only fetched when a
+    // stream actually plays, not on every page load.
+    let destroyed = false;
+    let cleanup: (() => void) | undefined;
 
-    setState('error');
+    import('hls.js').then(({ default: Hls }) => {
+      if (destroyed || !video) return;
+      if (Hls.isSupported()) {
+        const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => setState('ready'));
+        hls.on(Hls.Events.ERROR, (_evt, data) => {
+          if (data.fatal) setState('error');
+        });
+        cleanup = () => hls.destroy();
+      } else {
+        setState('error');
+      }
+    }).catch(() => setState('error'));
+
+    return () => {
+      destroyed = true;
+      cleanup?.();
+    };
   }, [src]);
 
   return (

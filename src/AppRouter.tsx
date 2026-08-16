@@ -1,23 +1,31 @@
+import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { StagingMode } from "./components/StagingMode";
 
+// Index and NotFound load eagerly — Index is the landing page, NotFound is tiny.
+// Every other page is code-split into its own chunk (React.lazy), so the initial
+// download is small and reliable. A single 3.5 MB bundle was failing to transfer
+// from the CDN mid-stream; splitting keeps each file small enough to arrive.
 import Index from "./pages/Index";
-import Recipes from "./pages/Recipes";
-import NewRecipe from "./pages/NewRecipe";
-import Vlogs from "./pages/Vlogs";
-import Circle from "./pages/Circle";
-import Pantry from "./pages/Pantry";
-import Live from "./pages/Live";
-import Tips from "./pages/Tips";
-import HomeEcModule from "./pages/HomeEcModule";
-import ContributeUnit from "./pages/ContributeUnit";
-import Settings from "./pages/Settings";
-import About from "./pages/About";
-import Guidelines from "./pages/Guidelines";
-import Wardrobe from "./pages/Wardrobe";
-import { NIP19Page } from "./pages/NIP19Page";
 import NotFound from "./pages/NotFound";
+
+const Recipes = lazy(() => import("./pages/Recipes"));
+const NewRecipe = lazy(() => import("./pages/NewRecipe"));
+const Vlogs = lazy(() => import("./pages/Vlogs"));
+const Circle = lazy(() => import("./pages/Circle"));
+const Pantry = lazy(() => import("./pages/Pantry"));
+const Live = lazy(() => import("./pages/Live"));
+const Tips = lazy(() => import("./pages/Tips"));
+const HomeEcModule = lazy(() => import("./pages/HomeEcModule"));
+const ContributeUnit = lazy(() => import("./pages/ContributeUnit"));
+const Settings = lazy(() => import("./pages/Settings"));
+const About = lazy(() => import("./pages/About"));
+const Guidelines = lazy(() => import("./pages/Guidelines"));
+const Wardrobe = lazy(() => import("./pages/Wardrobe"));
+const NIP19Page = lazy(() =>
+  import("./pages/NIP19Page").then((m) => ({ default: m.NIP19Page })),
+);
 
 export function AppRouter() {
   return (
