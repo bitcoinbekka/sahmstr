@@ -256,6 +256,78 @@ side — the AI provider is a separate contextVM server (ours, on the VPS), poin
 at via a single swappable config (`src/lib/contextvm.ts`). Payment is
 peer-to-peer in sats.
 
+## Live Streaming & Live Chat — NIP-53
+
+SAHMstr's Live section (cooking/baking streams and gatherings) uses **NIP-53**
+directly, with no custom kinds, so a SAHMstr stream is visible in other live
+clients (zap.stream, Amethyst) and vice versa.
+
+### The stream — `kind:30311`
+
+An addressable live event advertises the stream. SAHMstr sets:
+
+| Tag | Description | Required |
+|-----|-------------|----------|
+| `d` | Stream identifier (`sahmstr-<timestamp>`) | Yes |
+| `title` | Stream title | Yes |
+| `status` | `planned` \| `live` \| `ended` | Yes |
+| `p` | Host pubkey with `Host` marker | Yes |
+| `streaming` | HLS (`.m3u8`) URL of the video feed | When live |
+| `summary` | Description | No |
+| `image` | Cover image URL | No |
+| `starts` / `ends` | Unix timestamps | `starts` yes |
+| `recording` | Recording URL, set once ended | No |
+| `t` | Topic hashtags | No |
+| `alt` | NIP-31 human-readable fallback | Yes |
+| `chat-allow` | **SAHMstr extension** — see below | No |
+
+Because it is addressable, "go live", "edit", and "end" are all just a
+re-publish of the same `d` coordinate with different tags. A stream that says
+`live` but hasn't been updated in over an hour is treated as ended, per NIP-53.
+
+NIP-53 does not carry the video itself — `streaming` points at an HLS feed from
+a streaming/ingest server (self-hosted on the VPS, or a service). Everything in
+this section is pure Nostr and needs no backend.
+
+### Live chat — `kind:1311`
+
+Chat messages reference the stream by its `a` coordinate
+(`30311:<host-pubkey>:<d>`) with a `root` marker. Plain text `content`.
+
+```json
+{
+  "kind": 1311,
+  "content": "Smells amazing already!",
+  "tags": [["a", "30311:<host-pubkey>:sahmstr-1699999999", "", "root"]]
+}
+```
+
+### Members-only chat — the `chat-allow` extension
+
+To let a host keep chat to named members while still allowing anyone to *watch*,
+the stream event MAY carry one `chat-allow` tag per allowed hex pubkey:
+
+```json
+["chat-allow", "<hex-pubkey>"]
+```
+
+When any `chat-allow` tags are present, the client treats chat as members-only:
+the host plus the listed pubkeys may chat, and off-list messages are hidden in
+the UI (the host has a toggle to reveal them for moderation). This is a
+**client-side display policy** — Nostr is open, so a truly locked room is
+enforced by the host relay's write policy (see `docs/RELAY.md`), not by this tag
+alone. Absent the tag, chat is open to anyone logged in.
+
+## Media hosting — Blossom
+
+All uploaded media (Circle attachments, stream cover images, etc.) is stored on
+**Blossom** servers, addressed by SHA-256 hash and authorised with the user's
+Nostr key (BUD-01/02). The app uploads to a prioritised list of servers and
+takes the first success, preferring the community's own server
+(`blossom.sahmstr.com`, see `docs/BLOSSOM.md`) and falling back to public ones.
+Circle attachments are AES-GCM encrypted *before* upload, so the host only ever
+stores ciphertext (see the Circle section and ADR-003).
+
 ## Other Kinds in Use
 
 | Kind | Purpose | NIP |
@@ -264,6 +336,7 @@ peer-to-peer in sats.
 | 13 | Seal (Circle stories) | NIP-59 |
 | 20 | Private picture story | NIP-68 |
 | 22 | Private short video story | NIP-71 |
+| 1311 | Live chat messages | NIP-53 |
 | 25910 | AI tagging over contextVM (MCP+CEP-8) | contextVM |
 | 1059 | Gift wrap (Circle stories, DMs) | NIP-59 / NIP-17 |
 | 1111 | Comments | NIP-22 |
@@ -273,4 +346,5 @@ peer-to-peer in sats.
 | 30000 | Family circle membership | NIP-51 |
 | 30023 | Recipes and contributed units | NIP-23 |
 | 30078 | Private pantry & preserving inventory | NIP-78 |
+| 30311 | Live streaming events | NIP-53 |
 | 9734 / 9735 | Zap requests and receipts | NIP-57 |

@@ -19,12 +19,17 @@ does:
 3. **The Circle** — end-to-end encrypted photo and video sharing with a named
    family group. This is the highest-risk part of the codebase.
 
-Plus a wardrobe/AI stylist section, live streams, and vlogs (the last two are
-mostly placeholder).
+Plus a wardrobe/AI stylist section, and **live streaming with live chat**
+(NIP-53) for cooking/baking sessions, with recorded sessions surfacing in Vlogs.
 
 **AI photo tagging** (wardrobe + pantry) is sovereign and pay-per-use: the app
 is only a client, and the AI is a separate *contextVM server* we host, paid in
 sats over Lightning. See ADR-013 and `docs/CONTEXTVM.md`.
+
+**Live streaming** (ADR-014) is NIP-53: the app owns the stream metadata and
+chat; the actual video feed comes from a separate HLS streaming server that is
+not yet stood up. **Media** (uploads) go to Blossom, preferring a self-hosted
+`blossom.sahmstr.com` with public fallback (ADR-015, `docs/BLOSSOM.md`).
 
 ### The product thesis, because it constrains the code
 
@@ -81,6 +86,8 @@ This project was developed inside Shakespeare, a browser-based environment with
 | Head / SEO | Unhead (`useSeoMeta`) |
 | Payments | WebLN + NWC via `@getalby/sdk` |
 | AI (tagging) | contextVM — MCP over Nostr (`kind:25910`), CEP-8 sats payment |
+| Live streaming | NIP-53 (`kind:30311` stream, `kind:1311` chat); `hls.js` player |
+| Media hosting | Blossom (own server + public fallback) |
 | Tests | Vitest + Testing Library, jsdom |
 
 ---
@@ -133,6 +140,7 @@ src/
 │   ├── auth/          login, signup, account switching
 │   ├── circle/        private sharing UI (composer, feed, manager)
 │   ├── dm/            direct messages (disabled by default)
+│   ├── live/          streaming: HlsPlayer, LiveChat, GoLiveDialog, StreamCard, StreamView
 │   ├── wardrobe/      AI stylist
 │   ├── AITagButton.tsx    shared "tag this photo, paid in sats" control
 │   ├── Header.tsx     global nav + theme + type switcher
@@ -145,6 +153,7 @@ src/
 │   ├── circleCrypto.ts    AES-GCM attachment encryption
 │   ├── circleGiftWrap.ts  NIP-59 seal/wrap
 │   ├── contextvm.ts       the AI provider config + MCP/CEP-8 helpers
+│   ├── streamTypes.ts     NIP-53 stream parsing/validation + live-staleness
 │   ├── typeSettings.ts    the six typographic settings
 │   └── toolkit.ts         freedom-tech links (Plebeian et al.)
 ├── pages/             one per route
@@ -247,6 +256,34 @@ line and redeploy. Nothing else changes.
 
 ---
 
+## 7b. Live streaming (NIP-53) — how it hangs together
+
+Read ADR-014, then the streaming section of `NIP.md`.
+
+The app owns **metadata + chat**; it never touches raw video.
+
+- `src/lib/streamTypes.ts` — parse/validate `kind:30311`, the live-staleness
+  rule (a `live` stream not updated in >1h is treated as ended).
+- `src/hooks/useStreams.ts` — list all/host streams, and resolve one by `naddr`.
+- `src/hooks/usePublishStream.ts` — go live / edit / end (all re-publish the same
+  `d` coordinate, since 30311 is addressable).
+- `src/hooks/useStreamChat.ts` — read/send `kind:1311`, plus `chatAllowlist()`.
+- `src/components/live/` — `HlsPlayer` (hls.js + native Safari HLS, offline
+  state), `LiveChat` (host reveal toggle for off-list messages), `GoLiveDialog`
+  (host form; parses npub or hex whitelist), `StreamCard`, `StreamView`.
+- `pages/Live.tsx` lists streams; `pages/StreamPage.tsx` (routed via `NIP19Page`
+  for `kind:30311` naddrs) is the watch page.
+
+**The missing piece:** the *video feed*. NIP-53 only carries a `streaming` HLS
+URL — the app has no ingest server. For a demo, point a stream's URL at any HLS
+`.m3u8` (even a public test stream) and everything works. Going truly live needs
+an RTMP→HLS streaming server on the VPS (a follow-up runbook).
+
+**Members-only chat** (`chat-allow` tags) is a *client-side display* policy;
+real enforcement is the host relay's write policy (`docs/RELAY.md`).
+
+---
+
 ## 8. Known state, open items, and honest gaps
 
 ### Verified working
@@ -262,7 +299,9 @@ line and redeploy. Nothing else changes.
 |---|---|
 | **`og:image`** | Absent. Social shares have no preview image. Needs an absolute URL, so it can only be added once deployed. **Do this first after deploy.** |
 | **Tests never run** | See §2. First `npm test` is a verification step. |
-| **Vlogs / Live** | Largely placeholder. Vlogs points users at the Circle instead. |
+| **Live streaming** | Metadata + chat fully built (§7b, NIP-53). **No ingest server yet** — needs an RTMP→HLS box on the VPS to go truly live; for demos point a stream at any HLS `.m3u8`. See ADR-014. |
+| **Vlogs** | Now surfaces recorded (ended) streams; still no first-class recorded-video upload. Keeps the Circle CTA for private video. |
+| **`blossom.sahmstr.com`** | App already prefers it (with public fallback), but the server itself is **not deployed yet**. Additive — see `docs/BLOSSOM.md`. |
 | **DMs** | Fully implemented but **disabled** — pass `enabled: true` to `DMProvider` to turn on. Untested in production. |
 | **Type switcher** | User-facing in the header. Was for evaluation; decide whether it ships. See ADR-005. |
 | **`PageHero` adoption** | Several pages inline equivalent markup instead. |
@@ -288,14 +327,16 @@ Do not "fix" these without reading the reasoning:
 ## 9. Deployment
 
 Static output; any static host works. In practice the project is self-hosted on
-a VPS behind Caddy, with its own relay and (optionally) its own AI server. Three
-runbooks cover it, written one-command-at-a-time:
+a VPS behind Caddy, with its own relay, media host, and (optionally) AI server.
+Runbooks cover each, written one-command-at-a-time:
 
 | Runbook | Stands up |
 |---|---|
 | `docs/DEPLOY.md` | The app itself (Caddy + Docker) on `sahmstr.com` |
 | `docs/RELAY.md` | The community relay `wss://relay.sahmstr.com` (strfry) |
-| `docs/CONTEXTVM.md` | The sovereign, pay-per-use AI server (contextVM) — optional; the app runs fine without it, AI features just stay dormant |
+| `docs/BLOSSOM.md` | The media host `blossom.sahmstr.com` (allowlisted). Additive — app has public fallback |
+| `docs/CONTEXTVM.md` | The sovereign, pay-per-use AI server (contextVM) — optional; AI features stay dormant without it |
+| _(none yet)_ | **Live video ingest** (RTMP→HLS) for real streaming — the one missing runbook; see ADR-014 |
 
 The bare static flow:
 

@@ -1,6 +1,6 @@
 # Architecture Decision Record — SAHMstr
 
-Status of this document: current as of the `a37683d` commit (contextVM AI). Each entry records a
+Status of this document: current as of the live-streaming work (NIP-53). Each entry records a
 decision that is expensive to reverse, the alternatives that were weighed, and
 the consequences the team inherits. Entries are append-only: if a decision is
 revisited, add a new entry that supersedes the old one rather than editing
@@ -542,3 +542,106 @@ Lightning payments settled through the user's existing NWC wallet:
 The contextVM ecosystem or server images change materially, or if a hosted
 premium tier is wanted — CEP-8's `waive` (prepaid/subscription) mechanism can be
 layered on server-side without touching the client, per the alternatives above.
+
+---
+
+## ADR-014 — Live streaming on NIP-53; video feed is a separate concern
+
+**Status:** Accepted
+
+### Context
+
+The Live and Vlogs sections were placeholders. The owner wants to cook and bake
+on a public live stream with a live chat, optionally restricted to named
+members. The question was how much of "live streaming" belongs in this app.
+
+### Decision
+
+Use **NIP-53** directly — no custom kinds:
+
+- **kind:30311** (addressable) advertises a stream: title, `status`, host `p`
+  tag, and a `streaming` HLS (`.m3u8`) URL. Go-live / edit / end are re-publishes
+  of the same `d` coordinate.
+- **kind:1311** carries live chat, referencing the stream by its `a` coordinate.
+
+**The app owns the metadata and chat layer only.** NIP-53 deliberately does not
+carry video: `streaming` points at an HLS feed produced by a *streaming/ingest
+server* that is a separate piece of infrastructure (self-hosted on the VPS, or a
+service like zap.stream). The app never touches raw video — it embeds an HLS
+player (`hls.js`, native HLS on Safari) pointed at the URL.
+
+Chat moderation uses a **`chat-allow`** tag extension (documented in `NIP.md`):
+when present, only listed pubkeys (plus the host) are shown as allowed, and the
+host can reveal hidden off-list messages. This is a client-side *display* policy.
+
+### Alternatives considered
+
+- **A custom streaming kind.** Rejected per ADR-002. NIP-53 fits, and using it
+  means SAHMstr streams appear in zap.stream, Amethyst, etc., and vice versa.
+- **Bundling an ingest server / WebRTC into the app.** Rejected. That is a heavy
+  ops concern with no place in a static bundle, and it would make video
+  load-bearing on us. Keeping it external preserves ADR-001.
+- **Hard-gating members-only chat in the client.** Not possible on open Nostr —
+  anyone can publish a kind:1311. Real enforcement is the host relay's write
+  policy (`docs/RELAY.md`); the client does the honest display policy.
+
+### Consequences
+
+- The whole metadata + chat feature works today with **no backend** and is
+  interoperable. For a demo you can point `streaming` at any HLS URL.
+- **Going truly live needs a streaming server** (RTMP ingest → HLS out). That is
+  the one missing piece of infrastructure and is a follow-up runbook.
+- "Members-only" chat is only as strong as the relay it's published to. On the
+  open network it is a display convention; on a locked SAHMstr relay it is real.
+- Recorded sessions (a `recording` URL on an ended stream) surface in Vlogs.
+
+### Revisit if
+
+Low-latency interactive video (many-to-many) is needed — that is NIP-53 "meeting
+spaces" (kind:30312/30313) plus a real-time media server, a materially larger
+undertaking than one-to-many streaming.
+
+---
+
+## ADR-015 — Self-hosted, allowlisted media (Blossom), with public fallback
+
+**Status:** Accepted
+
+### Context
+
+All uploaded media (Circle photos, stream covers, future recordings) needs a
+host. Blossom is the Nostr-native file host. The product's ethos wants the
+photos of a family's children on hardware the family controls — but a single
+self-hosted server is also a single point of failure for a core flow.
+
+### Decision
+
+Uploads go through a **prioritised list** of Blossom servers
+(`src/hooks/useUploadFile.ts`): the community's own **`blossom.sahmstr.com`**
+first, then public servers as fallback. The app tries each in turn and takes the
+first success; if all fail it surfaces each host's real error.
+
+The self-hosted server is **upload-allowlisted** to family/community hex pubkeys
+(reads stay open, since a URL is enough to fetch a blob — and Circle blobs are
+ciphertext anyway). Standing it up is documented in **`docs/BLOSSOM.md`**.
+
+### Alternatives considered
+
+- **A single hardcoded public server.** This was the previous state and it *was*
+  the Circle upload bug the owner hit — one server down/rejecting failed every
+  upload. Rejected.
+- **Own server only, no fallback.** Rejected: it makes a core flow depend on one
+  box being healthy. The fallback keeps uploads working even if the VPS is down.
+
+### Consequences
+
+- Deploying `blossom.sahmstr.com` is **purely additive** — the entry sits at the
+  top of the list and is skipped harmlessly until DNS resolves. No app change is
+  needed to "turn it on".
+- Allowlisted family land on the owner's disk; everyone else uses public
+  fallbacks transparently.
+- **Video storage is the real cost** (see `docs/BLOSSOM.md`): photos are cheap,
+  recorded video is tens of GB per few hours. Live *feeds* do not pass through
+  Blossom; only recordings do.
+- Content-addressing means the same blob has the same URL everywhere, so
+  mirroring to a public server as backup does not break any app URL.

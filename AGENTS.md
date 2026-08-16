@@ -1139,3 +1139,101 @@ The validation ensures code quality and catches errors before deployment, regard
 If git is available in your environment (through a `shell` tool, or other git-specific tools), you should utilize `git log` to understand project history. Use `git status` and `git diff` to check the status of your changes, and if you make a mistake use `git checkout` to restore files.
 
 When your changes are complete and validated, create a git commit with a descriptive message summarizing your changes.
+
+---
+
+# SAHMstr — Agent Handover (read this before working)
+
+This section is the handover for AI agents ("clankers") working on **SAHMstr**.
+It is the fast path to being useful without breaking things. It complements two
+human docs you should also skim: `docs/HANDOVER.md` (how things are) and
+`docs/ADR.md` (why — decisions that are costly to reverse). `NIP.md` is the
+normative spec for every event this app writes.
+
+## What SAHMstr is
+
+Home economics for mothers on freedom tech: a 16-unit curriculum, user-published
+recipes, **the Circle** (E2E-encrypted family photo/video sharing — the flagship
+and highest-risk feature), a wardrobe/pantry with sovereign AI tagging, and
+**live streaming** with live chat. The product rejects platform capitalism: no
+backend we control, no ads, no data harvesting. **This is an architectural
+constraint, not marketing.** Proposals that reintroduce a central point of
+control are out of scope by default (ADR-001, ADR-002).
+
+## Hard rules (do not violate without explicit user sign-off)
+
+1. **No backend.** Static bundle only. Persistence is Nostr relays, Blossom
+   (media), or `localStorage` (prefs). If a request needs a server, explain the
+   trade-off and propose it as a *separate, self-hostable* service (as we did for
+   the relay, Blossom, and the contextVM AI) — never fold it into the app.
+2. **No custom event kinds.** Everything maps to an existing NIP. If you think
+   you need a new kind, you almost certainly don't — re-read `NIP.md` and the
+   NIPs first. If you genuinely do, generate it properly and document it in
+   `NIP.md` in the same commit.
+3. **Never import `Lock` from `lucide-react`.** It collides with the Web Locks
+   API global and hard-crashes under the ESM build. Use `ShieldCheck`/`KeyRound`
+   (ADR-009).
+4. **Never write raw hex or literal `hsl(...)` in components.** Use semantic
+   Tailwind tokens (`bg-primary`) or the ink-drawer vars
+   (`text-[hsl(var(--poster-ochre))]`). If you touch `TONE_WASH`/`TONE_INK` in
+   `posters.ts`, know they duplicate the ink drawer and must change together
+   (ADR-004).
+5. **Decoration must fail safe.** Non-essential subsystems (fonts, themes) must
+   degrade, never throw — the Header renders on every page (ADR-006).
+6. **Update `NIP.md` in the same commit as any event-shape change**, and append
+   an ADR entry (never edit an old one) for any decision that's costly to
+   reverse.
+7. **The Circle is the highest-risk code.** Failure mode is children's photos
+   leaking permanently. Read ADR-003 and the Circle section of `NIP.md` in full
+   before touching it. Invariants: rumor stays unsigned; reject stories where
+   rumor `pubkey` ≠ seal signer; membership stays in encrypted NIP-51 items (no
+   public `p` tags); attachments AES-GCM encrypted *before* upload; never imply
+   recipients can't forward.
+
+## Feature map (where things live)
+
+- **Curriculum** — typed modules in `src/lib/homeEc/` (ADR-010); contributed
+  units are `kind:30023` (ADR-002).
+- **Recipes** — `kind:30023`, readable in any long-form client.
+- **Circle** — `src/components/circle/`, `src/lib/circle*.ts`; NIP-59 gift wrap
+  + AES-GCM attachments (ADR-003).
+- **AI tagging** — `src/lib/contextvm.ts`, `useContextVMVision`, `AITagButton`;
+  contextVM (`kind:25910`) + CEP-8 sats (ADR-013). Dormant until
+  `CONTEXTVM_PROVIDER.pubkey` (hex) is set.
+- **Live streaming** — `src/lib/streamTypes.ts`, `src/hooks/useStreams*.ts` /
+  `usePublishStream.ts` / `useStreamChat.ts`, `src/components/live/`; NIP-53
+  (`kind:30311` + `kind:1311`), `chat-allow` whitelist extension (ADR-014). App
+  owns metadata + chat only; video is an external HLS feed.
+- **Media uploads** — `src/hooks/useUploadFile.ts`: prioritised Blossom list,
+  own server first with public fallback (ADR-015).
+
+## Infrastructure (self-hosted, runbooks in `docs/`)
+
+The app is designed to run entirely on the owner's VPS. Each piece is a
+**separate, optional, self-hostable service** with a one-command-at-a-time
+runbook, and each is *additive* — the app degrades gracefully when a piece isn't
+deployed yet:
+
+| Piece | Runbook | App behaviour if absent |
+|---|---|---|
+| App (Caddy) | `docs/DEPLOY.md` | — |
+| Relay (strfry, allowlisted) | `docs/RELAY.md` | Uses default public relays |
+| Blossom media (allowlisted) | `docs/BLOSSOM.md` | Falls back to public Blossom |
+| contextVM AI | `docs/CONTEXTVM.md` | AI shows "coming soon" |
+| Live video ingest (RTMP→HLS) | **not written yet** | Streams list but have no feed |
+
+When the user asks to "turn on" a piece, the change is usually **one config line**
+(a pubkey or URL) plus following the runbook on the VPS — not new app plumbing.
+
+## Working style here
+
+- Match the existing voice: warm, plain, honest. Comments explain *why*, not
+  *what*. UI copy never overpromises (e.g. it states that Circle recipients can
+  still forward).
+- Skeletons for structured loading; spinners only for buttons. Empty states get
+  a dashed-border card with a helpful message.
+- **Always run the build** and check the console before committing. `npm test`
+  is the full gate (`tsc` → eslint → vitest → build) but note tests were written
+  in-browser and may need a first real run (see `docs/HANDOVER.md` §2).
+- Prefer editing existing files and reusing `PageHero`, the poster/image set,
+  and the ink drawer over inventing new patterns.
