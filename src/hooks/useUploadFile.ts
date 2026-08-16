@@ -12,6 +12,10 @@ import { useCurrentUser } from "./useCurrentUser";
  * of them fail, and we surface the real reason when they do.
  */
 const BLOSSOM_SERVERS = [
+  // Our own server first (see docs/BLOSSOM.md). Until it is deployed and
+  // resolving, uploads simply fall through to the public servers below, so
+  // leaving it here is harmless before the VPS server exists.
+  'https://blossom.sahmstr.com/',
   'https://blossom.primal.net/',
   'https://blossom.band/',
   'https://cdn.satellite.earth/',

@@ -2,6 +2,8 @@ import { nip19 } from 'nostr-tools';
 import { useParams } from 'react-router-dom';
 import NotFound from './NotFound';
 import { LongFormRouter } from './LongFormRouter';
+import { StreamPage } from './StreamPage';
+import { KIND_LIVE_EVENT } from '@/lib/streamTypes';
 
 export function NIP19Page() {
   const { nip19: identifier } = useParams<{ nip19: string }>();
@@ -38,6 +40,10 @@ export function NIP19Page() {
       // LongFormRouter resolves the event and picks the right view.
       if (data.kind === 30023) {
         return <LongFormRouter naddr={data} />;
+      }
+      // Live streams (NIP-53) are addressable kind:30311.
+      if (data.kind === KIND_LIVE_EVENT) {
+        return <StreamPage address={data} />;
       }
       // Other addressable events placeholder
       return <div>Addressable event placeholder</div>;

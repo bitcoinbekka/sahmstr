@@ -86,7 +86,7 @@ const SECTIONS: Array<{
     label: 'Live & Gathering',
     icon: Radio,
     blurb:
-      'Cooking together in real time, questions answered plainly, and the door left open.',
+      'Cook and bake together in real time, with a live chat that anyone can join — or keep to the members you name.',
     cta: 'See what is on',
     poster: SECTION_POSTERS.live,
   },
