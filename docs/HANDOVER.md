@@ -299,7 +299,7 @@ real enforcement is the host relay's write policy (`docs/RELAY.md`).
 |---|---|
 | **`og:image`** | Absent. Social shares have no preview image. Needs an absolute URL, so it can only be added once deployed. **Do this first after deploy.** |
 | **Tests never run** | See §2. First `npm test` is a verification step. |
-| **Live streaming** | Metadata + chat fully built (§7b, NIP-53). **No ingest server yet** — needs an RTMP→HLS box on the VPS to go truly live; for demos point a stream at any HLS `.m3u8`. See ADR-014. |
+| **Live streaming** | Metadata + chat fully built (§7b, NIP-53). Ingest server **not deployed** but now has a runbook (`docs/STREAMING.md`, MediaMTX); for demos point a stream at any HLS `.m3u8`. See ADR-014. |
 | **Vlogs** | Now surfaces recorded (ended) streams; still no first-class recorded-video upload. Keeps the Circle CTA for private video. |
 | **`blossom.sahmstr.com`** | App already prefers it (with public fallback), but the server itself is **not deployed yet**. Additive — see `docs/BLOSSOM.md`. |
 | **DMs** | Fully implemented but **disabled** — pass `enabled: true` to `DMProvider` to turn on. Untested in production. |
@@ -336,7 +336,15 @@ Runbooks cover each, written one-command-at-a-time:
 | `docs/RELAY.md` | The community relay `wss://relay.sahmstr.com` (strfry) |
 | `docs/BLOSSOM.md` | The media host `blossom.sahmstr.com` (allowlisted). Additive — app has public fallback |
 | `docs/CONTEXTVM.md` | The sovereign, pay-per-use AI server (contextVM) — optional; AI features stay dormant without it |
-| _(none yet)_ | **Live video ingest** (RTMP→HLS) for real streaming — the one missing runbook; see ADR-014 |
+| `docs/STREAMING.md` | Live video ingest (MediaMTX, RTMP→HLS) so streams have a real feed — optional; chat/listing work without it |
+| `docs/STAGING.md` | A private, noindexed demo site (VPS subdomain or hosted preview) before public launch |
+
+### Staging mode
+
+The app ships a build-time staging mode (`src/components/StagingMode.tsx`).
+`VITE_STAGING=true npm run build` produces a bundle with a `noindex, nofollow`
+robots tag and a "preview build" ribbon; a plain `npm run build` is the inert
+production build. Used for the pre-launch demo — see `docs/STAGING.md`.
 
 The bare static flow:
 

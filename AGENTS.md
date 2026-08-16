@@ -1220,7 +1220,15 @@ deployed yet:
 | Relay (strfry, allowlisted) | `docs/RELAY.md` | Uses default public relays |
 | Blossom media (allowlisted) | `docs/BLOSSOM.md` | Falls back to public Blossom |
 | contextVM AI | `docs/CONTEXTVM.md` | AI shows "coming soon" |
-| Live video ingest (RTMP→HLS) | **not written yet** | Streams list but have no feed |
+| Live video ingest (RTMP→HLS) | `docs/STREAMING.md` | Streams list + chat work, but have no video feed |
+| Staging / demo hosting | `docs/STAGING.md` | n/a — build with `VITE_STAGING=true` for a noindexed preview |
+
+When the user asks to "turn on" a piece, the change is usually **one config line**
+(a pubkey or URL) plus following the runbook on the VPS — not new app plumbing.
+
+Note: the app has a built-in **staging mode** (`src/components/StagingMode.tsx`,
+`IS_STAGING`). A build with `VITE_STAGING=true` adds a `noindex` robots tag and a
+"preview build" ribbon; production builds are inert. Same code, env var differs.
 
 When the user asks to "turn on" a piece, the change is usually **one config line**
 (a pubkey or URL) plus following the runbook on the VPS — not new app plumbing.

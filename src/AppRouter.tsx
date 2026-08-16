@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { StagingMode } from "./components/StagingMode";
 
 import Index from "./pages/Index";
 import Recipes from "./pages/Recipes";
@@ -22,6 +23,7 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <StagingMode />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/recipes" element={<Recipes />} />
