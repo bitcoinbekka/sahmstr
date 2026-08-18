@@ -26,7 +26,10 @@ import { createServer } from 'node:http';
 const {
   OPENAI_BASE_URL = 'https://api.x.ai/v1',
   OPENAI_API_KEY,
-  VISION_MODEL = 'grok-2-vision-1212',
+  VISION_MODEL = 'grok-4.6',
+  // 'responses' = xAI Responses API (default); 'chat' = OpenAI chat completions
+  // (use this for OpenAI, OpenRouter, and other OpenAI-compatible hosts).
+  API_STYLE = 'responses',
   PORT = '8090',
   ALLOW_ORIGIN = '',
 } = process.env;
@@ -79,7 +82,7 @@ const server = createServer(async (req, res) => {
 
   // Health check — handy for `curl` and for confirming the service is up.
   if (req.method === 'GET' && req.url === '/api/ai/health') {
-    sendJson(res, 200, { ok: true, model: VISION_MODEL });
+    sendJson(res, 200, { ok: true, model: VISION_MODEL, apiStyle: API_STYLE });
     return;
   }
 
@@ -103,22 +106,43 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // Forward to the vision provider, key attached server-side.
-  const upstream = `${OPENAI_BASE_URL.replace(/\/$/, '')}/chat/completions`;
-  const body = {
-    model: VISION_MODEL,
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: instruction },
-          { type: 'image_url', image_url: { url: imageUrl } },
+  // Build the upstream request for the chosen API style. Two exist in the wild:
+  //   - "responses": xAI's current Responses API (POST /responses, `input`,
+  //     content parts typed input_image / input_text). This is the default.
+  //   - "chat":      classic OpenAI chat completions (POST /chat/completions,
+  //     `messages`, content parts image_url / text). Used by OpenAI, OpenRouter,
+  //     older xAI models, and most other OpenAI-compatible hosts.
+  const base = OPENAI_BASE_URL.replace(/\/$/, '');
+  const useResponses = API_STYLE === 'responses';
+
+  const upstream = useResponses ? `${base}/responses` : `${base}/chat/completions`;
+  const body = useResponses
+    ? {
+        model: VISION_MODEL,
+        input: [
+          {
+            role: 'user',
+            content: [
+              { type: 'input_image', image_url: imageUrl, detail: 'high' },
+              { type: 'input_text', text: instruction },
+            ],
+          },
         ],
-      },
-    ],
-    temperature: 0.2,
-    max_tokens: 700,
-  };
+      }
+    : {
+        model: VISION_MODEL,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: instruction },
+              { type: 'image_url', image_url: { url: imageUrl } },
+            ],
+          },
+        ],
+        temperature: 0.2,
+        max_tokens: 700,
+      };
 
   try {
     const r = await fetch(upstream, {
@@ -147,7 +171,7 @@ const server = createServer(async (req, res) => {
     }
 
     const data = await r.json();
-    const text = data?.choices?.[0]?.message?.content;
+    const text = extractText(data);
     if (typeof text !== 'string' || !text.trim()) {
       sendJson(res, 502, { error: 'The AI returned an empty response.' });
       return;
@@ -159,6 +183,43 @@ const server = createServer(async (req, res) => {
   }
 });
 
+/**
+ * Pull the assistant text out of either API shape.
+ *
+ *   chat completions → data.choices[0].message.content  (a string)
+ *   responses        → data.output_text, OR a walk of data.output[].content[]
+ *                      collecting { type: 'output_text', text } parts.
+ */
+function extractText(data) {
+  // Chat completions shape.
+  const chat = data?.choices?.[0]?.message?.content;
+  if (typeof chat === 'string' && chat.trim()) return chat;
+
+  // Responses API: some SDKs surface a convenience field.
+  if (typeof data?.output_text === 'string' && data.output_text.trim()) {
+    return data.output_text;
+  }
+
+  // Responses API: walk the structured output for text parts.
+  const output = data?.output;
+  if (Array.isArray(output)) {
+    const parts = [];
+    for (const item of output) {
+      const content = item?.content;
+      if (Array.isArray(content)) {
+        for (const part of content) {
+          if (typeof part?.text === 'string') parts.push(part.text);
+        }
+      } else if (typeof item?.text === 'string') {
+        parts.push(item.text);
+      }
+    }
+    if (parts.join('').trim()) return parts.join('');
+  }
+
+  return '';
+}
+
 server.listen(Number(PORT), '127.0.0.1', () => {
-  console.log(`SAHMstr AI proxy listening on 127.0.0.1:${PORT} → ${OPENAI_BASE_URL} (${VISION_MODEL})`);
+  console.log(`SAHMstr AI proxy listening on 127.0.0.1:${PORT} → ${OPENAI_BASE_URL} (${VISION_MODEL}, style=${API_STYLE})`);
 });

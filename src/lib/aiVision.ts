@@ -43,8 +43,8 @@ export const VISION_PRESETS: VisionProviderPreset[] = [
     id: 'xai',
     label: 'xAI (Grok) — key in this browser',
     baseUrl: 'https://api.x.ai/v1',
-    defaultModel: 'grok-2-vision-1212',
-    note: 'Calls xAI directly with a key stored in THIS browser. Simplest, but the key lives on your device. Fine for personal use.',
+    defaultModel: 'grok-4.6',
+    note: 'Calls xAI directly with a key stored in THIS browser. Simplest, but the key lives on your device. Fine for personal use. Note: the recommended "Your server" option is more robust for xAI, which uses a newer API shape.',
     keyUrl: 'https://console.x.ai',
   },
   {

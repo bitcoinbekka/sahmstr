@@ -74,10 +74,15 @@ Fill in your values (xAI shown):
 ```dotenv
 OPENAI_BASE_URL=https://api.x.ai/v1
 OPENAI_API_KEY=xai-...your real key...
-VISION_MODEL=grok-2-vision-1212
+VISION_MODEL=grok-4.6
+API_STYLE=responses
 PORT=8090
 ALLOW_ORIGIN=
 ```
+
+> **`API_STYLE`.** xAI's current models use their **Responses API**
+> (`API_STYLE=responses`, the default). For OpenAI or OpenRouter instead, set
+> `OPENAI_BASE_URL`/`VISION_MODEL` accordingly and use `API_STYLE=chat`.
 
 Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`), then lock it down:
 
@@ -100,7 +105,7 @@ set -a; . ./.env; set +a
 node server.mjs
 ```
 
-You should see: `SAHMstr AI proxy listening on 127.0.0.1:8090 → https://api.x.ai/v1 (grok-2-vision-1212)`.
+You should see: `SAHMstr AI proxy listening on 127.0.0.1:8090 → https://api.x.ai/v1 (grok-4.6, style=responses)`.
 
 In a **second terminal** (SSH in again), check health:
 
@@ -108,7 +113,7 @@ In a **second terminal** (SSH in again), check health:
 curl -s http://127.0.0.1:8090/api/ai/health
 ```
 
-Expect `{"ok":true,"model":"grok-2-vision-1212"}`. Then stop the foreground
+Expect `{"ok":true,"model":"grok-4.6","apiStyle":"responses"}`. Then stop the foreground
 process with `Ctrl+C`.
 
 ---
@@ -196,7 +201,7 @@ sudo systemctl reload nginx
 curl -s https://sahmstr.com/api/ai/health
 ```
 
-Expect `{"ok":true,"model":"grok-2-vision-1212"}`. If you get that, the browser
+Expect `{"ok":true,"model":"grok-4.6","apiStyle":"responses"}`. If you get that, the browser
 can reach your key-holding server on its own origin.
 
 ---
