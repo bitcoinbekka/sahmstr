@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { RelayListManager } from '@/components/RelayListManager';
+import { AiSettings } from '@/components/AiSettings';
 import { EditProfileForm } from '@/components/EditProfileForm';
 import { LoginArea } from '@/components/auth/LoginArea';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -112,6 +113,9 @@ export default function Settings() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Photo tagging AI (bring-your-own-key) */}
+            <AiSettings />
 
             {/* Profile */}
             <Card className="border-2">

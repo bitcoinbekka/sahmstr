@@ -15,7 +15,7 @@ import { usePantryActions } from '@/hooks/usePantry';
 import { useToast } from '@/hooks/useToast';
 import { useUploadFile } from '@/hooks/useUploadFile';
 import { useWallet } from '@/hooks/useWallet';
-import { useContextVMVision } from '@/hooks/useContextVMVision';
+import { useVisionTagging } from '@/hooks/useVisionTagging';
 import { AITagButton } from '@/components/AITagButton';
 import {
   PANTRY_LOCATIONS,
@@ -41,13 +41,14 @@ export function AddPantryItem() {
   const { mutateAsync: uploadFile, isPending: isUploading } = useUploadFile();
   const { hasNWC } = useWallet();
   const {
+    mode,
     tagImage,
     stage,
     error: tagError,
     paidSats,
     isConfigured,
     reset: resetTagging,
-  } = useContextVMVision();
+  } = useVisionTagging();
 
   const [imageUrl, setImageUrl] = useState('');
   const [autoTagged, setAutoTagged] = useState(false);
@@ -184,6 +185,7 @@ export function AddPantryItem() {
               stage={stage}
               isConfigured={isConfigured}
               hasWallet={hasNWC}
+              mode={mode}
               error={tagError}
               paidSats={paidSats}
               applied={autoTagged}

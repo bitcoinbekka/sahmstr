@@ -645,3 +645,49 @@ ciphertext anyway). Standing it up is documented in **`docs/BLOSSOM.md`**.
   Blossom; only recordings do.
 - Content-addressing means the same blob has the same URL everywhere, so
   mirroring to a public server as backup does not break any app URL.
+
+---
+
+## ADR-016 — Bring-your-own-key (BYOK) vision AI alongside contextVM
+
+**Status:** Accepted · **Date:** 2026-08-18
+
+### Context
+
+The sovereign, sats-paid contextVM AI (ADR-013) is the right model for a public,
+multi-user deployment, but standing up a contextVM server is a large, still-
+experimental task. For a personal or single-operator site — including the
+owner's own `sahmstr.com` — a much simpler path is wanted: paste an API key for
+an OpenAI-compatible vision provider (xAI/Grok, OpenAI, OpenRouter, …) and tag
+photos directly.
+
+### Decision
+
+Add a **bring-your-own-key** path as a *sibling* to contextVM, not a replacement:
+
+- `src/lib/aiVision.ts` — provider presets + `visionComplete()`, a single
+  OpenAI `/chat/completions` call with image input. The key is stored in the
+  **browser's `localStorage` only** (`sahmstr:ai-vision:v1`); it is never in the
+  bundle, never in git, never sent anywhere except the chosen provider.
+- `src/components/AiSettings.tsx` — the Settings UI to choose a provider and
+  paste a key. Lives on the Settings page.
+- `src/hooks/useVisionTagging.ts` — the unifying hook. If a BYOK key is saved it
+  uses it (no wallet, no sats); otherwise it falls back to `useContextVMVision`.
+  The wardrobe/pantry dialogs call only this hook and are agnostic to the mode.
+- `AITagButton` gained a `mode` prop so its copy is honest per path.
+
+### Alternatives considered
+
+- **contextVM only.** Rejected for now: too much setup for a single operator to
+  get *any* AI working. Kept as the fallback and the public-deployment answer.
+- **BYOK only (delete contextVM).** Rejected: a key on a shared client can't stay
+  secret, so BYOK is unsuitable for a public multi-user site. Both must coexist.
+
+### Consequences
+
+- **BYOK is only appropriate for personal/single-operator use.** On a public
+  site, every visitor's browser would need its own key; the owner's key is never
+  exposed to them (it is in the owner's browser only), but visitors get no free
+  AI. This trade-off is stated in the Settings UI and in `aiVision.ts`.
+- contextVM remains the sovereign path and takes over automatically whenever no
+  BYOK key is configured — turning it on later needs no code change here.

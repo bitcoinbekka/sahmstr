@@ -23,7 +23,7 @@ import { useUploadFile } from '@/hooks/useUploadFile';
 import { useWardrobe } from '@/hooks/useWardrobe';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWallet } from '@/hooks/useWallet';
-import { useContextVMVision } from '@/hooks/useContextVMVision';
+import { useVisionTagging } from '@/hooks/useVisionTagging';
 import { AITagButton } from '@/components/AITagButton';
 import {
   buildAutoTagSystemPrompt,
@@ -53,8 +53,8 @@ export function AddItemDialog() {
   const { user } = useCurrentUser();
   const { mutateAsync: uploadFile, isPending: isUploading } = useUploadFile();
   const { hasNWC } = useWallet();
-  const { tagImage, stage, error: tagError, paidSats, isConfigured, reset: resetTagging } =
-    useContextVMVision();
+  const { mode, tagImage, stage, error: tagError, paidSats, isConfigured, reset: resetTagging } =
+    useVisionTagging();
   const [open, setOpen] = useState(false);
   const [autoTagged, setAutoTagged] = useState(false);
 
@@ -196,6 +196,7 @@ export function AddItemDialog() {
               stage={stage}
               isConfigured={isConfigured}
               hasWallet={hasNWC}
+              mode={mode}
               error={tagError}
               paidSats={paidSats}
               applied={autoTagged}
