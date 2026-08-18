@@ -37,7 +37,7 @@ import {
 export function AiSettings() {
   const { toast } = useToast();
 
-  const [providerId, setProviderId] = useState('xai');
+  const [providerId, setProviderId] = useState('server');
   const [baseUrl, setBaseUrl] = useState('');
   const [model, setModel] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -53,7 +53,7 @@ export function AiSettings() {
       setModel(cfg.model);
       setApiKey(cfg.apiKey);
     } else {
-      const preset = getPreset('xai');
+      const preset = getPreset('server');
       setBaseUrl(preset.baseUrl);
       setModel(preset.defaultModel);
     }
@@ -61,6 +61,8 @@ export function AiSettings() {
 
   const preset = getPreset(providerId);
   const isCustom = providerId === 'custom';
+  // The server proxy holds the key on the VPS, so the browser needs no key/model.
+  const isServer = providerId === 'server';
 
   // When the provider changes, fill base URL + model from the preset (unless
   // the user is on "custom", where they type their own).
@@ -77,7 +79,8 @@ export function AiSettings() {
   };
 
   const handleSave = () => {
-    if (!apiKey.trim() || !baseUrl.trim() || !model.trim()) {
+    // The server proxy needs no key/model in the browser — those live on the VPS.
+    if (!isServer && (!apiKey.trim() || !baseUrl.trim() || !model.trim())) {
       toast({
         title: 'Missing details',
         description: 'A key, a base URL, and a model name are all needed.',
@@ -85,17 +88,16 @@ export function AiSettings() {
       });
       return;
     }
-    const config: VisionConfig = {
-      providerId,
-      baseUrl: baseUrl.trim(),
-      model: model.trim(),
-      apiKey: apiKey.trim(),
-    };
+    const config: VisionConfig = isServer
+      ? { providerId, baseUrl: preset.baseUrl, model: 'server', apiKey: '' }
+      : { providerId, baseUrl: baseUrl.trim(), model: model.trim(), apiKey: apiKey.trim() };
     saveVisionConfig(config);
     setSaved(config);
     toast({
       title: 'AI provider saved',
-      description: 'Photo tagging in the wardrobe and pantry will use it now.',
+      description: isServer
+        ? 'Photo tagging will use your server. Make sure the AI proxy is running (docs/AI_PROXY.md).'
+        : 'Photo tagging in the wardrobe and pantry will use it now.',
     });
   };
 
@@ -154,58 +156,71 @@ export function AiSettings() {
           <p className="text-xs leading-relaxed text-muted-foreground">{preset.note}</p>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="ai-key" className="flex items-center gap-1.5">
-            <KeyRound className="h-3.5 w-3.5" />
-            API key
-          </Label>
-          <Input
-            id="ai-key"
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Paste your key (e.g. xai-…)"
-            autoComplete="off"
-          />
-          {preset.keyUrl && (
-            <a
-              href={preset.keyUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              Get a key from {preset.label}
-              <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
-        </div>
+        {!isServer && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="ai-key" className="flex items-center gap-1.5">
+                <KeyRound className="h-3.5 w-3.5" />
+                API key
+              </Label>
+              <Input
+                id="ai-key"
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Paste your key (e.g. xai-…)"
+                autoComplete="off"
+              />
+              {preset.keyUrl && (
+                <a
+                  href={preset.keyUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                >
+                  Get a key from {preset.label}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
 
-        {isCustom && (
-          <div className="space-y-2">
-            <Label htmlFor="ai-baseurl">Base URL</Label>
-            <Input
-              id="ai-baseurl"
-              value={baseUrl}
-              onChange={(e) => setBaseUrl(e.target.value)}
-              placeholder="https://your-endpoint/v1"
-              autoComplete="off"
-            />
-          </div>
+            {isCustom && (
+              <div className="space-y-2">
+                <Label htmlFor="ai-baseurl">Base URL</Label>
+                <Input
+                  id="ai-baseurl"
+                  value={baseUrl}
+                  onChange={(e) => setBaseUrl(e.target.value)}
+                  placeholder="https://your-endpoint/v1"
+                  autoComplete="off"
+                />
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="ai-model">Model</Label>
+              <Input
+                id="ai-model"
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                placeholder="e.g. grok-2-vision-1212"
+                autoComplete="off"
+              />
+              <p className="text-xs text-muted-foreground">
+                Must be a model that can look at images.
+              </p>
+            </div>
+          </>
         )}
 
-        <div className="space-y-2">
-          <Label htmlFor="ai-model">Model</Label>
-          <Input
-            id="ai-model"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            placeholder="e.g. grok-2-vision-1212"
-            autoComplete="off"
-          />
-          <p className="text-xs text-muted-foreground">
-            Must be a model that can look at images.
-          </p>
-        </div>
+        {isServer && (
+          <div className="rounded-lg border-2 border-dashed bg-muted/30 p-3 text-xs leading-relaxed text-muted-foreground">
+            No key is entered here. Your server holds it. Set the key on the VPS
+            in <code>ai-proxy/.env</code> and run the proxy — see
+            {' '}<code>docs/AI_PROXY.md</code>. This is the same pattern as your
+            vault app.
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-2">
           <Button onClick={handleSave} className="gap-2">
@@ -222,12 +237,19 @@ export function AiSettings() {
 
         <div className="flex items-start gap-2 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          <span>
-            This key lives in your browser and is sent only to the provider you
-            chose. It is fine for your own use. For a public, shared setup where
-            you don't want a key on the client at all, the sats-paid AI (see the
-            server runbook) is the sovereign alternative.
-          </span>
+          {isServer ? (
+            <span>
+              With "Your server", the key never touches any browser — it lives on
+              the VPS, exactly like your vault app. This is the recommended, most
+              secure option, especially if others visit the site.
+            </span>
+          ) : (
+            <span>
+              This key lives in <strong>this browser</strong> and is sent only to
+              the provider you chose. Fine for your own use — but on a shared or
+              public site, prefer "Your server" so no key sits on the client.
+            </span>
+          )}
         </div>
       </CardContent>
     </Card>

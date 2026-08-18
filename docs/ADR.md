@@ -691,3 +691,55 @@ Add a **bring-your-own-key** path as a *sibling* to contextVM, not a replacement
   AI. This trade-off is stated in the Settings UI and in `aiVision.ts`.
 - contextVM remains the sovereign path and takes over automatically whenever no
   BYOK key is configured — turning it on later needs no code change here.
+
+---
+
+## ADR-017 — Optional server-side AI proxy (the "vault pattern")
+
+**Status:** Accepted · **Date:** 2026-08-18
+
+### Context
+
+BYOK (ADR-016) stores the vision key in the browser's `localStorage`. For the
+owner's own device that is acceptable, but it is plaintext and unsuitable once
+others can reach the site. The owner already runs a server-side key holder for
+the vault app (DeepSeek key in `/etc/vault-alerts.env`) and wanted the same
+posture here: **key on the VPS, never in any browser.**
+
+Reminder: the app itself is still a static bundle (ADR-001). The proxy is a
+**separate, optional, self-hostable service** — additive, like the relay,
+Blossom, and contextVM — not a backend folded into the app.
+
+### Decision
+
+Ship a tiny, dependency-free Node proxy (`ai-proxy/server.mjs`) that holds the
+key in a VPS `.env` and exposes `POST /api/ai/tag` (plus `/api/ai/health`). It
+forwards `{ imageUrl, instruction }` to an OpenAI-compatible vision endpoint and
+returns `{ text }`.
+
+- In Settings, a new provider **"Your server (recommended)"** stores only
+  `providerId: 'server'` (no key, no model) and calls the same-origin
+  `/api/ai/tag`. `isServerProxy()` / `visionComplete()` route accordingly.
+- nginx (already serving `sahmstr.com` on :8083) forwards `/api/ai/` to the
+  proxy on `127.0.0.1:8090`; the browser talks only to its own origin (no CORS,
+  no key on the client).
+- Stood up via `docs/AI_PROXY.md`, one command at a time, with a systemd unit
+  mirroring the vault services.
+
+### Alternatives considered
+
+- **BYOK only.** Rejected as the *default* for a public site: plaintext key on
+  every operator's browser. Kept as the simple personal option.
+- **A serverless function (Netlify/Cloudflare).** Rejected: would move hosting
+  off the owner's VPS and split the deployment; the whole box is self-hosted.
+
+### Consequences
+
+- The key lives only in `ai-proxy/.env` (`chmod 600`, gitignored) — identical
+  posture to vault. No key in the bundle or any browser.
+- The proxy is **optional and additive**: absent it, the "Your server" option
+  simply errors on use, and BYOK / contextVM still work. Turning it on is a
+  runbook + one Settings choice, no app rebuild for key/model changes.
+- **Open budget risk on a public site:** anyone can POST `/api/ai/tag` and spend
+  the key's budget. Mitigations (shared-secret header, rate limit) are noted in
+  `docs/AI_PROXY.md` and easy to add to `server.mjs` later.

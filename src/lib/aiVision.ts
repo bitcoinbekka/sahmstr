@@ -31,11 +31,20 @@ export interface VisionProviderPreset {
 
 export const VISION_PRESETS: VisionProviderPreset[] = [
   {
+    id: 'server',
+    label: 'Your server (recommended)',
+    // A same-origin path served by the AI proxy on the VPS (ai-proxy/server.mjs,
+    // fronted by Caddy/nginx). The key lives on the server, never in the browser.
+    baseUrl: '/api/ai',
+    defaultModel: 'server',
+    note: 'Calls your own server, which holds the key safely on the VPS. No key is stored in this browser. This is the vault-style setup — set it up with docs/AI_PROXY.md.',
+  },
+  {
     id: 'xai',
-    label: 'xAI (Grok)',
+    label: 'xAI (Grok) — key in this browser',
     baseUrl: 'https://api.x.ai/v1',
     defaultModel: 'grok-2-vision-1212',
-    note: 'Grok vision models. Uses your xAI API key.',
+    note: 'Calls xAI directly with a key stored in THIS browser. Simplest, but the key lives on your device. Fine for personal use.',
     keyUrl: 'https://console.x.ai',
   },
   {
@@ -123,9 +132,16 @@ export function clearVisionConfig(): void {
   }
 }
 
-/** Is there a usable config (key + endpoint + model)? */
+/** Does this config use the server-side proxy (no browser key)? */
+export function isServerProxy(config: VisionConfig | null): boolean {
+  return config?.providerId === 'server';
+}
+
+/** Is there a usable config? The server proxy needs no key; others need one. */
 export function isVisionConfigured(config: VisionConfig | null): boolean {
-  return Boolean(config && config.apiKey && config.baseUrl && config.model);
+  if (!config) return false;
+  if (isServerProxy(config)) return true; // key lives on the server
+  return Boolean(config.apiKey && config.baseUrl && config.model);
 }
 
 /**
@@ -142,6 +158,34 @@ export async function visionComplete(args: {
   signal?: AbortSignal;
 }): Promise<string> {
   const { config, imageUrl, instruction, signal } = args;
+
+  // Server-proxy path: POST to our own /api/ai/tag; the VPS holds the key and
+  // returns { text }. No key or provider details are sent from the browser.
+  if (isServerProxy(config)) {
+    const base = config.baseUrl.replace(/\/$/, '') || '/api/ai';
+    const response = await fetch(`${base}/tag`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrl, instruction }),
+      signal,
+    });
+    if (!response.ok) {
+      let detail = '';
+      try {
+        const err = await response.json();
+        detail = typeof err?.error === 'string' ? err.error : JSON.stringify(err);
+      } catch {
+        detail = await response.text().catch(() => '');
+      }
+      throw new Error(detail || `The AI server returned ${response.status}.`);
+    }
+    const data = await response.json();
+    const text: unknown = data?.text;
+    if (typeof text !== 'string' || !text.trim()) {
+      throw new Error('The AI server returned an empty response.');
+    }
+    return text;
+  }
 
   const url = `${config.baseUrl.replace(/\/$/, '')}/chat/completions`;
 
