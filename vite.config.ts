@@ -12,21 +12,6 @@ export default defineConfig(() => ({
   plugins: [
     react(),
   ],
-  // react-markdown pulls in a deep tree of tiny ESM packages (unified, remark,
-  // mdast, micromark, hast, …). Rollup's production resolver walks that tree
-  // strictly and, in a real Node install, trips on nested transitive imports
-  // ("Rollup failed to resolve import 'mdast-util-from-markdown'", etc.).
-  // Forcing Vite to pre-bundle react-markdown with esbuild — which resolves the
-  // whole tree in one pass — sidesteps that entirely. This is the root-cause fix
-  // for the string of missing-dependency build errors on the VPS.
-  optimizeDeps: {
-    include: ["react-markdown"],
-  },
-  build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-  },
   test: {
     globals: true,
     environment: 'jsdom',

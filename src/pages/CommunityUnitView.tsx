@@ -2,7 +2,7 @@ import { useSeoMeta } from '@unhead/react';
 import { Link } from 'react-router-dom';
 import { nip19 } from 'nostr-tools';
 import type { Event } from 'nostr-tools';
-import Markdown from 'react-markdown';
+import { MiniMarkdown } from '@/lib/miniMarkdown';
 import type { NostrEvent } from '@nostrify/nostrify';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -168,21 +168,10 @@ export function CommunityUnitView({ pubkey, identifier }: CommunityUnitViewProps
                 prose-li:text-[15px] prose-li:leading-relaxed
                 prose-a:text-primary prose-a:underline-offset-4"
             >
-              <Markdown
-                components={{
-                  // Keep contributed content inert: no raw HTML, and links open safely.
-                  a: ({ href, children }) => (
-                    <a href={href} target="_blank" rel="noreferrer nofollow ugc">
-                      {children}
-                    </a>
-                  ),
-                  img: ({ src, alt }) => (
-                    <img src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} loading="lazy" className="rounded-lg" />
-                  ),
-                }}
-              >
-                {unit.event.content}
-              </Markdown>
+              {/* Contributed content is rendered by our own small Markdown
+                  renderer (src/lib/miniMarkdown.tsx). It injects no raw HTML,
+                  so the content stays inert, and links open safely. */}
+              <MiniMarkdown>{unit.event.content}</MiniMarkdown>
             </article>
 
             <Separator className="my-10" />
