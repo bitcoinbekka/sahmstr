@@ -226,33 +226,48 @@ Relevant tests: `circleCrypto.test.ts`, `circleGiftWrap.test.ts`,
 
 ## 7a. AI photo tagging (contextVM) — how it hangs together
 
-Read ADR-013, then `docs/CONTEXTVM.md` (the server runbook).
+Read ADR-013, ADR-016, ADR-017. Photo tagging (wardrobe + pantry) can run **three
+ways**; the app is always only the client, and picks a path automatically.
 
-The app is **only the client**. There is no API key in the bundle and no backend
-we run. The AI is a separate **contextVM server** (MCP over Nostr, `kind:25910`)
-that we host on the VPS; the user pays it a few sats per photo via their NWC
-wallet (CEP-8), and it reads the image into form fields.
+**One hook to rule them:** `src/hooks/useVisionTagging.ts` is what the dialogs
+call. It reads the saved config (`src/lib/aiVision.ts`, localStorage) and routes:
 
-- `src/lib/contextvm.ts` — `CONTEXTVM_PROVIDER` is a single **swappable config**
-  (server pubkey, relays, tool name `tag_image`, indicative price) plus the
-  MCP/CEP-8 helpers. `isProviderConfigured` gates the whole feature.
-- `src/hooks/useContextVMVision.ts` — the flow: encrypt request → publish →
-  handle `payment_required` (pay via NWC) → return the tool result. 90s timeout,
-  honest error/degraded states.
-- `src/components/AITagButton.tsx` — the shared control. Used by the wardrobe
-  `AddItemDialog` and the pantry `AddPantryItem`. States the price up front;
-  degrades to "coming soon" (no provider) or "connect a wallet" (no NWC).
+1. **Server proxy (recommended, ADR-017).** Provider `server` in Settings. The
+   browser POSTs `{ imageUrl, instruction }` to same-origin `/api/ai/tag`; a tiny
+   Node service on the VPS (`ai-proxy/server.mjs`) holds the key in `.env` and
+   calls the provider (xAI/Grok, OpenAI, …). **No key in the browser, no sats.**
+   This is the vault pattern. Stand it up with `docs/AI_PROXY.md`.
+2. **BYOK — key in this browser (ADR-016).** Provider `xai`/`openai`/… in
+   Settings. `visionComplete()` calls the provider directly with a key stored in
+   `localStorage`. Simplest; fine for a single operator, unsafe for a public site.
+3. **contextVM — sovereign, sats-paid (ADR-013).** The fallback when no BYOK/proxy
+   config is saved. `src/hooks/useContextVMVision.ts` runs the MCP-over-Nostr
+   (`kind:25910`) + CEP-8 wallet-payment flow. Dormant until
+   `CONTEXTVM_PROVIDER.pubkey` (hex) is set in `src/lib/contextvm.ts`.
 
-**The switch that turns it on:** `CONTEXTVM_PROVIDER.pubkey` is **empty** in the
-repo, so the UI shows "AI tagging coming soon" everywhere. Once the server is
-deployed (`docs/CONTEXTVM.md`), paste its 64-char **hex** pubkey into that one
-line and redeploy. Nothing else changes.
+Supporting pieces:
 
-- Price is authoritative **server-side** (tunable without an app deploy);
-  `estimatedSats` is only the cosmetic "About N sats" the button shows.
-- `toolName` must match the server's config on both sides (`tag_image`).
-- Outfit generation still uses the old `useAIStylist` Shakespeare path; only
-  tagging moved to contextVM.
+- `src/lib/aiVision.ts` — provider presets, `VisionConfig` (localStorage),
+  `visionComplete()` (direct OpenAI-compatible call **or** the `/api/ai/tag`
+  proxy when `isServerProxy()`), `isVisionConfigured()`.
+- `src/components/AiSettings.tsx` — the Settings UI (provider picker; hides the
+  key/model fields for the `server` option). Lives on the Settings page.
+- `src/components/AITagButton.tsx` — shared control. `mode` prop tunes the copy;
+  degrades to "not set up" (no config) or "connect a wallet" (contextVM, no NWC).
+- `ai-proxy/server.mjs` + `ai-proxy/.env.example` — the dependency-free proxy;
+  systemd unit and nginx `location /api/ai/` are in `docs/AI_PROXY.md`.
+
+**State as of the first live deploy:** `sahmstr.com` runs the **server proxy**
+against xAI. Everything is plumbed and verified end-to-end; the only open item is
+that the demo xAI key needs credit + the correct current vision model id (set
+`VISION_MODEL` in `ai-proxy/.env`, then `systemctl restart sahmstr-ai` — no app
+rebuild). See DEMO_SUMMARY.md.
+
+- The proxy's model/key live in `ai-proxy/.env` and change with a service
+  restart — **never a site rebuild**. Same for switching providers entirely.
+- Outfit generation (the stylist) still uses the old `useAIStylist` Shakespeare
+  path — text-only, unrelated to the vision tagging above. A good future task is
+  pointing it at the same proxy (or a text key like DeepSeek).
 
 ---
 
@@ -288,25 +303,29 @@ real enforcement is the host relay's write policy (`docs/RELAY.md`).
 
 ### Verified working
 
-- Build clean, no console errors at `74426d2`.
+- **Live in production at `https://sahmstr.com`** (self-hosted; see §9 and the
+  deploy notes below).
 - Curriculum, recipes, Circle, wardrobe, settings, theming, type switching.
-- Deep-link routing configured for Netlify and Vercel.
+- Deep-link routing (SPA fallback) confirmed live behind Caddy → nginx.
 - Custom favicon, manifest, themed 404.
+- **AI photo-tagging pipeline** end-to-end via the server proxy (see §7a). The
+  request reaches xAI; only credit/model id remain (below).
 
 ### Not done
 
 | Item | Notes |
 |---|---|
-| **`og:image`** | Absent. Social shares have no preview image. Needs an absolute URL, so it can only be added once deployed. **Do this first after deploy.** |
-| **Tests never run** | See §2. First `npm test` is a verification step. |
-| **Live streaming** | Metadata + chat fully built (§7b, NIP-53). Ingest server **not deployed** but now has a runbook (`docs/STREAMING.md`, MediaMTX); for demos point a stream at any HLS `.m3u8`. See ADR-014. |
-| **Vlogs** | Now surfaces recorded (ended) streams; still no first-class recorded-video upload. Keeps the Circle CTA for private video. |
-| **`blossom.sahmstr.com`** | App already prefers it (with public fallback), but the server itself is **not deployed yet**. Additive — see `docs/BLOSSOM.md`. |
+| **`og:image`** | Absent. Social shares have no preview image. Needs an absolute URL — now that the site is live at `https://sahmstr.com`, this is the top quick win. |
+| **AI key credit / model id** | The photo-tagging proxy is deployed and working, but the demo xAI key ran out of credit, and `grok-2-vision-1212` was rejected — set `VISION_MODEL` (e.g. `grok-4.6`) and add credit in `ai-proxy/.env`, then `systemctl restart sahmstr-ai`. See DEMO_SUMMARY.md. |
+| **Tests never run** | See §2. First `npm test` is a verification step. Note: a real Node build surfaced missing deps (below) — treat the first CI run as authoritative. |
+| **Live streaming** | Metadata + chat fully built (§7b, NIP-53). Ingest server **not deployed** but has a runbook (`docs/STREAMING.md`, MediaMTX); for demos point a stream at any HLS `.m3u8`. See ADR-014. |
+| **Vlogs** | Surfaces recorded (ended) streams; still no first-class recorded-video upload. Keeps the Circle CTA for private video. |
+| **`blossom.sahmstr.com`** | App prefers it (with public fallback), but the server itself is **not deployed yet**. Additive — see `docs/BLOSSOM.md`. Uploads currently land on public Blossom. |
 | **DMs** | Fully implemented but **disabled** — pass `enabled: true` to `DMProvider` to turn on. Untested in production. |
 | **Type switcher** | User-facing in the header. Was for evaluation; decide whether it ships. See ADR-005. |
 | **`PageHero` adoption** | Several pages inline equivalent markup instead. |
-| **AI stylist (outfit gen)** | Still on the old `useAIStylist` Shakespeare path; review cost/failure handling, or migrate it to contextVM like tagging. |
-| **AI photo tagging** | Fully built (§7a) but **dormant** until the contextVM server is deployed and its hex pubkey is pasted into `CONTEXTVM_PROVIDER`. See `docs/CONTEXTVM.md`. |
+| **AI stylist (outfit gen)** | Still on the old `useAIStylist` Shakespeare path; text-only. Consider routing it at the same proxy (or a DeepSeek text key). |
+| **contextVM server** | The sovereign, sats-paid AI path is built but its server is **not deployed** — the proxy (ADR-017) is what's live instead. See `docs/CONTEXTVM.md`. |
 
 ### Deliberate non-obvious choices
 
@@ -326,18 +345,63 @@ Do not "fix" these without reading the reasoning:
 
 ## 9. Deployment
 
-Static output; any static host works. In practice the project is self-hosted on
-a VPS behind Caddy, with its own relay, media host, and (optionally) AI server.
-Runbooks cover each, written one-command-at-a-time:
+Static output; any static host works. Runbooks cover each self-hosted piece,
+written one-command-at-a-time:
 
 | Runbook | Stands up |
 |---|---|
-| `docs/DEPLOY.md` | The app itself (Caddy + Docker) on `sahmstr.com` |
-| `docs/RELAY.md` | The community relay `wss://relay.sahmstr.com` (strfry) |
-| `docs/BLOSSOM.md` | The media host `blossom.sahmstr.com` (allowlisted). Additive — app has public fallback |
-| `docs/CONTEXTVM.md` | The sovereign, pay-per-use AI server (contextVM) — optional; AI features stay dormant without it |
-| `docs/STREAMING.md` | Live video ingest (MediaMTX, RTMP→HLS) so streams have a real feed — optional; chat/listing work without it |
-| `docs/STAGING.md` | A private, noindexed demo site (VPS subdomain or hosted preview) before public launch |
+| `docs/DEPLOY.md` | The app itself (generic Caddy + Docker recipe) |
+| `docs/AI_PROXY.md` | **The live AI: a Node proxy holding the vision key server-side (ADR-017)** |
+| `docs/RELAY.md` | The community relay (strfry) |
+| `docs/BLOSSOM.md` | The media host (allowlisted). Additive — app has public fallback |
+| `docs/CONTEXTVM.md` | The sovereign, sats-paid AI server (contextVM) — alternative to the proxy; not deployed |
+| `docs/STREAMING.md` | Live video ingest (MediaMTX, RTMP→HLS) — optional; chat/listing work without it |
+| `docs/STAGING.md` | A private, noindexed demo site before public launch |
+
+### How it is ACTUALLY deployed (important — differs from `docs/DEPLOY.md`)
+
+`docs/DEPLOY.md` describes a clean single-purpose box. The real production host
+is a **shared Ubuntu VPS** (`ch-server`) that also runs several `plebeian.build`
+services. The pattern there is different and must be respected:
+
+- **Caddy runs in a Docker container** (`torii-quest-web`) and **owns 80/443 +
+  all TLS**. You **append** site blocks to its Caddyfile and reload — never
+  rewrite it. `sahmstr.com { reverse_proxy 172.21.0.1:8083 }` is the block.
+- **Host nginx** serves the static sites on **internal ports** (vault 8081,
+  houseof 8082, **sahmstr 8083**). SPA fallback + cache rules live in the nginx
+  config (`/etc/nginx/sites-available/sahmstr.com`), not the Caddyfile.
+- The built site is copied to **`/var/www/sahmstr.com/`**.
+- The **AI proxy** runs as a systemd service (`sahmstr-ai`) on `127.0.0.1:8090`;
+  nginx forwards `location /api/ai/` to it (see `docs/AI_PROXY.md`).
+
+**The release loop on the VPS** (content update — no nginx/Caddy change):
+
+```bash
+cd ~/sahmstr && git reset --hard HEAD && git pull
+npm install && npm run build
+cp -r dist/* /var/www/sahmstr.com/
+```
+
+> ⚠️ **nginx reload vs restart.** After editing the nginx config, `systemctl
+> reload nginx` sometimes keeps stale workers and does **not** pick up a new
+> `location` block. A full `systemctl restart nginx` was required to route
+> `/api/ai/`. If a config change "isn't taking", restart, don't reload.
+
+Code is pushed to **GitHub** (`github.com/bitcoinbekka/sahmstr`) and pulled on
+the VPS. (Shakespeare's own `origin` remote is a separate Nostr git; ignore it
+for VPS deploys.)
+
+### First-real-build gotchas (fixed; here so nobody re-hits them)
+
+The project was authored in Shakespeare (browser, CDN module resolution). The
+first real Node/Rollup build surfaced issues the browser build hid:
+
+- **`react-markdown` was removed** — its deep unified/remark/mdast/micromark tree
+  would not resolve under Rollup. Replaced by `src/lib/miniMarkdown.tsx`, a
+  small, dependency-free renderer (used only by `CommunityUnitView`). Don't
+  reintroduce `react-markdown` without a plan for that tree.
+- **`.npmrc`** maps the `@jsr` scope to `https://npm.jsr.io` — Nostrify pulls JSR
+  packages (`@jsr/std__encoding`) that plain npm 404s on. Keep this file.
 
 ### Staging mode
 

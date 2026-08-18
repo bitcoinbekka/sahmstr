@@ -1154,11 +1154,15 @@ normative spec for every event this app writes.
 
 Home economics for mothers on freedom tech: a 16-unit curriculum, user-published
 recipes, **the Circle** (E2E-encrypted family photo/video sharing — the flagship
-and highest-risk feature), a wardrobe/pantry with sovereign AI tagging, and
+and highest-risk feature), a wardrobe/pantry with AI photo tagging, and
 **live streaming** with live chat. The product rejects platform capitalism: no
-backend we control, no ads, no data harvesting. **This is an architectural
-constraint, not marketing.** Proposals that reintroduce a central point of
-control are out of scope by default (ADR-001, ADR-002).
+ads, no data harvesting, nothing users can't take with them. **This is an
+architectural constraint, not marketing.** Proposals that reintroduce a central
+point of control are out of scope by default (ADR-001, ADR-002).
+
+> **Live:** `https://sahmstr.com`, self-hosted on a shared VPS. AI photo tagging
+> uses a server-side key-holding proxy (the "vault pattern", ADR-017) — an
+> optional, self-hostable service, not a backend folded into the app.
 
 ## Hard rules (do not violate without explicit user sign-off)
 
@@ -1197,9 +1201,14 @@ control are out of scope by default (ADR-001, ADR-002).
 - **Recipes** — `kind:30023`, readable in any long-form client.
 - **Circle** — `src/components/circle/`, `src/lib/circle*.ts`; NIP-59 gift wrap
   + AES-GCM attachments (ADR-003).
-- **AI tagging** — `src/lib/contextvm.ts`, `useContextVMVision`, `AITagButton`;
-  contextVM (`kind:25910`) + CEP-8 sats (ADR-013). Dormant until
-  `CONTEXTVM_PROVIDER.pubkey` (hex) is set.
+- **AI photo tagging** — one entry point, `src/hooks/useVisionTagging.ts`, which
+  routes across three backends (ADR-013/016/017): a **server-side proxy**
+  (`ai-proxy/server.mjs` + same-origin `/api/ai/tag`, key in VPS `.env` — this is
+  what's live), a **browser BYOK key** (`src/lib/aiVision.ts`, localStorage), or
+  the sovereign **contextVM** path (`src/lib/contextvm.ts`, `useContextVMVision`,
+  `kind:25910` + CEP-8 sats). Settings UI: `src/components/AiSettings.tsx`; shared
+  button: `AITagButton`. Provider/model/key change server-side with a
+  `systemctl restart sahmstr-ai` — never an app rebuild. See `docs/AI_PROXY.md`.
 - **Live streaming** — `src/lib/streamTypes.ts`, `src/hooks/useStreams*.ts` /
   `usePublishStream.ts` / `useStreamChat.ts`, `src/components/live/`; NIP-53
   (`kind:30311` + `kind:1311`), `chat-allow` whitelist extension (ADR-014). App
@@ -1217,11 +1226,23 @@ deployed yet:
 | Piece | Runbook | App behaviour if absent |
 |---|---|---|
 | App (Caddy) | `docs/DEPLOY.md` | — |
+| AI proxy (key server-side) | `docs/AI_PROXY.md` | "Your server" option errors; BYOK/contextVM still available |
 | Relay (strfry, allowlisted) | `docs/RELAY.md` | Uses default public relays |
 | Blossom media (allowlisted) | `docs/BLOSSOM.md` | Falls back to public Blossom |
-| contextVM AI | `docs/CONTEXTVM.md` | AI shows "coming soon" |
+| contextVM AI | `docs/CONTEXTVM.md` | Falls back to proxy/BYOK; contextVM path dormant |
 | Live video ingest (RTMP→HLS) | `docs/STREAMING.md` | Streams list + chat work, but have no video feed |
 | Staging / demo hosting | `docs/STAGING.md` | n/a — build with `VITE_STAGING=true` for a noindexed preview |
+
+**Deployment reality:** production is a **shared VPS** (`ch-server`, also hosting
+`plebeian.build` services), not the clean box `docs/DEPLOY.md` describes. Caddy
+runs in a Docker container owning 80/443 (**append** blocks, never rewrite); host
+nginx serves static sites on internal ports (sahmstr = **8083**); the built site
+lives in `/var/www/sahmstr.com/`; the AI proxy is a systemd service on
+`127.0.0.1:8090` fronted by nginx `location /api/ai/`. Code ships via **GitHub**
+(`bitcoinbekka/sahmstr`) → `git pull` on the VPS. See HANDOVER.md §9 for the full
+picture, the release loop, and the nginx **restart-not-reload** gotcha. Two
+first-real-build fixes to preserve: **no `react-markdown`** (replaced by
+`src/lib/miniMarkdown.tsx`) and the **`.npmrc`** `@jsr` scope mapping.
 
 When the user asks to "turn on" a piece, the change is usually **one config line**
 (a pubkey or URL) plus following the runbook on the VPS — not new app plumbing.
