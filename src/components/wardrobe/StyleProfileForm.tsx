@@ -1,7 +1,10 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Check, ShieldCheck } from 'lucide-react';
 import { useWardrobe } from '@/hooks/useWardrobe';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
+import type { StyleProfile } from '@/lib/wardrobeTypes';
 import {
   Select,
   SelectContent,
@@ -20,7 +23,28 @@ import {
 import type { SkinTone, SkinUndertone, BodyType, ClothingStyle, ColorFamily } from '@/lib/wardrobeTypes';
 
 export function StyleProfileForm() {
-  const { profile, updateProfile } = useWardrobe();
+  const { profile, updateProfile: persistProfile } = useWardrobe();
+
+  // The form has no Save button — every change persists to localStorage
+  // immediately. That silent save felt broken, so we flash a "Saved" indicator
+  // whenever a change lands, and state up front that it saves automatically.
+  const [justSaved, setJustSaved] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const updateProfile = useCallback(
+    (updates: Partial<StyleProfile>) => {
+      persistProfile(updates);
+      setJustSaved(true);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setJustSaved(false), 1800);
+    },
+    [persistProfile],
+  );
+
+  // Clean up the pending timeout on unmount.
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
 
   const toggleStyle = (style: ClothingStyle) => {
     const newStyles = profile.preferredStyles.includes(style)
@@ -51,6 +75,27 @@ export function StyleProfileForm() {
 
   return (
     <div className="space-y-6">
+      {/* Auto-save notice + live "Saved" confirmation. The form has no Save
+          button by design; this makes the silent persistence visible. */}
+      <div className="sticky top-2 z-10 flex items-center justify-between gap-3 rounded-xl border-2 border-primary/25 bg-background/90 px-4 py-3 shadow-sm backdrop-blur">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-primary" />
+          <span>
+            Your profile saves automatically and stays private on this device —
+            it is never published.
+          </span>
+        </p>
+        <span
+          className={`flex items-center gap-1.5 text-sm font-medium text-primary transition-opacity duration-300 ${
+            justSaved ? 'opacity-100' : 'opacity-0'
+          }`}
+          aria-live="polite"
+        >
+          <Check className="h-4 w-4" />
+          Saved
+        </span>
+      </div>
+
       {/* Skin Tone & Undertone */}
       <Card>
         <CardHeader>
